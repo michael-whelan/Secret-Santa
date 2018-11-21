@@ -132,12 +132,12 @@ def sendtest():
 	smtp_host = 'smtp.gmail.com'       # google
 	#smtp_host = 'smtp.mail.yahoo.com'  # yahoo
 	login, password = 'santysecrets@gmail.com', 'blitzen123'
-	recipients_emails = ['seanwhelan117@gmail']
+	recipients_emails = ['seagullmania93@gmail.com']
 
 	msg = MIMEText('sean is a gobshite', 'plain', 'utf-8')
 	msg['Subject'] = Header('test', 'utf-8')
 	msg['From'] = login
-	msg['To'] = 'seanwhelan117@gmail'
+	msg['To'] = 'seagullmania93@gmail.com'
 
 	s = smtplib.SMTP(smtp_host, 587, timeout=10)
 	s.set_debuglevel(1)
