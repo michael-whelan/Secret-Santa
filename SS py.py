@@ -12,6 +12,8 @@ from string import Template
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.header import Header
+from operator import attrgetter
+
 
 class Person:
 	def __init__(self, name, email):
@@ -41,32 +43,28 @@ class Person:
 
 
 
-
-user1 = Person('user1','user1@gmail.com')
-user2 = Person('user2','user2@gmail.com')
-user3 = Person('user3','user3@gmail.com')
-user4 = Person('user4','user4@gmail.com')
-user5 = Person('user5','user5@gmail.com')
-user6 = Person('user6','user6@gmail.com')
-user7 = Person('user7','user7@gmail.com')
-user8 = Person('user8','user8@gmail.com')
-user9 = Person('user9','user9@gmail.com')
-
-
 taken = []
 
 
 usersG = [
-	user1,
-	user2,
-	user3,
-	user4,
-	user5,
-	user6,
-	user7,
-	user8,
-	user9 	
+	Person('Michael','seagullmania93@gmail.com'),
+	Person('Damo','superdamo@gmail.com'),
+	Person('Emma','emmakingham93@gmail.com'),
+	Person('Joanna','joannacorscadden@gmail.com'),
+	Person('Fiach','fiachw@gmail.com'),
+	Person('Sam','samanthaloughrey@hotmail.com'),
+	Person('Rach','whelan8395@gmail.com'),
+	Person('Jack','jackwhelan01@gmail.com'),
+	Person('Sean','seanwhelan117@gmail.com'),
+	Person('Aine','ainewhelanphotos@gmail.com')
 ]
+
+usersG[0].not_list.append(usersG[2])
+usersG[2].not_list.append(usersG[0])
+usersG[1].not_list.append(usersG[3])
+usersG[3].not_list.append(usersG[1])
+usersG[4].not_list.append(usersG[5])
+usersG[5].not_list.append(usersG[4])
 
 def fillTest():
 	for user in usersG:
@@ -75,7 +73,7 @@ def fillTest():
 		while tempInt > 0:
 			user.not_list.append(random.choice(usersG))
 			tempInt-=1
-
+	
 
 def main():
 	fails = 0
@@ -83,14 +81,15 @@ def main():
 	fillTest()
 	while fails < 1200 and success==False:
 		shuffle(usersG)
+		usersG.sort(key=lambda s: len(s.not_list), reverse = True)#sort the list so that the largest not list is first
 		if not loopUsers():
 			fails+=1
 			fillTest()
-			#	import pdb; pdb.set_trace()
 		else:
 			success=True
 	for user in usersG:
-		print(user.name, user.chosen.name)
+		#print(user.name, user.chosen.name)
+		sendMessage(user)
 	print('success:', success)
 	print('fails:', fails)
 
@@ -100,55 +99,35 @@ def loopUsers():
 	try:
 		for user in usersG:
 			remaining.remove(user.collect(remaining))
-			#print(user.name,user.chosen.name)
 			if user.chosen == False:
 				return False
 		return True
 	except Exception as error:
-		#print(error)
-		#import pdb; pdb.set_trace()
 		return False
 		
-def sendMessage(me, you):
-	print('sending.......')
-	#msg = EmailMessage()
-	s = smtplib.SMTP.connect(host='smtp.gmail.com',port='587')
-	s.starttls()
-	s.login('santysecrets@gmail.com', 'blitzen123')
 
-	msg = MIMEMultipart() 
-	#msg.set_content('sean is a dick')
-	message='sean is a dick'
-	msg['Subject'] = 'test mail'
-	msg['From'] = me
-	msg['To'] = you
-	#msg.attach(MIMEText(message, 'plain'))
-	msg = MIMEText(message, 'plain', charset)
-	#s.send_message(msg)
-	s.quit()
-
-def sendtest():
+def sendMessage(person):
 	####smtp_host = 'smtp.live.com'        # microsoft
 	smtp_host = 'smtp.gmail.com'       # google
 	#smtp_host = 'smtp.mail.yahoo.com'  # yahoo
 	login, password = 'santysecrets@gmail.com', 'blitzen123'
-	recipients_emails = ['seagullmania93@gmail.com']
 
-	msg = MIMEText('sean is a gobshite', 'plain', 'utf-8')
-	msg['Subject'] = Header('test', 'utf-8')
+	msg = MIMEText("To "+str(person.name)+", \n\nYou're secret santa giftee is "+str(person.chosen.name), 'plain', 'utf-8')
+	msg['Subject'] = Header('Secret Santa', 'utf-8')
 	msg['From'] = login
-	msg['To'] = 'seagullmania93@gmail.com'
+	msg['To'] = person.email
 
 	s = smtplib.SMTP(smtp_host, 587, timeout=10)
 	s.set_debuglevel(1)
 	try:
 		s.starttls()
 		s.login(login, password)
-		s.sendmail(msg['From'], recipients_emails, msg.as_string())
+		s.sendmail(msg['From'], msg['To'], msg.as_string())
 	finally:
 		s.quit()
 
 if __name__ == "__main__":
-	#main()
-	#sendMessage('santysecrets@gmail.com','seanwhelan117@gmail.com')
-	sendtest()
+	main()
+	#sendMessage('santysecrets@gmail.com','seagullmania93@gmail.com')
+
+	
