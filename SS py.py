@@ -47,16 +47,16 @@ taken = []
 
 
 usersG = [
-	Person('Michael','seagullmania93@gmail.com'),
-	Person('Damo','superdamo@gmail.com'),
-	Person('Emma','emmakingham93@gmail.com'),
-	Person('Joanna','joannacorscadden@gmail.com'),
-	Person('Fiach','fiachw@gmail.com'),
-	Person('Sam','samanthaloughrey@hotmail.com'),
-	Person('Rach','whelan8395@gmail.com'),
-	Person('Jack','jackwhelan01@gmail.com'),
-	Person('Sean','seanwhelan117@gmail.com'),
-	Person('Aine','ainewhelanphotos@gmail.com')
+	Person('Michael','*****@gmail.com'),
+	Person('Damo','*****@gmail.com'),
+	Person('Emma','*****@gmail.com'),
+	Person('Joanna','*****@gmail.com'),
+	Person('Fiach','*****@gmail.com'),
+	Person('Sam','*****@hotmail.com'),
+	Person('Rach','*****@gmail.com'),
+	Person('Jack','*****@gmail.com'),
+	Person('Sean','*****@gmail.com'),
+	Person('Aine','*****@gmail.com')
 ]
 
 usersG[0].not_list.append(usersG[2])
