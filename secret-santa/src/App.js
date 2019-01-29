@@ -15,14 +15,11 @@ function makeEnum(arr){
 class App extends Component {
 	constructor(props) {	
 		super(props);
-		//this.appStates = makeEnum(["home","login","reg"]);
-		//this.appState = this.appStates.home;
-		//this.state = {page:["home","login","reg"]};
-		//this.setState({page:"home"});
 		this.state = {page:"home"};
 	}
 	setAppState = ()=> {
-		this.state ={page: "login"};
+		//this.state ={page: "login"};
+    this.setState({page: "login"})
 		console.log(this.state);
 	}
 
