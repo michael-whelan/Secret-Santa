@@ -15,21 +15,30 @@ function makeEnum(arr){
 class App extends Component {
 	constructor(props) {	
 		super(props);
-		this.appStates = makeEnum(["home","login","reg"]);
-		this.appState = this.appStates.home;
+		//this.appStates = makeEnum(["home","login","reg"]);
+		//this.appState = this.appStates.home;
+		//this.state = {page:["home","login","reg"]};
+		//this.setState({page:"home"});
+		this.state = {page:"home"};
 	}
-	setAppState(newState){
-		console.log(newState);
-		this.appState = newState;
-		console.log(this.appState);		
+	setAppState = ()=> {
+		this.state ={page: "login"};
+		console.log(this.state);
 	}
+
+	tester = () =>{
+		console.log(this.state);
+	}
+
 	render() {
-		if(this.appState === this.appStates.home){
+		const page = this.state.page;
+		if(this.state.page === "home"){
 			return (
 				<div className="App">
 					<header className="App-header">
 						<input type="text"/>
-						<button onClick={this.setAppState(this.appStates.login)}>Go to Login</button>
+						<button onClick={this.setAppState}>Go to Login</button>
+						<button onClick={this.tester}>test</button>
 					</header>
 				</div>
 			);
@@ -38,12 +47,28 @@ class App extends Component {
 			return (
 				<div className="App">
 					<header className="App-header">
-						<Login></Login> 
+						<Login></Login>
+						<button onClick={this.tester}>test</button>
 					</header>
 				</div>
 			);
 		}
 	}
 }
-
+/*
+return (
+				<div className="App">
+					<header className="App-header">
+					{this.state.page === "home" ? (
+							<input type="text"/>
+							<button onClick={this.setAppState}>Go to Login</button>
+							<button onClick={this.tester}>test</button>
+					): (
+							<Login></Login>
+							<button onClick={this.tester()}>test</button>
+					)}
+					</header>
+				</div>
+			);
+*/ 
 export default App;

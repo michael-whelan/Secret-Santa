@@ -13,7 +13,7 @@ export default class Login extends Component {
   }
 
   validateForm() {
-	return this.state.email.length > 0 && this.state.password.length > 0;
+		return this.state.email.length > 0 && this.state.password.length > 0;
   }
 
   handleChange = event => {
