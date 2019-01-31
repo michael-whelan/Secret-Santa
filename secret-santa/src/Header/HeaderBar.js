@@ -6,25 +6,27 @@ export default class HeaderBar extends Component {
 	super(props);
   }
 
-  validateForm() {
-		return this.state.email.length > 0 && this.state.password.length > 0;
-  }
-
   handleChange = event => {
 	this.setState({
 	  [event.target.type]: event.target.value
 	});
   }
 
-  handleSubmit = event => {
+  handleLogout = event => {
 	event.preventDefault();
-
+	console.log("Logout");
   }
 
   render() {
 	return (
 		<div className="header">
-
+			<div className="left-head">
+				<input type="text"/>
+				<button className="btn1" onClick={this.setAppState}>Search</button>
+			</div>
+			<div className="right-head"> 
+				<button onClick={this.handleLogout}>Logout</button>
+			</div>
 		</div>
 	);
   }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Login from './Login/Login.js';
-import HeaderBar from './Header/HeaderBar.js'
-
+import HeaderBar from './Header/HeaderBar.js';
+import LeftPanel from './LeftPanel/LeftPanel';
 
 function makeEnum(arr){
     let obj = {};
@@ -46,8 +46,8 @@ class App extends Component {
 				<div className="App">
 					<HeaderBar></HeaderBar>
 					<div className="main">					
-						{/*<LeftPanel></LeftPanel>
-						<DetailArea></DetailArea>*/}
+						<LeftPanel></LeftPanel>
+						{/*<DetailArea></DetailArea>*/}
 					</div>
 				</div>
 			);
