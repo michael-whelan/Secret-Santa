@@ -3,6 +3,8 @@ A simple secet santa app. The digital version of picking names out of a hat.
 
 ## The Front End
 
+Built in ReactJS
+
 ## The Python
 **NOT DONE**
 
@@ -17,5 +19,8 @@ This is done in two ways. Depending on whether or not the group admin has added 
 - If the _"not"_ field doesn't get filled out then the random selection is much easier. The simpler wqay to randomly sort people into pairs is just by randomising the list and assigning people the next person in the list and the last person the first. This way guarantees everyone is found a pair and it's the simplest pairing method.
 
 
-Another aspect of the second part is the use of google s 
+Another aspect of the second part is the use of google account to send the emails from, simply creating a MIMEText message with sender/recipient/body and sending it through the account was fine. 
+
+
 ## The Database
+ 
