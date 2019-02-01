@@ -3,6 +3,8 @@ import './App.css';
 import Login from './Login/Login.js';
 import HeaderBar from './Header/HeaderBar.js';
 import LeftPanel from './LeftPanel/LeftPanel';
+import GroupDetail from './MainDetails/Details.js';
+
 
 function makeEnum(arr){
     let obj = {};
@@ -15,7 +17,7 @@ function makeEnum(arr){
 class App extends Component {
 	constructor(props) {	
 		super(props);
-		this.state = {page:"home"};
+		this.state = {page:"home", groups:"unloaded"};
 	}
 	setAppState = ()=> {
     	this.setState({page: "login"})
@@ -25,6 +27,26 @@ class App extends Component {
 	updateAppState = (newState)=>{
 		this.setState({page: newState})
 		console.log(this.state);
+	}
+
+	testRun = () => {
+		/*axios.get('../public/users.json') // JSON File Path
+		.then( response => {
+			this.setState({
+				userList: response.data,
+				groups: "loaded"
+			});
+		})
+		var oReq = new XMLHttpRequest();
+		oReq.onload = this.reqListener;
+		oReq.open("get", "./db.json", true);
+		oReq.send();*/
+	}
+
+	reqListener = e => {
+
+		//var data = JSON.parse(this.responseText);
+		console.log(this.responseText)
 	}
 
 	render() {
@@ -45,9 +67,10 @@ class App extends Component {
 			return (
 				<div className="App">
 					<HeaderBar></HeaderBar>
+					<button onClick={this.testRun}> tester</button>
 					<div className="main">					
 						<LeftPanel></LeftPanel>
-						{/*<DetailArea></DetailArea>*/}
+						<GroupDetail></GroupDetail>
 					</div>
 				</div>
 			);
