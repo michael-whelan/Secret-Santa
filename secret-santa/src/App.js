@@ -4,16 +4,15 @@ import Login from './Login/Login.js';
 import HeaderBar from './Header/HeaderBar.js';
 import LeftPanel from './LeftPanel/LeftPanel';
 import GroupDetail from './MainDetails/Details.js';
-import axios from 'axios';
+//import axios from 'axios';
 
 class App extends Component {
 	constructor(props) {	
 		super(props);
-		this.state = {page:"login", groups:"unloaded"};
+		this.state = {page:"landing", groups:"unloaded",user:"null"};
 	}
 	setAppState = ()=> {
     	this.setState({page: "login"})
-		console.log(this.state);
 	}
 
 	updateAppState = (newState)=>{
@@ -22,17 +21,7 @@ class App extends Component {
 	}
 
 	testRun = () => {
-		/*axios.get('../public/users.json') // JSON File Path
-		.then( response => {
-			this.setState({
-				userList: response.data,
-				groups: "loaded"
-			});
-		})
-		var oReq = new XMLHttpRequest();
-		oReq.onload = this.reqListener;
-		oReq.open("get", "./db.json", true);
-		oReq.send();*/
+		console.log(this.state.user);
 	}
 
 	reqListener = e => {
@@ -58,7 +47,7 @@ class App extends Component {
 		else if(this.state.page ==="home"){
 			return (
 				<div className="App">
-					<HeaderBar></HeaderBar>
+					<HeaderBar user={this.state.user} goLogin={this.setAppState}></HeaderBar>
 					<div className="main">					
 						<LeftPanel></LeftPanel>
 						<GroupDetail></GroupDetail>
@@ -70,7 +59,7 @@ class App extends Component {
 			return (
 				<div className="App">
 					<div className="main">
-						<Login stateUpdate={this.updateAppState}></Login>
+						<Login stateUpdate={this.updateAppState} user={this.state}></Login>
 					</div>
 				</div>
 			);

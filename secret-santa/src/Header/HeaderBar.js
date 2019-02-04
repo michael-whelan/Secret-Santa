@@ -15,6 +15,9 @@ export default class HeaderBar extends Component {
   handleLogout = event => {
 	event.preventDefault();
 	console.log("Logout");
+	//Check if current page needs creds
+	//If so return to login
+	//if not stay on page
   }
 
   render() {
@@ -24,9 +27,16 @@ export default class HeaderBar extends Component {
 				<input type="text"/>
 				<button className="btn1" onClick={this.setAppState}>Search</button>
 			</div>
-			<div className="right-head"> 
-				<button onClick={this.handleLogout}>Logout</button>
-			</div>
+			{this.props.user!="null" ? (
+				<div className="right-head">
+					<label className="user-name">{this.props.user}</label>
+					<button onClick={this.handleLogout}>Logout</button>
+				</div>
+			) : (
+				<div className="right-head">
+					<button onClick={this.props.goLogin}>Login</button>
+				</div>
+			)}
 		</div>
 	);
   }

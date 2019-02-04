@@ -103,23 +103,7 @@ class Handler (BaseHTTPRequestHandler) :
 			#self.response.out.write()
 			self.send_response(404)
 			self.end_headers()
-			
-		if self.path == "/chirps" or self.path == "/chirps/":
-			length = int(self.headers.getheader('content-length'))
-			# Get form data
-			postvars = urlparse.parse_qs(self.rfile.read(length), keep_blank_values=1)
-			#d = self.rfile.readline()
-			# Init data
-			name = postvars.get('user')[0]
-			datetime = postvars.get('datetime')[0]
-			msg= postvars.get('msg')[0]
-			# Send request to DB
-			resp = db.putOne(name,datetime,msg)			
-			# Send code 200
-			#self.response.out.write()
-			self.send_response(200)
-			self.end_headers()
-		
+
 
 
 server = HTTPServer(("localhost", PORT), Handler)

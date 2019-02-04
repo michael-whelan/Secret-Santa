@@ -45,6 +45,11 @@
 	float:right;
 }
 
+.right-head > .user-name{
+	color:white;
+	margin-right: 1em;
+}
+
 
 .left-panel {
 	height: 90%; 

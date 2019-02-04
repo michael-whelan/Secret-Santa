@@ -35,10 +35,11 @@ export default class Login extends Component {
 			console.log(res);
 			console.log(res.data);
 			if(res.status == 200){
+				const userState = this.props.user;
+				userState.user = this.state.email;
 				this.props.stateUpdate("home");
 			}
-		}); 
-
+		});
   }
 
   render() {
