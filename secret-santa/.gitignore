@@ -10,7 +10,8 @@
 
 # production
 /build
-
+*.pyc
+!spec/*.pyc
 # misc
 .DS_Store
 .env.local

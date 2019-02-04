@@ -4,20 +4,12 @@ import Login from './Login/Login.js';
 import HeaderBar from './Header/HeaderBar.js';
 import LeftPanel from './LeftPanel/LeftPanel';
 import GroupDetail from './MainDetails/Details.js';
-
-
-function makeEnum(arr){
-    let obj = {};
-    for (let val of arr){
-        obj[val] = Symbol(val);
-    }
-    return Object.freeze(obj);
-}
+import axios from 'axios';
 
 class App extends Component {
 	constructor(props) {	
 		super(props);
-		this.state = {page:"home", groups:"unloaded"};
+		this.state = {page:"login", groups:"unloaded"};
 	}
 	setAppState = ()=> {
     	this.setState({page: "login"})
@@ -67,7 +59,6 @@ class App extends Component {
 			return (
 				<div className="App">
 					<HeaderBar></HeaderBar>
-					<button onClick={this.testRun}> tester</button>
 					<div className="main">					
 						<LeftPanel></LeftPanel>
 						<GroupDetail></GroupDetail>

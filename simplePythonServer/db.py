@@ -19,7 +19,7 @@ def getUser(n,p):
 
 	return data
 
-def getGroups():
+def getGroups(p):
 	data = {
 		"group1": {
 			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
@@ -71,6 +71,7 @@ def getGroups():
 			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
 		}
 	}
+	print ("Operation done successfully")
 	return data
 	
 def getChirps(p):
@@ -89,7 +90,7 @@ def getChirps(p):
 		entry[prop] = val
 	  data.append(entry)
 
-	print ("Operation done successfully");
+	print ("Operation done successfully")
 	conn.close()
 
 	return data

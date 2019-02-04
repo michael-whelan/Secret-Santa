@@ -16,7 +16,7 @@ from flask import Flask, jsonify, abort, request, make_response, url_for, render
 
 
 
-PORT = 3000
+PORT = 8080
 
 class Handler (BaseHTTPRequestHandler) :
 	def do_OPTIONS(self):
@@ -34,7 +34,7 @@ class Handler (BaseHTTPRequestHandler) :
 
 		if self.path == "/getstuff" or self.path == "/getstuff/":
 			#send response code:
-			
+			print("connection made")
 			self.send_response(200)
 			#send headers:
 			self.send_header("Content-type:", "application/json")
@@ -82,19 +82,22 @@ class Handler (BaseHTTPRequestHandler) :
 		# Look for POST request
 		if self.path == "/users" or self.path == "/users/":
 			length = int(self.headers.getheader('content-length'))
+			print(length)
 			# Get form data
 			postvars = urlparse.parse_qs(self.rfile.read(length), keep_blank_values=1)
 			#d = self.rfile.readline()
 			# Init data
-			name = postvars.get('username')[0]
-			password = postvars.get('password')[0]
-			# Send request to DB
-			resp = db.getUser(name, password)
-			for item in resp:
-				if item['name'] ==name and item['password']:
-					self.send_response(200)
-					self.end_headers()
-					return
+			vals ={}
+			for k in postvars:
+				vals = json.loads(k)
+			print(vals.get('email'))
+			name = vals.get('email')
+			password = vals.get('password')
+			
+			if name =="michael@g.c"  and password == "qwert":
+				self.send_response(200)
+				self.end_headers()
+				return
 			
 			# Send code 200
 			#self.response.out.write()

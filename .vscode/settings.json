@@ -3,5 +3,14 @@
 		"activityBar.background": "#1F2D4C",
 		"titleBar.activeBackground": "#2C3E6A",
 		"titleBar.activeForeground": "#FCFCFE"
-	}
+	},
+	"files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+		"**/simplePythonServer/**": true,
+		"**/SS py.py": true,
+		"**/templater.py": true,
+		"**/public/**": true
+    }
 }
