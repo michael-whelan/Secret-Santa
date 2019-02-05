@@ -27,6 +27,15 @@ class Handler (BaseHTTPRequestHandler) :
 		self.send_header("Access-Control-Allow-Headers", "Content-Type")
 		self.end_headers()
 		
+
+	def check_credentials(self):
+		name = self.headers.getheader('X-User-Name')
+		password = self.headers.getheader('X-User-Pass')
+		if name =="michael@g.c" and password == "qwert":
+			return True
+		return False
+
+
 	def do_GET(self) :
 		# Look for main page
 		if self.path=="/":
@@ -35,14 +44,16 @@ class Handler (BaseHTTPRequestHandler) :
 		if self.path == "/getstuff" or self.path == "/getstuff/":
 			#send response code:
 			print("connection made")
-			self.send_response(200)
-			#send headers:
-			self.send_header("Content-type:", "application/json")
-			# send a blank line to end headers:
-			self.wfile.write("\n")
-			#send response:
-			json.dump(db.getGroups(self.path), self.wfile)
-		
+			if self.check_credentials():
+				self.send_response(200)
+				#send headers:
+				self.send_header("Content-type:", "application/json")
+				# send a blank line to end headers:
+				self.wfile.write("\n")
+				#send response:
+				json.dump(db.getGroups(self.path), self.wfile)
+			else:
+				self.send_response(404)
 
 		try:
 			#Check the file extension required and
@@ -103,9 +114,7 @@ class Handler (BaseHTTPRequestHandler) :
 			#self.response.out.write()
 			self.send_response(404)
 			self.end_headers()
-
-
-
+		
 server = HTTPServer(("localhost", PORT), Handler)
 print ("serving at port", PORT)
 server.serve_forever()

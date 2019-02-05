@@ -9,7 +9,7 @@ import GroupDetail from './MainDetails/Details.js';
 class App extends Component {
 	constructor(props) {	
 		super(props);
-		this.state = {page:"landing", groups:"unloaded",user:"null"};
+		this.state = {page:"home", groups:"unloaded",user:"null"};
 	}
 	setAppState = ()=> {
     	this.setState({page: "login"})
@@ -49,7 +49,7 @@ class App extends Component {
 				<div className="App">
 					<HeaderBar user={this.state.user} goLogin={this.setAppState}></HeaderBar>
 					<div className="main">					
-						<LeftPanel></LeftPanel>
+						<LeftPanel user={this.state.user} ></LeftPanel>
 						<GroupDetail></GroupDetail>
 					</div>
 				</div>

@@ -13,8 +13,8 @@ export default class HeaderBar extends Component {
   }
 
   handleLogout = event => {
-	event.preventDefault();
-	console.log("Logout");
+		event.preventDefault();
+		console.log("Logout");
 	//Check if current page needs creds
 	//If so return to login
 	//if not stay on page
