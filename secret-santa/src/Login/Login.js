@@ -25,15 +25,14 @@ export default class Login extends Component {
 
   handleSubmit = event => {
 		event.preventDefault();
-		console.log(this.state.email,this.state.password);
-		/*send details to server
-		Get response
-		Log in*/
-		//
-		axios.post('http://localhost:8080/users', {email: this.state.email,password:this.state.password})
+		
+		var config = {
+			headers: {'X-User-Name': this.state.email,
+			'X-User-Pass': this.state.password,
+			'Access-Control-Allow-Origin': '*'}
+		};
+		axios.get('http://localhost:8080/login', config)
 		.then(res => {
-			console.log(res);
-			console.log(res.data);
 			if(res.status == 200){
 				const userState = this.props.user;
 				userState.user = this.state.email;

@@ -54,6 +54,16 @@ class Handler (BaseHTTPRequestHandler) :
 				json.dump(db.getGroups(self.path), self.wfile)
 			else:
 				self.send_response(404)
+		if self.path == "/login" or self.path == "/login/":
+			if self.check_credentials():
+				self.send_response(200)
+				self.end_headers()
+				return
+			
+			# Send code 200
+			#self.response.out.write()
+			self.send_response(404)
+			self.end_headers()
 
 		try:
 			#Check the file extension required and
@@ -91,21 +101,8 @@ class Handler (BaseHTTPRequestHandler) :
 
 	def do_POST(self):
 		# Look for POST request
-		if self.path == "/users" or self.path == "/users/":
-			length = int(self.headers.getheader('content-length'))
-			print(length)
-			# Get form data
-			postvars = urlparse.parse_qs(self.rfile.read(length), keep_blank_values=1)
-			#d = self.rfile.readline()
-			# Init data
-			vals ={}
-			for k in postvars:
-				vals = json.loads(k)
-			print(vals.get('email'))
-			name = vals.get('email')
-			password = vals.get('password')
-			
-			if name =="michael@g.c"  and password == "qwert":
+		if self.path == "/login" or self.path == "/login/":
+			if self.check_credentials():
 				self.send_response(200)
 				self.end_headers()
 				return
