@@ -9,7 +9,8 @@ import GroupDetail from './MainDetails/Details.js';
 class App extends Component {
 	constructor(props) {	
 		super(props);
-		this.state = {page:"home", groups:"unloaded",user:"null", groupDetails:"null"};
+		this.state = {page:"home", groups:"null",user:"null", activeGroup:"null", 
+		selectedGroup:"null"};
 	}
 	setAppState = ()=> {
     	this.setState({page: "login"})
@@ -17,11 +18,18 @@ class App extends Component {
 
 	updateAppState = (newState)=>{
 		this.setState({page: newState})
-		console.log(this.state);
 	}
 
+	fillGroups = (groupList)=>{
+		console.log(groupList);
+		this.setState({groups: groupList});
+	}
 	testRun = () => {
-		console.log(this.state.user);
+		console.log(this.state.groups);
+	}
+
+	showGroup = (groupId) =>{
+		this.setState({activeGroup: groupId});
 	}
 
 	reqListener = e => {
@@ -48,9 +56,11 @@ class App extends Component {
 			return (
 				<div className="App">
 					<HeaderBar user={this.state.user} goLogin={this.setAppState}></HeaderBar>
-					<div className="main">					
-						<LeftPanel user={this.state.user} groupDeets={this.state.groupDetails}></LeftPanel>
-						<GroupDetail groupsDeets={this.state.groupDetails}></GroupDetail>
+					<div className="main">
+						<LeftPanel user={this.state.user} updateGroups={this.fillGroups} 
+						showGroupById={this.showGroup} groups={this.state.groups}></LeftPanel>
+						<GroupDetail activeGroupId={this.state.activeGroup}
+						 groups={this.state.groups}></GroupDetail>
 					</div>
 				</div>
 			);

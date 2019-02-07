@@ -21,49 +21,56 @@ def getUser(n,p):
 
 def getGroups(p):
 	data = {
-		"group1": {
+		"id0001": {
+			"name":"group1", 
 			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
 			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
 			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
 			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
 			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
 		},
-		"group2": {
+		"id0002": {
+			"name":"group2",
 			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
 			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
 			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
 			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
 			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
 		},
-		"group3": {
+		"id0003": {
+			"name":"group3",
 			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
 			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
 			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
 			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
 			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
 		},
-		"group4": {
+		"id0004": {
+			"name":"group4",
 			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
 			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
 			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
 			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
 			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
 		},
-		"group5": {
+		"id0005": {
+			"name":"group5",
 			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
 			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
 			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
 			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
 			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
 		},
-		"group6": {
+		"id0006": {
+			"name":"group6",
 			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
 			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
 			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
 			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
 			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
 		},
-		"group7": {
+		"id0007": {
+			"name":"group7",
 			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
 			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
 			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},

@@ -5,7 +5,7 @@ import axios from "axios";
 export default class LeftPanel extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {user : this.props.user, userGroups: "null"};
+		this.state = {user : this.props.user, userGroups: this.props.groups};
 		this.initGroups();
 	}
 
@@ -13,6 +13,12 @@ export default class LeftPanel extends Component {
 		this.setState({
 			[event.target.type]: event.target.value
 		});
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.groups !== this.state.userGroups) {
+			this.setState({ userGroups: nextProps.groups });
+		}
 	}
 
 	handleLogout = event => {
@@ -28,7 +34,8 @@ export default class LeftPanel extends Component {
 			axios.get('http://localhost:8080/getstuff', config)
 			.then(res => {
 				console.log(res);
-				this.setState({userGroups: res.data});
+				//this.setState({userGroups: res.data},);
+				this.props.updateGroups(res.data);
 			});
 		}
 	}
@@ -41,10 +48,9 @@ export default class LeftPanel extends Component {
 
 	render() {
 		var groupList =[];
-		var iter = 0;
 		for(var k in this.state.userGroups){
-			groupList.push(<li key={iter} onClick={this.showDeets.bind(this,k)}>{k}</li>);
-			++iter;
+			var group = this.state.userGroups[k];
+			groupList.push(<li key={k} onClick={this.props.showGroupById.bind(this,k)}>{group.name}</li>);
 		}
 
 		return (
