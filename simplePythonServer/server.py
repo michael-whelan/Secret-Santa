@@ -29,6 +29,9 @@ class Handler (BaseHTTPRequestHandler) :
 		
 
 	def check_credentials(self):
+		uuid = self.headers.getheader('X-User-ID')
+		if uuid == "random1234":
+			return True
 		name = self.headers.getheader('X-User-Name')
 		password = self.headers.getheader('X-User-Pass')
 		if name =="michael@g.c" and password == "qwert":
@@ -52,11 +55,17 @@ class Handler (BaseHTTPRequestHandler) :
 				self.wfile.write("\n")
 				#send response:
 				json.dump(db.getGroups(self.path), self.wfile)
+				self.end_headers
+				return
 			else:
 				self.send_response(404)
+				return
 		if self.path == "/login" or self.path == "/login/":
 			if self.check_credentials():
 				self.send_response(200)
+				self.send_header("Content-type:", "application/json")
+				self.wfile.write("\n")
+				json.dump({"uuid": "random1234"})
 				self.end_headers()
 				return
 			

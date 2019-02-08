@@ -35,9 +35,9 @@ export default class LeftPanel extends Component {
 	}
 
 	initGroups(){
-		if(this.state.user == "michael@g.c"){
+		if(this.state.user.email == "michael@g.c"){
 			var config = {
-			headers: {'X-User-Name': this.state.user,
+			headers: {'X-User-Name': this.state.user.uuid,
 				'X-User-Pass': 'qwert'}
 			};
 			axios.get('http://localhost:8080/getstuff', config)
@@ -67,7 +67,7 @@ export default class LeftPanel extends Component {
 					<Button variant="outlined" color="primary" onClick={this.createGroup}>
 						Create Group
 					</Button>
-					<Dialog openDialog = {this.state.cgDialogOpen} title={"Create Group"} 
+					<Dialog user= {this.state.user} openDialog = {this.state.cgDialogOpen} title={"Create Group"} 
 					inputName={"Group Name"} text={this.diText} btnName={"Create"}/>
 					<ul>
 						{

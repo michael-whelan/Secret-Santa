@@ -35,7 +35,7 @@ export default class Login extends Component {
 		.then(res => {
 			if(res.status == 200){
 				const userState = this.props.user;
-				userState.user = this.state.email;
+				userState.user = {"uuid":res.data.uuid,"email":this.state.email};
 				this.props.stateUpdate("home");
 			}
 		});

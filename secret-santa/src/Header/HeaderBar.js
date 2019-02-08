@@ -30,7 +30,7 @@ export default class HeaderBar extends Component {
 			</div>
 			{this.props.user!="null" ? (
 				<div className="right-head">
-					<label className="user-name">{this.props.user}</label>
+					<label className="user-name">{this.props.user.email}</label>
 					<button onClick={this.handleLogout}>Logout</button>
 				</div>
 			) : (
