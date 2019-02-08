@@ -8,13 +8,14 @@ export default class HeaderBar extends Component {
 
   handleChange = event => {
 	this.setState({
-	  [event.target.type]: event.target.value
+		[event.target.type]: event.target.value
 	});
   }
 
   handleLogout = event => {
 		event.preventDefault();
 		console.log("Logout");
+		this.props.doLogout();
 	//Check if current page needs creds
 	//If so return to login
 	//if not stay on page

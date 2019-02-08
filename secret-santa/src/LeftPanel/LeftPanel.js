@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import "../App.css";
 import axios from "axios";
+import Dialog from "../Dialog/Dialog.js"
+import Button from '@material-ui/core/Button';
 
 export default class LeftPanel extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {user : this.props.user, userGroups: this.props.groups};
+		this.state = {user : this.props.user, userGroups: this.props.groups, 
+			cgDialogOpen:false};
 		this.initGroups();
+		this.diText="";
 	}
 
 	handleChange = event => {
@@ -18,6 +22,11 @@ export default class LeftPanel extends Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.groups !== this.state.userGroups) {
 			this.setState({ userGroups: nextProps.groups });
+		}
+
+		if(nextProps.user !== this.state.user){
+			console.log("You logged out");
+			this.setState({ user: nextProps.user });
 		}
 	}
 
@@ -40,10 +49,8 @@ export default class LeftPanel extends Component {
 		}
 	}
 
-	showDeets=(keyName)=>{
-		console.log(keyName);
-		console.log(this.state.userGroups[keyName]);
-		//this.setState({this.props.groupDeets: this.state.userGroups[keyName]})
+	createGroup=()=>{
+		this.setState({ cgDialogOpen : true });
 	}
 
 	render() {
@@ -57,7 +64,11 @@ export default class LeftPanel extends Component {
 			<div>
 			{this.state.user!="null" && this.state.userGroups!="null" &&
 				<div className="left-panel">
-					<button className="btn1" onClick={this.setAppState}>Create Group</button>
+					<Button variant="outlined" color="primary" onClick={this.createGroup}>
+						Create Group
+					</Button>
+					<Dialog openDialog = {this.state.cgDialogOpen} title={"Create Group"} 
+					inputName={"Group Name"} text={this.diText} btnName={"Create"}/>
 					<ul>
 						{
 							groupList

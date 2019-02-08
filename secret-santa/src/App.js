@@ -17,13 +17,18 @@ class App extends Component {
 	}
 
 	updateAppState = (newState)=>{
-		this.setState({page: newState})
+		this.setState({page: newState});
 	}
 
 	fillGroups = (groupList)=>{
 		console.log(groupList);
 		this.setState({groups: groupList});
 	}
+
+	doLogout = () =>{
+		this.setState({user: "null", activeGroup:"null"});
+	}
+
 	testRun = () => {
 		console.log(this.state.groups);
 	}
@@ -55,7 +60,7 @@ class App extends Component {
 		else if(this.state.page ==="home"){
 			return (
 				<div className="App">
-					<HeaderBar user={this.state.user} goLogin={this.setAppState}></HeaderBar>
+					<HeaderBar user={this.state.user} doLogout={this.doLogout} goLogin={this.setAppState}></HeaderBar>
 					<div className="main">
 						<LeftPanel user={this.state.user} updateGroups={this.fillGroups} 
 						showGroupById={this.showGroup} groups={this.state.groups}></LeftPanel>
