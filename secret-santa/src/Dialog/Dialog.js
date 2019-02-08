@@ -27,7 +27,6 @@ export default class FormDialog extends Component {
 		}
 	}
 
-
 	render() {
 	return (
 		<div>
