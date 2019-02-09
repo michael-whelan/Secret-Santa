@@ -26,10 +26,11 @@ class Handler (BaseHTTPRequestHandler) :
 		self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
 		self.send_header("Access-Control-Allow-Headers", "Content-Type")
 		self.end_headers()
-		
+
 
 	def check_credentials(self):
 		uuid = self.headers.getheader('X-User-ID')
+		print ("uuid", uuid)
 		if uuid == "random1234":
 			return True
 		name = self.headers.getheader('X-User-Name')
@@ -65,10 +66,10 @@ class Handler (BaseHTTPRequestHandler) :
 				self.send_response(200)
 				self.send_header("Content-type:", "application/json")
 				self.wfile.write("\n")
-				json.dump({"uuid": "random1234"})
+				json.dump({"uuid": "random1234"},self.wfile)
 				self.end_headers()
 				return
-			
+
 			# Send code 200
 			#self.response.out.write()
 			self.send_response(404)
@@ -108,19 +109,35 @@ class Handler (BaseHTTPRequestHandler) :
 		except IOError:
 			self.send_error(404,'File Not Found: %s' % self.path)
 
+	def parse_POST(self):
+		length = int(self.headers.getheader('content-length'))
+		# Get form data
+		postvars = urlparse.parse_qs(self.rfile.read(length), keep_blank_values=1)
+		newJson ={}
+		for k in postvars:
+			v = json.loads(k)
+			for key in v:
+				newJson[key] = v[key]
+		return newJson
+
 	def do_POST(self):
 		# Look for POST request
-		if self.path == "/login" or self.path == "/login/":
+		if self.path == "/creategroup" or self.path == "/creategroup/":
 			if self.check_credentials():
-				self.send_response(200)
+				postvars = self.parse_POST()
+
+				if db.addGroup(postvars["groupname"]):
+					json.dump({"message": "Group added: "+postvars["groupname"],"approved":True},self.wfile)
+				else:
+					json.dump({"message": "Group name already exists","approved":False},self.wfile)
 				self.end_headers()
 				return
-			
+
 			# Send code 200
 			#self.response.out.write()
 			self.send_response(404)
 			self.end_headers()
-		
+
 server = HTTPServer(("localhost", PORT), Handler)
 print ("serving at port", PORT)
 server.serve_forever()

@@ -6,11 +6,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import axios from "axios";
 
 export default class FormDialog extends Component {
 	constructor(props){
 		super(props);
-		this.state = {open: false};
+		this.state = {open: false, message:""};
 		this.groupName = "null";
 	}
 
@@ -22,24 +23,29 @@ export default class FormDialog extends Component {
 		this.setState({ open: false });
 	};
 
-	createGroup = () => {
+	createGroup = event => {
 		event.preventDefault();
-		
+		console.log("myUUID:",this.state.user.uuid);
 		var config = {
-			headers : {'X-User-Name': this.state.email,
-			'X-User-Pass': this.state.password,
-			'Access-Control-Allow-Origin': '*',
-			},
-			data : {
-				'groupname':this.groupName
-			} 
+			headers : {'X-User-ID': this.state.user.uuid,
+			'Content-Type': 'application/json'
+			}
 		};
-		axios.post('http://localhost:8080/creategroup', config)
+
+		var data = {
+			'groupname':this.groupName
+		};
+
+		axios.post('http://localhost:8080/creategroup', data,config)
 		.then(res => {
 			if(res.status == 200){
-				const userState = this.props.user;
-				userState.user = {"uuid":res.data.uuid,"email":this.state.email};
-				this.props.stateUpdate("home");
+				var results = res.data
+				if(results.approved){
+					this.handleClose();
+					//continue to deal with new group
+				}
+
+				this.setState({message: results.message});
 			}
 		})
 		.catch(error => {
@@ -56,6 +62,9 @@ export default class FormDialog extends Component {
 		if (nextProps.openDialog !== this.state.open) {
 			this.setState({ open: nextProps.openDialog });
 		}
+		if (nextProps.user !== this.state.user) {
+			this.setState({ user: nextProps.user });
+		}
 	}
 
 	render() {
@@ -69,7 +78,7 @@ export default class FormDialog extends Component {
 			<DialogTitle id="form-dialog-title">{this.props.title}</DialogTitle>
 			<DialogContent>
 			<DialogContentText>
-				{this.props.text}
+				{this.state.message}
 			</DialogContentText>
 			<TextField
 				autoFocus

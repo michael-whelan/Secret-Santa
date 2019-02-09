@@ -35,18 +35,13 @@ export default class LeftPanel extends Component {
 	}
 
 	initGroups(){
-		if(this.state.user.email == "michael@g.c"){
-			var config = {
-			headers: {'X-User-Name': this.state.user.uuid,
-				'X-User-Pass': 'qwert'}
-			};
-			axios.get('http://localhost:8080/getstuff', config)
-			.then(res => {
-				console.log(res);
-				//this.setState({userGroups: res.data},);
-				this.props.updateGroups(res.data);
-			});
-		}
+		var config = {
+		headers: {'X-User-ID': this.state.user.uuid}
+		};
+		axios.get('http://localhost:8080/getstuff', config)
+		.then(res => {
+			this.props.updateGroups(res.data);
+		});
 	}
 
 	createGroup=()=>{
