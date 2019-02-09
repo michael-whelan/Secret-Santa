@@ -132,9 +132,6 @@ class Handler (BaseHTTPRequestHandler) :
 					json.dump({"message": "Group name already exists","approved":False},self.wfile)
 				self.end_headers()
 				return
-
-			# Send code 200
-			#self.response.out.write()
 			self.send_response(404)
 			self.end_headers()
 

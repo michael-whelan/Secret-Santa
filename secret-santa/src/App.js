@@ -7,9 +7,9 @@ import GroupDetail from './MainDetails/Details.js';
 //import axios from 'axios';
 
 class App extends Component {
-	constructor(props) {	
+	constructor(props) {
 		super(props);
-		this.state = {page:"home", groups:"null",user:"null", activeGroup:"null", 
+		this.state = {page:"login", groups:"null",user:"null", activeGroup:"null",
 		selectedGroup:"null"};
 	}
 	setAppState = ()=> {
@@ -62,7 +62,7 @@ class App extends Component {
 				<div className="App">
 					<HeaderBar user={this.state.user} doLogout={this.doLogout} goLogin={this.setAppState}></HeaderBar>
 					<div className="main">
-						<LeftPanel user={this.state.user} updateGroups={this.fillGroups} 
+						<LeftPanel user={this.state.user} updateGroups={this.fillGroups}
 						showGroupById={this.showGroup} groups={this.state.groups}></LeftPanel>
 						<GroupDetail activeGroupId={this.state.activeGroup}
 						 groups={this.state.groups}></GroupDetail>
