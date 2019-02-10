@@ -26,7 +26,7 @@ export default class Login extends Component {
 
   handleSubmit = event => {
 		event.preventDefault();
-		
+
 		var config = {
 			headers: {'X-User-Name': this.state.email,
 			'X-User-Pass': this.state.password,
@@ -49,7 +49,7 @@ export default class Login extends Component {
 			<h3>Sign in</h3>
 			<input ref="username" placeholder="enter you username" type="email"
 				onChange={this.handleChange}/>
-			<input type="password" ref="password" placeholder="enter password" 
+			<input type="password" ref="password" placeholder="enter password"
 			   onChange={this.handleChange}/>
 			<input type="submit" value="Login" disabled={!this.validateForm()}/>
 		</form>

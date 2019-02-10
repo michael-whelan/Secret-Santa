@@ -66,6 +66,7 @@ class Handler (BaseHTTPRequestHandler) :
 				self.send_response(200)
 				self.send_header("Content-type:", "application/json")
 				self.wfile.write("\n")
+				db.getUser("n","p")
 				json.dump({"uuid": "random1234"},self.wfile)
 				self.end_headers()
 				return

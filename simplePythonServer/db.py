@@ -2,22 +2,23 @@ import sqlite3
 
 
 def getUser(n,p):
-	conn = sqlite3.connect('birdy.db')
-	cursor = conn.execute("SELECT id,name,password from login")
+	conn = sqlite3.connect('secretsanta.db')
+	cursor = conn.execute("SELECT * from users")
 
 	rows = [x for x in cursor]
 	cols = [x[0] for x in cursor.description]
 	data = []
 	for row in rows:
-	  entry = {}
-	  for prop, val in zip(cols, row):
-		entry[prop] = val
-	  data.append(entry)
+		print(row)
+		#entry = {}
+		#for prop, val in zip(cols, row):
+		#entry[prop] = val
+		#data.append(entry)
 
 	print ("Operation done successfully");
 	conn.close()
 
-	return data
+	#return data
 
 def getGroups(p):
 	data =groups
