@@ -57,12 +57,12 @@ export default class LeftPanel extends Component {
 
 		return (
 			<div>
-			{this.state.user!="null" && this.state.userGroups!="null" &&
+			{this.state.user!=="null" && this.state.userGroups!=="null" &&
 				<div className="left-panel">
 					<Button variant="outlined" color="primary" onClick={this.createGroup}>
 						Create Group
 					</Button>
-					<Dialog user= {this.state.user} openDialog = {this.state.cgDialogOpen} title={"Create Group"} 
+					<Dialog user= {this.state.user} openDialog = {this.state.cgDialogOpen} title={"Create Group"}
 					inputName={"Group Name"} text={this.diText} btnName={"Create"}/>
 					<ul>
 						{

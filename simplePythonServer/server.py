@@ -12,9 +12,10 @@ import codecs
 import cgi
 import urlparse
 from flask import Flask, jsonify, abort, request, make_response, url_for, render_template, redirect
+import random
+import hashlib
 
-
-
+ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 PORT = 8080
 
@@ -33,7 +34,7 @@ class Handler (BaseHTTPRequestHandler) :
 		print ("uuid", uuid)
 		if uuid == "random1234":
 			return True
-		name = self.headers.getheader('X-User-Name')
+		name = self.headers.getheader('X-User-Email')
 		password = self.headers.getheader('X-User-Pass')
 		if name =="michael@g.c" and password == "qwert":
 			return True
@@ -104,7 +105,6 @@ class Handler (BaseHTTPRequestHandler) :
 				self.end_headers()
 				self.wfile.write(f.read())
 				f.close()
-
 			return
 
 		except IOError:
@@ -120,13 +120,16 @@ class Handler (BaseHTTPRequestHandler) :
 			for key in v:
 				newJson[key] = v[key]
 		return newJson
+	def gensalt(self):
+		chars=[]
+		return ''.join(random.choice(ALPHABET) for i in range(16))
+
 
 	def do_POST(self):
 		# Look for POST request
 		if self.path == "/creategroup" or self.path == "/creategroup/":
 			if self.check_credentials():
 				postvars = self.parse_POST()
-
 				if db.addGroup(postvars["groupname"]):
 					json.dump({"message": "Group added: "+postvars["groupname"],"approved":True},self.wfile)
 				else:
@@ -135,6 +138,13 @@ class Handler (BaseHTTPRequestHandler) :
 				return
 			self.send_response(404)
 			self.end_headers()
+		if self.path == "/register" or self.path == "/register/":
+			postvars = self.parse_POST()
+			print(postvars)
+			salt = self.gensalt()
+			passw = salt +postvars['X-User-Pass']
+			passSec = hashlib.sha224(passw).hexdigest()
+			db.registerUser(postvars,passSec,salt)
 
 server = HTTPServer(("localhost", PORT), Handler)
 print ("serving at port", PORT)

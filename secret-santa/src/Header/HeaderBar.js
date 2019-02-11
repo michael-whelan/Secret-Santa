@@ -28,7 +28,7 @@ export default class HeaderBar extends Component {
 				<input type="text"/>
 				<button className="btn1" onClick={this.setAppState}>Search</button>
 			</div>
-			{this.props.user!="null" ? (
+			{this.props.user!=="null" ? (
 				<div className="right-head">
 					<label className="user-name">{this.props.user.email}</label>
 					<button onClick={this.handleLogout}>Logout</button>

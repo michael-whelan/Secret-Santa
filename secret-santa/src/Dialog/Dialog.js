@@ -25,7 +25,6 @@ export default class FormDialog extends Component {
 
 	createGroup = event => {
 		event.preventDefault();
-		console.log("myUUID:",this.state.user.uuid);
 		var config = {
 			headers : {'X-User-ID': this.state.user.uuid,
 			'Content-Type': 'application/json'
@@ -38,7 +37,7 @@ export default class FormDialog extends Component {
 
 		axios.post('http://localhost:8080/creategroup', data,config)
 		.then(res => {
-			if(res.status == 200){
+			if(res.status === 200){
 				var results = res.data
 				if(results.approved){
 					this.handleClose();

@@ -74,7 +74,7 @@ class App extends Component {
 			return (
 				<div className="App">
 					<div className="main">
-						<Login stateUpdate={this.updateAppState} user={this.state}></Login>
+						<Login stateUpdate={this.updateAppState} user={this.state.user} pageState={this.state.page}></Login>
 					</div>
 				</div>
 			);

@@ -1,5 +1,15 @@
 import sqlite3
 
+def generate_uuid():
+	return "uuid"
+
+def registerUser(deets,secure,salt):
+	uuid=generate_uuid()
+	query = "insert into users(first_name, last_name,email,uuid,pass,salt) values ('%s','%s','%s','%s','%s','%s');" %(
+		deets['X-User-First'],deets['X-User-Last'],deets['X-User-Email'],uuid,secure,salt
+	)
+	print(query)
+	#return uuid
 
 def getUser(n,p):
 	conn = sqlite3.connect('secretsanta.db')

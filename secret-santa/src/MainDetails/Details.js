@@ -28,7 +28,7 @@ export default class GroupDetails extends Component {
 		var people =[];
 		var group = this.state.groups[this.props.activeGroupId];
 		for(var k in group){
-			if(k !="name"){
+			if(k !=="name"){
 				var person = <div className="person">
 					<Button variant="outlined" color="primary"
 					onClick={this.showAlert.bind(this,"Are you sure you want to delete: "+group[k].name)}>-</Button>
@@ -43,7 +43,7 @@ export default class GroupDetails extends Component {
 
 		return (
 			<div className="Details">
-			{this.props.activeGroupId!="null" ? (
+			{this.props.activeGroupId!=="null" ? (
 				<>
 				<h1>{group.name}</h1>
 				{people}
