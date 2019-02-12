@@ -43,22 +43,6 @@ export default class Login extends Component {
 		}
 	}
 
-	handleSubmit = event => {
-		event.preventDefault();
-
-		var config = {
-			headers: {'X-User-Email': this.state.email,
-			'X-User-Pass': this.state.password,
-			'Access-Control-Allow-Origin': '*'}
-		};
-		axios.get('http://localhost:8080/login', config)
-		.then(res => {
-			if(res.status === 200){
-				console.log(res.data);
-				this.props.doLogin({"uuid":res.data.uuid,"email":this.state.email});
-			}
-		});
-	}
 
 	handleReg = event => {
 	event.preventDefault();
@@ -93,7 +77,7 @@ export default class Login extends Component {
 	return (
 		<div className="Login">
 		{this.state.formType==="login" ? (
-		<form onSubmit={this.handleSubmit}>
+		<form onSubmit={this.props.doLogin}>
 			<h3>Sign in</h3>
 			<input title="email" placeholder="enter you username" type="email"
 				onChange={this.handleChange}/>

@@ -14,6 +14,7 @@ import urlparse
 from flask import Flask, jsonify, abort, request, make_response, url_for, render_template, redirect
 import random
 import hashlib
+import datetime
 
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -38,7 +39,8 @@ class Handler (BaseHTTPRequestHandler) :
 
 	def check_credentials(self):
 		uuid = self.headers.getheader('X-User-ID')
-		print ("uuid", uuid)
+		nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
+
 		if uuid == "random1234":
 			return True
 		name = self.headers.getheader('X-User-Email')
@@ -147,12 +149,12 @@ class Handler (BaseHTTPRequestHandler) :
 			self.end_headers()
 		if self.path == "/register" or self.path == "/register/":
 			postvars = self.parse_POST()
-			print(postvars)
 			salt = self.gensalt()
 			passw = salt +postvars['X-User-Pass']
 			passSec = hashlib.sha224(passw).hexdigest()
-			#info = db.registerUser(postvars,passSec,salt)
-			info = {"success":True, "message":"added user","uuid":"random1234"}
+			uuid=db.generate_uuid()
+			#info = db.registerUser(postvars,passSec,salt,uuid)
+			info = {"success":True, "message":"added user","uuid":"random1234", "email":postvars['X-User-Email']}
 			if info["success"]:
 				self.send_response(200)
 			else:

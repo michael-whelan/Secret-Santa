@@ -3,7 +3,7 @@ import "../App.css";
 
 export default class HeaderBar extends Component {
 	constructor(props) {
-	super(props);
+		super(props);
 	}
 
 	handleChange = event => {

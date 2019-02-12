@@ -1,5 +1,6 @@
 import sqlite3
 import uuid
+import datetime
 
 def generate_uuid():
 	return uuid.uuid4().hex
@@ -15,11 +16,11 @@ def uniqueEntry(email):
 		return False
 
 
-def registerUser(deets,secure,salt):
+def registerUser(deets,secure,salt, uuid):
+	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
 	if uniqueEntry(deets['X-User-Email']):
-		uuid=generate_uuid()
-		query = "insert into users(first_name, last_name,email,uuid,pass,salt) values ('%s','%s','%s','%s','%s','%s');" %(
-			deets['X-User-First'],deets['X-User-Last'],deets['X-User-Email'],uuid,secure,salt
+		query = "insert into users(first_name, last_name,email,uuid,pass,salt) values ('%s','%s','%s','%s','%s','%s','%s');" %(
+			deets['X-User-First'],deets['X-User-Last'],deets['X-User-Email'],uuid,secure,salt,nowTime
 		)
 		conn = sqlite3.connect('secretsanta.db')
 		cursor = conn.execute(query)
