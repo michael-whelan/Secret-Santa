@@ -20,6 +20,10 @@ class App extends Component {
 		this.setState({page: newState});
 	}
 
+	updateUserState = (newState) =>{
+		this.setState({user: newState, page:"home"});
+	}
+
 	fillGroups = (groupList)=>{
 		console.log(groupList);
 		this.setState({groups: groupList});
@@ -30,7 +34,7 @@ class App extends Component {
 	}
 
 	testRun = () => {
-		console.log(this.state.groups);
+		console.log(this.state);
 	}
 
 	showGroup = (groupId) =>{
@@ -74,8 +78,10 @@ class App extends Component {
 			return (
 				<div className="App">
 					<div className="main">
-						<Login stateUpdate={this.updateAppState} user={this.state.user} pageState={this.state.page}></Login>
+						<Login doLogin={this.updateUserState} stateUpdate={this.updateAppState}
+						user={this.state.user} pageState={this.state.page}></Login>
 					</div>
+					<button onClick={this.testRun}>tester</button>
 				</div>
 			);
 		}

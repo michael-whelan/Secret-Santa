@@ -1,15 +1,30 @@
 import sqlite3
+import uuid
 
 def generate_uuid():
-	return "uuid"
+	return uuid.uuid4().hex
+
+def uniqueEntry(email):
+	conn = sqlite3.connect('secretsanta.db')
+	query = "SELECT email from users where email = '%s'" % email
+	cursor = conn.execute(query)
+	data = cursor.fetchall()
+	if not data:
+		return True
+	else:
+		return False
+
 
 def registerUser(deets,secure,salt):
-	uuid=generate_uuid()
-	query = "insert into users(first_name, last_name,email,uuid,pass,salt) values ('%s','%s','%s','%s','%s','%s');" %(
-		deets['X-User-First'],deets['X-User-Last'],deets['X-User-Email'],uuid,secure,salt
-	)
-	print(query)
-	#return uuid
+	if uniqueEntry(deets['X-User-Email']):
+		uuid=generate_uuid()
+		query = "insert into users(first_name, last_name,email,uuid,pass,salt) values ('%s','%s','%s','%s','%s','%s');" %(
+			deets['X-User-First'],deets['X-User-Last'],deets['X-User-Email'],uuid,secure,salt
+		)
+		conn = sqlite3.connect('secretsanta.db')
+		cursor = conn.execute(query)
+		return {"uuid":uuid,"success":True,"message":"New Account created"}
+	return {"message": "Email account already exists","success":False}
 
 def getUser(n,p):
 	conn = sqlite3.connect('secretsanta.db')

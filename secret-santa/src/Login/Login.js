@@ -5,18 +5,17 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 
 export default class Login extends Component {
-  constructor(props) {
+	constructor(props) {
 	super(props);
 
 		this.state = {
 			email: "",
 			password: "",
-			uuid:"",
-			formType:"register"
+			formType:"login"
 		};
-  }
+	}
 
-  validateForm() {
+	validateForm() {
 		if(this.state.formType ==="login"){
 			return this.state.email.length > 0 && this.state.password.length > 0;
 		}
@@ -25,38 +24,43 @@ export default class Login extends Component {
 				this.state.password === this.state.password2 &&
 				this.state.first.length > 0 && this.state.last.length > 0);
 		}
-  }
+	}
 
-  handleSwap = event => {
-	  console.log(this.state);
-	this.setState({formType:event.target.value});
-  }
+	handleSwap = event => {
+		console.log(this.state);
+		this.setState({formType:event.target.value});
+	}
 
-  handleChange = event => {
-	this.setState({
-	  [event.target.title]: event.target.value
-	});
-  }
+	handleChange = event => {
+		this.setState({
+			[event.target.title]: event.target.value
+		});
+	}
 
-  handleSubmit = event => {
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.user !== this.state.user) {
+			this.setState({ user: nextProps.user });
+		}
+	}
+
+	handleSubmit = event => {
 		event.preventDefault();
 
 		var config = {
-			headers: {'X-User-Name': this.state.email,
+			headers: {'X-User-Email': this.state.email,
 			'X-User-Pass': this.state.password,
 			'Access-Control-Allow-Origin': '*'}
 		};
 		axios.get('http://localhost:8080/login', config)
 		.then(res => {
 			if(res.status === 200){
-				const userState = this.props.user;
-				userState = {"uuid":res.data.uuid,"email":this.state.email};
-				this.props.stateUpdate("home");
+				console.log(res.data);
+				this.props.doLogin({"uuid":res.data.uuid,"email":this.state.email});
 			}
 		});
-  }
+	}
 
-  handleReg = event => {
+	handleReg = event => {
 	event.preventDefault();
 
 	var config = {
@@ -72,20 +76,23 @@ export default class Login extends Component {
 	axios.post('http://localhost:8080/register',data, config)
 	.then(res => {
 		if(res.status === 200){
-			console.log(res.data);
-			/*const userState = this.props.user;
-			userState = {"uuid":res.data.uuid,"email":this.state.email};
-			this.props.stateUpdate("home");*/
+			//const userState = this.props.user;
+			this.props.doLogin({"uuid":res.data.uuid,"email":this.state.email});
+			//this.props.user = {"uuid":res.data.uuid,"email":this.state.email};
+			//this.props.stateUpdate("home");
+		}
+		else if(res.status === 201){
+			console.log(res.data,201);
 		}
 	});
 }
 
 
 
-  render() {
+	render() {
 	return (
-	  <div className="Login">
-	  {this.state.formType==="login" ? (
+		<div className="Login">
+		{this.state.formType==="login" ? (
 		<form onSubmit={this.handleSubmit}>
 			<h3>Sign in</h3>
 			<input title="email" placeholder="enter you username" type="email"
@@ -109,9 +116,9 @@ export default class Login extends Component {
 			<input title="email" placeholder="enter you email" type="email"
 				onChange={this.handleChange}/>
 			<input type="password" title="password" placeholder="enter password"
-			   onChange={this.handleChange}/>
+				 onChange={this.handleChange}/>
 			<input type="password" title="password2" placeholder="re-enter password"
-			   onChange={this.handleChange}/>
+				 onChange={this.handleChange}/>
 			<Button type="submit" value="register" disabled={!this.validateForm()} color="primary">
 				Register
 			</Button>
@@ -120,7 +127,7 @@ export default class Login extends Component {
 			</Button>
 		</form>
 		)}
-	  </div>
+		</div>
 	);
-  }
+	}
 }

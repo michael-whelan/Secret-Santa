@@ -2,26 +2,26 @@ import React, { Component } from "react";
 import "../App.css";
 
 export default class HeaderBar extends Component {
-  constructor(props) {
+	constructor(props) {
 	super(props);
-  }
+	}
 
-  handleChange = event => {
+	handleChange = event => {
 	this.setState({
 		[event.target.type]: event.target.value
 	});
-  }
+	}
 
-  handleLogout = event => {
+	handleLogout = event => {
 		event.preventDefault();
 		console.log("Logout");
 		this.props.doLogout();
-	//Check if current page needs creds
-	//If so return to login
-	//if not stay on page
-  }
+		//Check if current page needs creds
+		//If so return to login
+		//if not stay on page
+	}
 
-  render() {
+	render() {
 	return (
 		<div className="header">
 			<div className="left-head">
@@ -40,5 +40,5 @@ export default class HeaderBar extends Component {
 			)}
 		</div>
 	);
-  }
+	}
 }

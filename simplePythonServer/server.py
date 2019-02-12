@@ -19,6 +19,13 @@ ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 PORT = 8080
 
+"""
+Codes:
+200 success
+201 user already exists
+202
+404 error in understanding request
+"""
 class Handler (BaseHTTPRequestHandler) :
 	def do_OPTIONS(self):
 		self.send_response(200, "ok")
@@ -144,7 +151,16 @@ class Handler (BaseHTTPRequestHandler) :
 			salt = self.gensalt()
 			passw = salt +postvars['X-User-Pass']
 			passSec = hashlib.sha224(passw).hexdigest()
-			db.registerUser(postvars,passSec,salt)
+			#info = db.registerUser(postvars,passSec,salt)
+			info = {"success":True, "message":"added user","uuid":"random1234"}
+			if info["success"]:
+				self.send_response(200)
+			else:
+				self.send_response(201)
+			self.wfile.write("\n")
+			json.dump(info,self.wfile)
+			self.end_headers()
+			return
 
 server = HTTPServer(("localhost", PORT), Handler)
 print ("serving at port", PORT)
