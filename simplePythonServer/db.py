@@ -1,6 +1,8 @@
 import sqlite3
 import uuid
 import datetime
+import hashlib
+
 
 def generate_uuid():
 	return uuid.uuid4().hex
@@ -15,33 +17,72 @@ def uniqueEntry(email):
 	else:
 		return False
 
+def days_between(d1, d2):
+    d1 = datetime.datetime.strptime(d1, "%Y-%m-%d")
+    d2 = datetime.datetime.strptime(d2, "%Y-%m-%d")
+    return abs((d2 - d1).days)
+
+def check_credentials(uuid,email,passw):
+	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
+	getUser(None,email,passw)
+
+	print(days_between("2019-02-12",nowTime))
+	return None
+	uuid = self.headers.getheader('X-User-ID')
+	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
+	print("uuid",uuid)
+	if uuid == "random1234":
+		return True
+	name = self.headers.getheader('X-User-Email')
+	password = self.headers.getheader('X-User-Pass')
+	if name =="michael@g.c" and password == "qwert":
+		return True
+	return False
 
 def registerUser(deets,secure,salt, uuid):
 	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
 	if uniqueEntry(deets['X-User-Email']):
-		query = "insert into users(first_name, last_name,email,uuid,pass,salt) values ('%s','%s','%s','%s','%s','%s','%s');" %(
+		query = "insert into users(first_name, last_name,email,uuid,pass,salt,uuid_date) values ('%s','%s','%s','%s','%s','%s','%s');" %(
 			deets['X-User-First'],deets['X-User-Last'],deets['X-User-Email'],uuid,secure,salt,nowTime
 		)
 		conn = sqlite3.connect('secretsanta.db')
 		cursor = conn.execute(query)
+		print(query)
 		return {"uuid":uuid,"success":True,"message":"New Account created"}
 	return {"message": "Email account already exists","success":False}
 
-def getUser(n,p):
+def getUser(u,e,recpass):
+	query= ""
 	conn = sqlite3.connect('secretsanta.db')
-	cursor = conn.execute("SELECT * from users")
+	if u is not None:
+		query = "SELECT * from users where uuid = %s" % (u)
+		print(query)
+		cursor = conn.execute(query)
+		if cursor == None:
+			return False
+	else:
+		query = "SELECT * from users where email = '%s'" % (e)
+		print(query)
+		cursor = conn.execute(query)
+		if cursor == None:
+			return False
+		rows = [x for x in cursor]
+		cols = [x[0] for x in cursor.description]
+		data = []
+		for row in rows:
+			entry = {}
+			for prop, val in zip(cols, row):
+				entry[prop] = val
+				data.append(entry)
+		print(data[0])
+		#newPass= data[0]['salt'] +recpass
+		#passSec = hashlib.sha224(newPass).hexdigest()
+		#print("pass check",passSec,data[0]['pass'])
+		#if(passSec == data[0]['pass']):
+		#	return data[0].uuid
 
-	rows = [x for x in cursor]
-	cols = [x[0] for x in cursor.description]
-	data = []
-	for row in rows:
-		print(row)
-		#entry = {}
-		#for prop, val in zip(cols, row):
-		#entry[prop] = val
-		#data.append(entry)
-
-	print ("Operation done successfully");
+		return False
+	print ("Operation done successfully")
 	conn.close()
 
 	#return data

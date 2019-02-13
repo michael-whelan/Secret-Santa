@@ -134,7 +134,7 @@ class App extends Component {
 			return (
 				<div className="App">
 					<div className="main">
-						<Login doLogin={this.doLogin} stateUpdate={this.updateAppState}
+						<Login doLogin={this.loginSuccess} stateUpdate={this.updateAppState}
 						user={this.state.user} pageState={this.state.page}></Login>
 					</div>
 					<button onClick={this.testRun}>tester</button>

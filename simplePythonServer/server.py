@@ -36,20 +36,6 @@ class Handler (BaseHTTPRequestHandler) :
 		self.send_header("Access-Control-Allow-Headers", "Content-Type")
 		self.end_headers()
 
-
-	def check_credentials(self):
-		uuid = self.headers.getheader('X-User-ID')
-		nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
-
-		if uuid == "random1234":
-			return True
-		name = self.headers.getheader('X-User-Email')
-		password = self.headers.getheader('X-User-Pass')
-		if name =="michael@g.c" and password == "qwert":
-			return True
-		return False
-
-
 	def do_GET(self) :
 		# Look for main page
 		if self.path=="/":
@@ -58,7 +44,9 @@ class Handler (BaseHTTPRequestHandler) :
 		if self.path == "/getstuff" or self.path == "/getstuff/":
 			#send response code:
 			print("connection made")
-			if self.check_credentials():
+			return
+			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			if creds is not None:
 				self.send_response(200)
 				#send headers:
 				self.send_header("Content-type:", "application/json")
@@ -72,7 +60,8 @@ class Handler (BaseHTTPRequestHandler) :
 				self.send_response(404)
 				return
 		if self.path == "/login" or self.path == "/login/":
-			if self.check_credentials():
+			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			if creds is not None:
 				self.send_response(200)
 				self.send_header("Content-type:", "application/json")
 				self.wfile.write("\n")
@@ -137,7 +126,8 @@ class Handler (BaseHTTPRequestHandler) :
 	def do_POST(self):
 		# Look for POST request
 		if self.path == "/creategroup" or self.path == "/creategroup/":
-			if self.check_credentials():
+			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			if creds is not None:
 				postvars = self.parse_POST()
 				if db.addGroup(postvars["groupname"]):
 					json.dump({"message": "Group added: "+postvars["groupname"],"approved":True},self.wfile)
@@ -153,8 +143,8 @@ class Handler (BaseHTTPRequestHandler) :
 			passw = salt +postvars['X-User-Pass']
 			passSec = hashlib.sha224(passw).hexdigest()
 			uuid=db.generate_uuid()
-			#info = db.registerUser(postvars,passSec,salt,uuid)
-			info = {"success":True, "message":"added user","uuid":"random1234", "email":postvars['X-User-Email']}
+			info = db.registerUser(postvars,passSec,salt,uuid)
+			#info = {"success":True, "message":"added user","uuid":"random1234", "email":postvars['X-User-Email']}
 			if info["success"]:
 				self.send_response(200)
 			else:

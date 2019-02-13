@@ -42,7 +42,29 @@ export default class Login extends Component {
 			this.setState({ user: nextProps.user });
 		}
 	}
+	handlSubmit = event => {
+	event.preventDefault();
 
+		/*var config = {
+			headers: {'X-User-ID': uuidCookie,
+			'Access-Control-Allow-Origin': '*'}
+		};*/
+		console.log(this.state.password,this.state.email);
+		var authOptions = {
+			method: 'get',
+			url: 'http://localhost:8080/login',
+			headers: {'X-User-Email': this.state.email,
+			'X-User-Pass': this.state.password,
+			'Access-Control-Allow-Origin': '*'},
+			json: true
+		   };
+		axios(authOptions)
+		.then(res => {
+			if(res.status === 200){
+				this.props.doLogin(res.data);
+			}
+		});
+	}
 
 	handleReg = event => {
 	event.preventDefault();
@@ -61,6 +83,7 @@ export default class Login extends Component {
 	.then(res => {
 		if(res.status === 200){
 			//const userState = this.props.user;
+			console.log(res.data);
 			this.props.doLogin({"uuid":res.data.uuid,"email":this.state.email});
 			//this.props.user = {"uuid":res.data.uuid,"email":this.state.email};
 			//this.props.stateUpdate("home");
@@ -77,7 +100,7 @@ export default class Login extends Component {
 	return (
 		<div className="Login">
 		{this.state.formType==="login" ? (
-		<form onSubmit={this.props.doLogin}>
+		<form onSubmit={this.handleSubmit}>
 			<h3>Sign in</h3>
 			<input title="email" placeholder="enter you username" type="email"
 				onChange={this.handleChange}/>
