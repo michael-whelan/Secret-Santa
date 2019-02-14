@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "./Login.css";
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 export default class Login extends Component {
 	constructor(props) {
@@ -11,7 +12,7 @@ export default class Login extends Component {
 		this.state = {
 			email: "",
 			password: "",
-			formType:"login"
+			formType:"register"
 		};
 	}
 
@@ -32,8 +33,9 @@ export default class Login extends Component {
 	}
 
 	handleChange = event => {
+		console.log(event.target);
 		this.setState({
-			[event.target.title]: event.target.value
+			[event.target.name]: event.target.value
 		});
 	}
 
@@ -96,45 +98,48 @@ export default class Login extends Component {
 	});
 }
 
+
 	render() {
-	return (
-		<div className="Login">
-		{this.state.formType==="login" ? (
-		<form onSubmit={this.handleSubmit}>
-			<h3>Sign in</h3>
-			<input title="email" placeholder="enter you username" type="email"
-				onChange={this.handleChange}/>
-			<input type="password" title="password" placeholder="enter password"
-			onChange={this.handleChange}/>
-			<Button type="submit" value="Login" disabled={!this.validateForm()} color="primary">
-				Login
-			</Button>
-			<Button value="register" onClick={this.handleSwap} color="primary">
-				Register
-			</Button>
-		</form>
-		):(
-		<form onSubmit={this.handleReg}>
-			<h3>Create Account</h3>
-			<input title="first" placeholder="first name" type="first"
-				onChange={this.handleChange}/>
-			<input title="last" placeholder="last name" type="last"
-				onChange={this.handleChange}/>
-			<input title="email" placeholder="enter you email" type="email"
-				onChange={this.handleChange}/>
-			<input type="password" title="password" placeholder="enter password"
-				 onChange={this.handleChange}/>
-			<input type="password" title="password2" placeholder="re-enter password"
-				 onChange={this.handleChange}/>
-			<Button type="submit" value="register" disabled={!this.validateForm()} color="primary">
-				Register
-			</Button>
-			<Button value="login" onClick={this.handleSwap} color="primary">
-				Go Login
-			</Button>
-		</form>
-		)}
-		</div>
-	);
+		return (
+			<div className="Login">
+			{this.state.formType==="login" ? (
+			<form onSubmit={this.handleSubmit}>
+				<h3>Sign in</h3>
+				<TextField name="email" type="email" label="email" margin="none"
+					onChange={this.handleChange}/>
+				<TextField type="password" name="password"	label="password" margin="none"
+					onChange={this.handleChange}/>
+				<Button type="submit" className="main-btn" value="Login" disabled={!this.validateForm()}
+					variant="contained" color="primary">
+					Login
+				</Button>
+				<Button value="register" className="main-btn" onClick={this.handleSwap} variant="contained"
+					color="primary">
+					Register
+				</Button>
+			</form>
+			):(
+			<form onSubmit={this.handleReg}>
+				<h3>Create Account</h3>
+				<TextField name="first" type="first" label="first name" margin="none"
+					onChange={this.handleChange}/>
+				<TextField name="last" type="last" label="last name" margin="none"
+					onChange={this.handleChange}/>
+				<TextField name="email" type="email" label="email" margin="none"
+					onChange={this.handleChange}/>
+				<TextField name="password1" type="password" label="password" margin="none"
+					onChange={this.handleChange}/>
+				<TextField name="password2" type="password" label="re-password" margin="none"
+					onChange={this.handleChange}/>
+				<Button type="submit" value="register" className="main-btn" disabled={!this.validateForm()} color="primary">
+					Register
+				</Button>
+				<Button value="login" onClick={this.handleSwap} className="main-btn" color="primary">
+					Go Login
+				</Button>
+			</form>
+			)}
+			</div>
+		);
 	}
 }

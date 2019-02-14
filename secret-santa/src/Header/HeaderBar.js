@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "../App.css";
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 export default class HeaderBar extends Component {
 	constructor(props) {
@@ -25,8 +27,9 @@ export default class HeaderBar extends Component {
 	return (
 		<div className="header">
 			<div className="left-head">
-				<input type="text"/>
-				<button className="btn1" onClick={this.setAppState}>Search</button>
+				<TextField id="header-search-bar" label="Search" margin="none" className="search-input"/>
+				<Button  className="btn1" onClick={this.setAppState} variant="contained" color="primary">
+					Search</Button>
 			</div>
 			{this.props.user!=="null" ? (
 				<div className="right-head">
@@ -35,7 +38,9 @@ export default class HeaderBar extends Component {
 				</div>
 			) : (
 				<div className="right-head">
-					<button onClick={this.props.goLogin}>Login</button>
+					<Button value="login"  onClick={this.props.goLogin} variant="contained" color="primary">
+						Login
+					</Button>
 				</div>
 			)}
 		</div>

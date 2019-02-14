@@ -5,13 +5,17 @@ import HeaderBar from './Header/HeaderBar.js';
 import LeftPanel from './LeftPanel/LeftPanel';
 import GroupDetail from './MainDetails/Details.js';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
+
 
 class App extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {page:"login", groups:"null",user:"null", activeGroup:"null",
+		this.state = {page:"landing", groups:"null",user:"null", activeGroup:"null",
 		selectedGroup:"null"};
-		this.checkLogin();
+		//this.checkLogin();
 	}
 	setAppState = ()=> {
 		this.setState({page: "login"})
@@ -96,6 +100,14 @@ class App extends Component {
 		//var data = JSON.parse(this.responseText);
 		console.log(this.responseText)
 	}
+/*
+<TextField id="header-search-bar" label="Search" margin="none" className="search-input"/>
+				<Button  className="btn1" onClick={this.setAppState} variant="contained" color="primary">
+					Search</Button>
+
+					<input title="email" placeholder="enter you username" type="email"
+				onChange={this.handleChange}/>
+ */
 
 	render() {
 		if(this.state.page === "landing"){
@@ -103,8 +115,17 @@ class App extends Component {
 				<div className="App">
 					<div className="main">
 						<div className = "dialogue">
-							<input type="text"/>
-							<button className="btn1" onClick={this.setAppState}>Go to Login</button>
+							<div className="dialog-top">
+							<h3>Sign in</h3>
+							</div>
+							<div id="search-area" className="search-holder">
+							<TextField id="main-search-bar" className="text-btn-accom"
+								variant="outlined" label="Search" margin="none"/>
+							<Button variant="contained" color="primary">
+								Search</Button>
+							</div>
+							<Button variant="contained" color="primary" className="main-btn high-top"
+								onClick={this.setAppState}>Go to Login</Button>
 						</div>
 					</div>
 				</div>
@@ -136,4 +157,3 @@ class App extends Component {
 	}
 }
 export default App;
-//7d17fc5099f74e20b1d78ca8ee917b68

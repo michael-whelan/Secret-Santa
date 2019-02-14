@@ -1,5 +1,6 @@
 .App {
 	text-align: center;
+	cursor:text!important;
 }
 
 .header {
@@ -21,12 +22,51 @@
 }
 
 .dialogue {
-	background-color:	paleturquoise;
-	padding: 2.5em 6em;
+	background-color: #f2f2f2;
+	/*padding: 0em 2.5em 3em 3em;*/
+	height: 15em;
+	width: 30em;
+	border-radius:0.6em;
+	position: relative;
+}
+
+/*.dialogue >h3{
+	width: 130.2%;
+	margin-left: -2.55em;
+	background-color: red;
+}*/
+
+.search-holder{
+	margin-top: 5em;
+}
+
+.dialog-top {
+	background-color: red;
+	width: 100%;
+	height: 3em;
+	margin-bottom: 2em;
+	border-radius: 0.6em 0.6em 0em 0em;
+	position: absolute;
 }
 
 .btn1 {
 	display:block;
+}
+.text-btn-accom {
+	display: inline!important;
+	margin: 1em!important;
+}
+
+
+.main-btn{
+	display: block!important;
+	margin-top: 1em!important;
+	margin-left: auto!important;
+	margin-right: auto!important;
+}
+
+.high-top{
+	margin-top: 4em!important;
 }
 
 .App-link {
@@ -39,6 +79,10 @@
 
 .left-head *{
 	display: inline-block;
+}
+
+.search-input { 
+	margin-top: -0.6em!important;
 }
 
 .right-head {
