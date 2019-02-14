@@ -42,7 +42,7 @@ export default class Login extends Component {
 			this.setState({ user: nextProps.user });
 		}
 	}
-	handlSubmit = event => {
+	handleSubmit = event => {
 	event.preventDefault();
 
 		/*var config = {
@@ -61,6 +61,7 @@ export default class Login extends Component {
 		axios(authOptions)
 		.then(res => {
 			if(res.status === 200){
+				document.cookie = "uuid="+ res.data.uuid+";expires=400;"
 				this.props.doLogin(res.data);
 			}
 		});
@@ -84,6 +85,7 @@ export default class Login extends Component {
 		if(res.status === 200){
 			//const userState = this.props.user;
 			console.log(res.data);
+			document.cookie = "uuid="+ res.data.uuid+";expires=400;"
 			this.props.doLogin({"uuid":res.data.uuid,"email":this.state.email});
 			//this.props.user = {"uuid":res.data.uuid,"email":this.state.email};
 			//this.props.stateUpdate("home");
@@ -93,8 +95,6 @@ export default class Login extends Component {
 		}
 	});
 }
-
-
 
 	render() {
 	return (

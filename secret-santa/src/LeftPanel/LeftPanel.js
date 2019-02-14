@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 export default class LeftPanel extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {user : this.props.user, userGroups: this.props.groups, 
+		this.state = {user : this.props.user, userGroups: this.props.groups,
 			cgDialogOpen:false};
 		this.initGroups();
 		this.diText="";

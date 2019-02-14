@@ -21,29 +21,19 @@ class App extends Component {
 		this.setState({page: newState});
 	}
 
-	doLogin = event =>{
-		event.preventDefault();
-		var config = {
-			headers: {'X-User-Email': this.state.email,
-			'X-User-Pass': this.state.password,
-			'Access-Control-Allow-Origin': '*'}
-		};
-		axios.get('http://localhost:8080/login', config)
-		.then(res => {
-			if(res.status === 200){
-				document.cookie = "uuid="+ res.data.uuid+";expires=400;"
-				this.loginSuccess(res.data);
-			}
-		});
-	}
 
 	loginSuccess=(data)=>{
+		console.log(data)
 		var newUser = {"uuid":data.uuid,"email":data.email};
 		this.setState({user: newUser, page:"home"});
 	}
 
 	checkLogin = () => {
 		const uuidCookie = this.getCookie("uuid");
+		console.log(uuidCookie);
+		if(uuidCookie == null || uuidCookie.length < 10){
+			return;
+		}
 		/*var config = {
 			headers: {'X-User-ID': uuidCookie,
 			'Access-Control-Allow-Origin': '*'}
@@ -59,6 +49,9 @@ class App extends Component {
 		.then(res => {
 			if(res.status === 200){
 				this.loginSuccess(res.data);
+			}
+			else if(res.status === 401){
+				this.setAppState();
 			}
 		});
 	}
@@ -137,10 +130,10 @@ class App extends Component {
 						<Login doLogin={this.loginSuccess} stateUpdate={this.updateAppState}
 						user={this.state.user} pageState={this.state.page}></Login>
 					</div>
-					<button onClick={this.testRun}>tester</button>
 				</div>
 			);
 		}
 	}
 }
 export default App;
+//7d17fc5099f74e20b1d78ca8ee917b68

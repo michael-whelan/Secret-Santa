@@ -23,31 +23,55 @@ def days_between(d1, d2):
     return abs((d2 - d1).days)
 
 def check_credentials(uuid,email,passw):
+	print("checkcreds",uuid,email,passw)
 	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
-	getUser(None,email,passw)
+	newUUID = uuid
+	#if days_between("2019-02-12",nowTime) > 0:
+	#	newUUID=generate_uuid()
 
-	print(days_between("2019-02-12",nowTime))
-	return None
-	uuid = self.headers.getheader('X-User-ID')
+	#retrieve info from DB
+	userInfo = getUser(uuid,email,passw)
+	if userInfo is None:
+		return None
+	#get sent info from client
 	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
-	print("uuid",uuid)
-	if uuid == "random1234":
-		return True
-	name = self.headers.getheader('X-User-Email')
-	password = self.headers.getheader('X-User-Pass')
-	if name =="michael@g.c" and password == "qwert":
-		return True
-	return False
+	if uuid is not None:
+		if days_between(userInfo["uuid_date"],nowTime) < 1:
+			return {"uuid":uuid,"email":userInfo["email"]}
+			#newUUID=generate_uuid()
+		return None
+	#if not logging in via UUID salt the password and hash
+	passl = userInfo["salt"] +passw
+	passSec = hashlib.sha224(passl).hexdigest()
+	print("loging check", passSec)
+	print("loging check", 	userInfo["pass"])
+	if email == userInfo["email"] and passSec == userInfo["pass"]:
+		if days_between(userInfo["uuid_date"],nowTime) >= 1:
+			newUUID=generate_uuid()
+			update_uuid(userInfo["id"],newUUID)
+		return {"uuid":userInfo["uuid"],"email":userInfo["email"]}
+	return None
+
+
+def update_uuid(userId, uuid):
+	query = "Update users set uuid='%s' where id = '%s'" % (uuid,userId)
+	conn = sqlite3.connect('secretsanta.db')
+	cursor= conn.cursor()
+	cursor.execute(query)
+	conn.commit()
+
 
 def registerUser(deets,secure,salt, uuid):
+	print("salt",salt)
 	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
 	if uniqueEntry(deets['X-User-Email']):
 		query = "insert into users(first_name, last_name,email,uuid,pass,salt,uuid_date) values ('%s','%s','%s','%s','%s','%s','%s');" %(
 			deets['X-User-First'],deets['X-User-Last'],deets['X-User-Email'],uuid,secure,salt,nowTime
 		)
 		conn = sqlite3.connect('secretsanta.db')
-		cursor = conn.execute(query)
-		print(query)
+		cursor= conn.cursor()
+		cursor.execute(query)
+		conn.commit()
 		return {"uuid":uuid,"success":True,"message":"New Account created"}
 	return {"message": "Email account already exists","success":False}
 
@@ -55,37 +79,24 @@ def getUser(u,e,recpass):
 	query= ""
 	conn = sqlite3.connect('secretsanta.db')
 	if u is not None:
-		query = "SELECT * from users where uuid = %s" % (u)
+		query = "SELECT * from users where uuid = '%s'" % (u)
 		print(query)
-		cursor = conn.execute(query)
-		if cursor == None:
-			return False
 	else:
 		query = "SELECT * from users where email = '%s'" % (e)
-		print(query)
-		cursor = conn.execute(query)
-		if cursor == None:
-			return False
-		rows = [x for x in cursor]
-		cols = [x[0] for x in cursor.description]
-		data = []
-		for row in rows:
-			entry = {}
-			for prop, val in zip(cols, row):
-				entry[prop] = val
-				data.append(entry)
-		print(data[0])
-		#newPass= data[0]['salt'] +recpass
-		#passSec = hashlib.sha224(newPass).hexdigest()
-		#print("pass check",passSec,data[0]['pass'])
-		#if(passSec == data[0]['pass']):
-		#	return data[0].uuid
-
-		return False
+	print(query)
+	cursor = conn.execute(query)
+	if cursor == None:
+		return None
+	rows = [x for x in cursor]
+	cols = [x[0] for x in cursor.description]
+	data = {}
+	for row in rows:
+		for prop, val in zip(cols, row):
+			data[prop] = val
 	print ("Operation done successfully")
 	conn.close()
 
-	#return data
+	return data
 
 def getGroups(p):
 	data =groups

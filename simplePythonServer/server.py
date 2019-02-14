@@ -25,6 +25,7 @@ Codes:
 200 success
 201 user already exists
 202
+401 uuid not found
 404 error in understanding request
 """
 class Handler (BaseHTTPRequestHandler) :
@@ -43,7 +44,7 @@ class Handler (BaseHTTPRequestHandler) :
 
 		if self.path == "/getstuff" or self.path == "/getstuff/":
 			#send response code:
-			print("connection made")
+			print("connection made /getstuff")
 			return
 			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
 			if creds is not None:
@@ -60,19 +61,19 @@ class Handler (BaseHTTPRequestHandler) :
 				self.send_response(404)
 				return
 		if self.path == "/login" or self.path == "/login/":
+			print("connection made /login")
 			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
 			if creds is not None:
 				self.send_response(200)
 				self.send_header("Content-type:", "application/json")
 				self.wfile.write("\n")
-				db.getUser("n","p")
-				json.dump({"uuid": "random1234"},self.wfile)
+				json.dump(creds,self.wfile)
 				self.end_headers()
 				return
 
 			# Send code 200
 			#self.response.out.write()
-			self.send_response(404)
+			self.send_response(401)
 			self.end_headers()
 
 		try:
