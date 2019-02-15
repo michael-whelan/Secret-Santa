@@ -12,7 +12,7 @@ export default class Login extends Component {
 		this.state = {
 			email: "",
 			password: "",
-			formType:"register"
+			formType:"login"
 		};
 	}
 
@@ -33,7 +33,6 @@ export default class Login extends Component {
 	}
 
 	handleChange = event => {
-		console.log(event.target);
 		this.setState({
 			[event.target.name]: event.target.value
 		});

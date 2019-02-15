@@ -13,9 +13,9 @@ import TextField from '@material-ui/core/TextField';
 class App extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {page:"landing", groups:"null",user:"null", activeGroup:"null",
+		this.state = {page:"login", groups:"null",user:"null", activeGroup:"null",
 		selectedGroup:"null"};
-		//this.checkLogin();
+		this.checkLogin();
 	}
 	setAppState = ()=> {
 		this.setState({page: "login"})
@@ -60,7 +60,7 @@ class App extends Component {
 		});
 	}
 
-	fillGroups = (groupList)=>{
+	updateGroups = (groupList)=>{
 		console.log(groupList);
 		this.setState({groups: groupList});
 	}
@@ -136,7 +136,7 @@ class App extends Component {
 				<div className="App">
 					<HeaderBar user={this.state.user} doLogout={this.doLogout} goLogin={this.setAppState}></HeaderBar>
 					<div className="main">
-						<LeftPanel user={this.state.user} updateGroups={this.fillGroups}
+						<LeftPanel user={this.state.user} updateGroups={this.updateGroups}
 						showGroupById={this.showGroup} groups={this.state.groups}></LeftPanel>
 						<GroupDetail activeGroupId={this.state.activeGroup}
 						 groups={this.state.groups}></GroupDetail>

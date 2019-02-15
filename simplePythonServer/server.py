@@ -46,7 +46,8 @@ class Handler (BaseHTTPRequestHandler) :
 			#send response code:
 			print("connection made /getstuff")
 			return
-			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'),
+				self.headers.getheader('X-User-Pass'))
 			if creds is not None:
 				self.send_response(200)
 				#send headers:
@@ -62,7 +63,8 @@ class Handler (BaseHTTPRequestHandler) :
 				return
 		if self.path == "/login" or self.path == "/login/":
 			print("connection made /login")
-			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
+				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
 			if creds is not None:
 				self.send_response(200)
 				self.send_header("Content-type:", "application/json")
@@ -127,11 +129,14 @@ class Handler (BaseHTTPRequestHandler) :
 	def do_POST(self):
 		# Look for POST request
 		if self.path == "/creategroup" or self.path == "/creategroup/":
-			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
+				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+
 			if creds is not None:
 				postvars = self.parse_POST()
-				if db.addGroup(postvars["groupname"]):
-					json.dump({"message": "Group added: "+postvars["groupname"],"approved":True},self.wfile)
+				newGroup = db.addGroup(postvars["groupname"],creds)
+				if newGroup["success"]:
+					json.dump(newGroup ,self.wfile)
 				else:
 					json.dump({"message": "Group name already exists","approved":False},self.wfile)
 				self.end_headers()

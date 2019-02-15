@@ -38,13 +38,13 @@ export default class FormDialog extends Component {
 		axios.post('http://localhost:8080/creategroup', data,config)
 		.then(res => {
 			if(res.status === 200){
-				var results = res.data
-				if(results.approved){
+				if(res.data.success){
+					console.log(res.data)
 					this.handleClose();
 					//continue to deal with new group
 				}
 
-				this.setState({message: results.message});
+				this.setState({message: res.data.message});
 			}
 		})
 		.catch(error => {
