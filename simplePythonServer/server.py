@@ -26,6 +26,7 @@ Codes:
 201 user already exists
 202
 401 uuid not found
+402 group not found
 404 error in understanding request
 """
 class Handler (BaseHTTPRequestHandler) :
@@ -45,7 +46,6 @@ class Handler (BaseHTTPRequestHandler) :
 		if self.path == "/getstuff" or self.path == "/getstuff/":
 			#send response code:
 			print("connection made /getstuff")
-			return
 			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'),
 				self.headers.getheader('X-User-Pass'))
 			if creds is not None:
@@ -55,7 +55,7 @@ class Handler (BaseHTTPRequestHandler) :
 				# send a blank line to end headers:
 				self.wfile.write("\n")
 				#send response:
-				json.dump(db.getGroups(self.path), self.wfile)
+				json.dump(db.getGroups(creds['uuid']), self.wfile)
 				self.end_headers
 				return
 			else:

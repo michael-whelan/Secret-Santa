@@ -26,7 +26,11 @@ export default class GroupDetails extends Component {
 
 	render() {
 		var people =[];
-		var group = this.state.groups[this.props.activeGroupId];
+		var group = {};
+		if(this.state.groups != null){
+			group = this.state.groups[this.props.activeGroupId];
+		}
+
 		for(var k in group){
 			if(k !=="name"){
 				var person = <div className="person">

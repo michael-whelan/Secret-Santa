@@ -38,10 +38,6 @@ class App extends Component {
 		if(uuidCookie == null || uuidCookie.length < 10){
 			return;
 		}
-		/*var config = {
-			headers: {'X-User-ID': uuidCookie,
-			'Access-Control-Allow-Origin': '*'}
-		};*/
 		var authOptions = {
 			method: 'get',
 			url: 'http://localhost:8080/login',

@@ -99,9 +99,30 @@ def getUser(u,e,recpass):
 
 	return data
 
-def getGroups(p):
+def getGroups(uuid):
 	data =groups
+	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
+	query = """SELECT g.id,g.group_name,g.sent,p.name,p.email,p.active from groups g inner join
+	people p where g.id = p.group_id and g.admin = (select id from users where uuid = '%s') order by p.group_id;""" % (uuid)
+	print(query)
+	conn = sqlite3.connect('secretsanta.db')
+	cursor= conn.cursor()
+	cursor.execute(query)
+	if cursor == None:
+		return None
+	rows = [x for x in cursor]
+	cols = [x[0] for x in cursor.description]
+	data = []
+	for row in rows:
+		dataSingle = {}
+		print("row",row)
+		for prop, val in zip(cols, row):
+			dataSingle[prop] = val
+		data.append(dataSingle)
+	conn.close()
 	print ("Operation done successfully")
+	print(data)
+	return None
 	return data
 
 def addGroup(groupName, userInfo):

@@ -9,8 +9,9 @@ export default class LeftPanel extends Component {
 		super(props);
 		this.state = {user : this.props.user, userGroups: this.props.groups,
 			cgDialogOpen:false};
-		this.initGroups();
+		this.getGroups();
 		this.diText="";
+		this.showGroups = false;
 	}
 
 	handleChange = event => {
@@ -21,6 +22,7 @@ export default class LeftPanel extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.groups !== this.state.userGroups) {
+			this.showGroups=true;
 			this.setState({ userGroups: nextProps.groups });
 		}
 
@@ -34,7 +36,7 @@ export default class LeftPanel extends Component {
 		event.preventDefault();
 	}
 
-	initGroups(){
+	getGroups(){
 		var config = {
 		headers: {'X-User-ID': this.state.user.uuid}
 		};
@@ -50,9 +52,13 @@ export default class LeftPanel extends Component {
 
 	render() {
 		var groupList =[];
-		for(var k in this.state.userGroups){
-			var group = this.state.userGroups[k];
-			groupList.push(<li key={k} onClick={this.props.showGroupById.bind(this,k)}>{group.name}</li>);
+		console.log(this.state.userGroups);
+		if(this.state.userGroups !=="null" && this.state.userGroups !==null){
+			for (var i =0; i < this.state.userGroups.length; ++i){
+				var group = this.state.userGroups[i];
+				console.log(group);
+				groupList.push(<li key={i} onClick={this.props.showGroupById.bind(this,group.id)}>{group.group_name}</li>);
+			}
 		}
 
 		return (
@@ -63,7 +69,7 @@ export default class LeftPanel extends Component {
 						Create Group
 					</Button>
 					<Dialog user= {this.state.user} openDialog = {this.state.cgDialogOpen} title={"Create Group"}
-					inputName={"Group Name"} text={this.diText} btnName={"Create"}/>
+					inputName={"Group Name"} text={this.diText} getGroups={this.getGroups} btnName={"Create"}/>
 					{this.state.userGroups!=="null"&&
 					<ul>
 						{

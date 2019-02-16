@@ -44,7 +44,7 @@ export default class FormDialog extends Component {
 					//continue to deal with new group
 				}
 
-				this.setState({message: res.data.message});
+				this.props.getGroups();
 			}
 		})
 		.catch(error => {
