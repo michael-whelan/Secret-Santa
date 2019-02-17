@@ -28,7 +28,6 @@ export default class Login extends Component {
 	}
 
 	handleSwap = event => {
-		console.log(this.state);
 		this.setState({formType:event.target.value});
 	}
 
@@ -50,7 +49,6 @@ export default class Login extends Component {
 			headers: {'X-User-ID': uuidCookie,
 			'Access-Control-Allow-Origin': '*'}
 		};*/
-		console.log(this.state.password,this.state.email);
 		var authOptions = {
 			method: 'get',
 			url: 'http://localhost:8080/login',
@@ -85,7 +83,6 @@ export default class Login extends Component {
 	.then(res => {
 		if(res.status === 200){
 			//const userState = this.props.user;
-			console.log(res.data);
 			document.cookie = "uuid="+ res.data.uuid+";expires=400;"
 			this.props.doLogin({"uuid":res.data.uuid,"email":this.state.email});
 			//this.props.user = {"uuid":res.data.uuid,"email":this.state.email};

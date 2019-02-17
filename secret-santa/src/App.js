@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField';
 class App extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {page:"login", groups:"null",user:"null", activeGroup:"null",
+		this.state = {page:"login", groups:"null",user:"null", activeGroupId:"null",
 		selectedGroup:"null"};
 		this.checkLogin();
 	}
@@ -27,14 +27,12 @@ class App extends Component {
 
 
 	loginSuccess=(data)=>{
-		console.log(data)
 		var newUser = {"uuid":data.uuid,"email":data.email};
 		this.setState({user: newUser, page:"home"});
 	}
 
 	checkLogin = () => {
 		const uuidCookie = this.getCookie("uuid");
-		console.log(uuidCookie);
 		if(uuidCookie == null || uuidCookie.length < 10){
 			return;
 		}
@@ -57,18 +55,16 @@ class App extends Component {
 	}
 
 	updateGroups = (groupList)=>{
-		console.log(groupList);
 		this.setState({groups: groupList});
 	}
 
 	doLogout = () =>{
-		this.setState({user: "null", activeGroup:"null"});
+		this.setState({user: "null", activeGroupId:"null"});
 	}
 
 	testRun = () => {
 		console.log(this.state);
 		console.log(document.cookie);
-		//console.log(cookies.get('uuid'));
 	}
 
 	getCookie = (cname)=> {
@@ -87,12 +83,12 @@ class App extends Component {
 		return "";
 	}
 
-	showGroup = (groupId) =>{
-		this.setState({activeGroup: groupId});
+	showGroup = (groupId, position) =>{
+		console.log(groupId);
+		this.setState({activeGroupId: groupId,activeGroup: this.state.groups[position]});
 	}
 
 	reqListener = e => {
-
 		//var data = JSON.parse(this.responseText);
 		console.log(this.responseText)
 	}
@@ -134,8 +130,8 @@ class App extends Component {
 					<div className="main">
 						<LeftPanel user={this.state.user} updateGroups={this.updateGroups}
 						showGroupById={this.showGroup} groups={this.state.groups}></LeftPanel>
-						<GroupDetail activeGroupId={this.state.activeGroup}
-						 groups={this.state.groups}></GroupDetail>
+						<GroupDetail activeGroupId={this.state.activeGroupId}
+						 groups={this.state.groups} activeGroup={this.state.activeGroup}></GroupDetail>
 					</div>
 				</div>
 			);

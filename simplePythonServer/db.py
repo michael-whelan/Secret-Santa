@@ -102,7 +102,7 @@ def getUser(u,e,recpass):
 def getGroups(uuid):
 	data =groups
 	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
-	query = """SELECT g.id,g.group_name,g.sent,p.name,p.email,p.active from groups g inner join
+	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active from groups g inner join
 	people p where g.id = p.group_id and g.admin = (select id from users where uuid = '%s') order by p.group_id;""" % (uuid)
 	print(query)
 	conn = sqlite3.connect('secretsanta.db')
@@ -112,17 +112,46 @@ def getGroups(uuid):
 		return None
 	rows = [x for x in cursor]
 	cols = [x[0] for x in cursor.description]
-	data = []
+	raw_data = []
+	"""
+	data=[
+		{name: groupname,
+		id:groupid,
+		sent:,
+		people: [
+			{id, name, email,active},
+			{id, name, email,active}
+		]
+		}
+	]
+	"""
 	for row in rows:
 		dataSingle = {}
-		print("row",row)
 		for prop, val in zip(cols, row):
 			dataSingle[prop] = val
-		data.append(dataSingle)
+		raw_data.append(dataSingle)
 	conn.close()
+
+	lastGroup ="null"
+	data =[]
+	for i in raw_data:
+		if i["group_id"] != lastGroup:
+			group = {}
+			group["group_name"] = i["group_name"]
+			group["group_id"] = i["group_id"]
+			group["active"] = i["active"]
+			group["people"] = []
+			lastGroup = i["group_id"]
+			data.append(group)
+		person = {}
+		person["person_id"]= i["person_id"]
+		person["name"]= i["name"]
+		person["email"]= i["email"]
+		person["active"]= i["active"]
+		data[(len(data))-1]["people"].append(person)
+
 	print ("Operation done successfully")
 	print(data)
-	return None
 	return data
 
 def addGroup(groupName, userInfo):

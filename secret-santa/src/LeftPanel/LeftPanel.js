@@ -40,7 +40,7 @@ export default class LeftPanel extends Component {
 		var config = {
 		headers: {'X-User-ID': this.state.user.uuid}
 		};
-		axios.get('http://localhost:8080/getstuff', config)
+		axios.get('http://localhost:8080/getgroups', config)
 		.then(res => {
 			this.props.updateGroups(res.data);
 		});
@@ -57,7 +57,7 @@ export default class LeftPanel extends Component {
 			for (var i =0; i < this.state.userGroups.length; ++i){
 				var group = this.state.userGroups[i];
 				console.log(group);
-				groupList.push(<li key={i} onClick={this.props.showGroupById.bind(this,group.id)}>{group.group_name}</li>);
+				groupList.push(<li key={i} onClick={this.props.showGroupById.bind(this,group.group_id,i)}>{group.group_name}</li>);
 			}
 		}
 

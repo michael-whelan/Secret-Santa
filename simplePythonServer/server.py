@@ -43,9 +43,9 @@ class Handler (BaseHTTPRequestHandler) :
 		if self.path=="/":
 			self.path="/index.html"
 
-		if self.path == "/getstuff" or self.path == "/getstuff/":
+		if self.path == "/getgroups" or self.path == "/getgroups/":
 			#send response code:
-			print("connection made /getstuff")
+			print("connection made /getgroups")
 			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'),
 				self.headers.getheader('X-User-Pass'))
 			if creds is not None:

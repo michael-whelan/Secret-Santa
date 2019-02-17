@@ -39,7 +39,6 @@ export default class FormDialog extends Component {
 		.then(res => {
 			if(res.status === 200){
 				if(res.data.success){
-					console.log(res.data)
 					this.handleClose();
 					//continue to deal with new group
 				}
