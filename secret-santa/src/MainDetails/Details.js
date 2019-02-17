@@ -43,8 +43,8 @@ export default class GroupDetails extends Component {
 			var person = <div className="person">
 				<Button variant="outlined" color="primary"
 				onClick={this.showAlert.bind(this,"Are you sure you want to delete: "+single.name)}>-</Button>
-				<input type="text" key={"name"+i} defaultValue={single.name}/>
-				<input type="text" key={"email"+i} defaultValue={single.email}/>
+				<input type="text" key={"name-"+single.person_id} defaultValue={single.name}/>
+				<input type="text" key={"email-"+single.person_id} defaultValue={single.email}/>
 				<Button variant="outlined" color="primary"
 				onClick={this.showAlert.bind(this,"You are adding a not field")}>Nots</Button>
 			</div>
