@@ -27,7 +27,6 @@ export default class LeftPanel extends Component {
 		}
 
 		if(nextProps.user !== this.state.user){
-			console.log("You logged out");
 			this.setState({ user: nextProps.user });
 		}
 	}

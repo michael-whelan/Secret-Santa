@@ -15,6 +15,8 @@ from flask import Flask, jsonify, abort, request, make_response, url_for, render
 import random
 import hashlib
 import datetime
+import errno
+import socket
 
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -129,6 +131,7 @@ class Handler (BaseHTTPRequestHandler) :
 	def do_POST(self):
 		# Look for POST request
 		if self.path == "/creategroup" or self.path == "/creategroup/":
+			print("connection made /creategroup")
 			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
 				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
 
@@ -143,6 +146,25 @@ class Handler (BaseHTTPRequestHandler) :
 				return
 			self.send_response(404)
 			self.end_headers()
+
+		if self.path == "/addperson" or self.path == "/addperson/":
+			print("connection made /addperson")
+			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
+				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+
+			if creds is not None:
+				postvars = self.parse_POST()
+				newPerson = db.add_person(postvars,creds)
+				if newPerson["success"]:
+					json.dump(newPerson ,self.wfile)
+				else:
+					json.dump({"message": "Error adding person","approved":False},self.wfile)
+				self.end_headers()
+				return
+			self.send_response(404)
+			self.end_headers()
+
+
 		if self.path == "/register" or self.path == "/register/":
 			postvars = self.parse_POST()
 			salt = self.gensalt()
@@ -159,6 +181,37 @@ class Handler (BaseHTTPRequestHandler) :
 			json.dump(info,self.wfile)
 			self.end_headers()
 			return
+
+
+	def do_PUT(self):
+		# Look for POST request
+		if self.path == "/updateperson" or self.path == "/updateperson/":
+			print("connection made /updateperson")
+			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
+				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			try:
+				if creds is not None:
+					postvars = self.parse_POST()
+					info = db.update_person(postvars,creds)
+					if info["success"]:
+						self.send_response(200)
+						self.wfile.write("\n")
+						json.dump({"message": "worked","approved":True} ,self.wfile)
+					else:
+						self.send_response(201)
+						self.wfile.write("\n")
+						json.dump({"message": "Error updating","approved":False},self.wfile)
+					self.end_headers()
+					return
+				self.send_response(404)
+				self.end_headers()
+			except socket.error as e:
+				if e.errno != errno.EPIPE:
+					# Not a broken pipe
+					raise
+				print("***********pipe************")
+				self.send_response(404)
+				self.end_headers()
 
 server = HTTPServer(("localhost", PORT), Handler)
 print ("serving at port", PORT)

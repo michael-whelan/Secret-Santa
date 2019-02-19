@@ -100,7 +100,6 @@ def getUser(u,e,recpass):
 	return data
 
 def getGroups(uuid):
-	data =groups
 	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
 	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active from groups g inner join
 	people p where g.id = p.group_id and g.admin = (select id from users where uuid = '%s') order by p.group_id;""" % (uuid)
@@ -175,74 +174,38 @@ def addGroup(groupName, userInfo):
 			return False
 	return True
 
-def putOne(name,datetime,msg):
-	conn = sqlite3.connect('birdy.db')
-	c = conn.cursor()
-	c.execute("INSERT INTO chirps (user, datetime, msg) VALUES(?,?,?)", (name,datetime,msg))
-	#num = c.execute("SELECT id FROM clients ORDER BY id DESC LIMIT 1")
+def update_person(vars, creds):
+	#Should first check that user is valid to make change
+	query = """update people set %s = '%s' where id = %s""" % (
+				vars["col"], vars["newVal"], vars["id"]
+			)
+
+	print(query)
+	conn = sqlite3.connect('secretsanta.db')
+	cursor = conn.cursor()
+	cursor.execute(query)
 	conn.commit()
-	#rows = [x for x in num]
-	#print ("Operation done successfully "+str(rows[0][0]));
-	c.close()
 	conn.close()
-	return
+	return {"success":True,"message":"Person updated"}
+
+def add_person(vars, creds):
+	#Should first check that user is valid to make change
+	new_name = ""
+	new_email = ""
+	if vars["col"] == "name":
+		new_name = vars["newVal"]
+	if vars["col"] == "email":
+		new_email = vars["newVal"]
+	query = """insert into people(group_id, name, email, active) values (%s, '%s', '%s',%s)""" % (
+				vars["group_id"], new_name, new_email,1
+			)
+
+	print(query)
+	conn = sqlite3.connect('secretsanta.db')
+	cursor = conn.cursor()
+	cursor.execute(query)
+	conn.commit()
+	conn.close()
+	return {"success":True,"message":"Person added"}
 
 
-groups= {
-		"id0001": {
-			"name":"group1",
-			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
-			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
-			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
-			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
-			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
-		},
-		"id0002": {
-			"name":"group2",
-			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
-			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
-			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
-			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
-			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
-		},
-		"id0003": {
-			"name":"group3",
-			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
-			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
-			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
-			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
-			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
-		},
-		"id0004": {
-			"name":"group4",
-			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
-			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
-			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
-			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
-			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
-		},
-		"id0005": {
-			"name":"group5",
-			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
-			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
-			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
-			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
-			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
-		},
-		"id0006": {
-			"name":"group6",
-			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
-			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
-			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
-			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
-			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
-		},
-		"id0007": {
-			"name":"group7",
-			"0": {"name":"Test Person1","email":"Test1@test.com", "not":[]},
-			"1": {"name":"Test Person2","email":"Test2@test.com", "not":[]},
-			"2": {"name":"Test Person3","email":"Test3@test.com", "not":[]},
-			"3": {"name":"Test Person4","email":"Test4@test.com", "not":[]},
-			"4": {"name":"Test Person5","email":"Test5@test.com", "not":[]}
-		}
-	}

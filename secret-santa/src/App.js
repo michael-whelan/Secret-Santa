@@ -15,6 +15,9 @@ class App extends Component {
 		super(props);
 		this.state = {page:"login", groups:"null",user:"null", activeGroupId:"null",
 		selectedGroup:"null"};
+	}
+
+	componentDidMount = () =>{
 		this.checkLogin();
 	}
 	setAppState = ()=> {
@@ -84,13 +87,7 @@ class App extends Component {
 	}
 
 	showGroup = (groupId, position) =>{
-		console.log(groupId);
 		this.setState({activeGroupId: groupId,activeGroup: this.state.groups[position]});
-	}
-
-	reqListener = e => {
-		//var data = JSON.parse(this.responseText);
-		console.log(this.responseText)
 	}
 /*
 <TextField id="header-search-bar" label="Search" margin="none" className="search-input"/>
@@ -130,8 +127,8 @@ class App extends Component {
 					<div className="main">
 						<LeftPanel user={this.state.user} updateGroups={this.updateGroups}
 						showGroupById={this.showGroup} groups={this.state.groups}></LeftPanel>
-						<GroupDetail activeGroupId={this.state.activeGroupId}
-						 groups={this.state.groups} activeGroup={this.state.activeGroup}></GroupDetail>
+						<GroupDetail activeGroupId={this.state.activeGroupId} groups={this.state.groups}
+						 activeGroup={this.state.activeGroup} user={this.state.user}></GroupDetail>
 					</div>
 				</div>
 			);
