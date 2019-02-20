@@ -14,7 +14,7 @@ export default class GroupDetails extends Component {
 	}
 
 	handleChange = event => {
-		console.log(event.target.value,event.target.title);
+		//console.log(event.target.value,event.target.title);
 		//*****Should add a color to say changed/unsaved ******
 		//clearTimeout(this.timer);
 		//this.timer = setTimeout(this.triggerChange, WAIT_INTERVAL);
@@ -53,6 +53,12 @@ export default class GroupDetails extends Component {
 			if(res.status === 200){
 				if(res.data.success){
 					console.log(res.data)
+				}
+			}
+			if(res.status === 202){
+				if(res.data.success){
+					console.log(res.data)
+					this.props.updateGroup(res.data.updated_g_id, res.data.updated_group[0]);
 					//continue to deal with new group
 				}
 			}

@@ -26,7 +26,7 @@ PORT = 8080
 Codes:
 200 success
 201 user already exists
-202
+202 added person
 401 uuid not found
 402 group not found
 404 error in understanding request
@@ -50,6 +50,8 @@ class Handler (BaseHTTPRequestHandler) :
 			print("connection made /getgroups")
 			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'),
 				self.headers.getheader('X-User-Pass'))
+			par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
+			print(par)
 			if creds is not None:
 				self.send_response(200)
 				#send headers:
@@ -156,6 +158,8 @@ class Handler (BaseHTTPRequestHandler) :
 				postvars = self.parse_POST()
 				newPerson = db.add_person(postvars,creds)
 				if newPerson["success"]:
+					self.send_response(202)
+					self.wfile.write("\n")
 					json.dump(newPerson ,self.wfile)
 				else:
 					json.dump({"message": "Error adding person","approved":False},self.wfile)

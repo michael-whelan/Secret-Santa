@@ -61,6 +61,23 @@ class App extends Component {
 		this.setState({groups: groupList});
 	}
 
+	updateGroup = (g_id, group)=>{
+		console.log(g_id, group);
+		var glist = [];
+		var pos = null;
+		for(var i = 0; i < this.state.groups.length; ++i){
+			if(this.state.groups[i].group_id == g_id){
+				glist.push(group);
+				pos = i;
+			}
+			else{
+				glist.push(this.state.groups[i]);
+			}
+		}
+		this.updateGroups(glist);
+		this.showGroup(g_id,pos);
+	}
+
 	doLogout = () =>{
 		this.setState({user: "null", activeGroupId:"null"});
 	}
@@ -128,7 +145,7 @@ class App extends Component {
 						<LeftPanel user={this.state.user} updateGroups={this.updateGroups}
 						showGroupById={this.showGroup} groups={this.state.groups}></LeftPanel>
 						<GroupDetail activeGroupId={this.state.activeGroupId} groups={this.state.groups}
-						 activeGroup={this.state.activeGroup} user={this.state.user}></GroupDetail>
+						 activeGroup={this.state.activeGroup} user={this.state.user} updateGroup={this.updateGroup}></GroupDetail>
 					</div>
 				</div>
 			);

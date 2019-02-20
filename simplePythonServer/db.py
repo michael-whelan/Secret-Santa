@@ -99,38 +99,9 @@ def getUser(u,e,recpass):
 
 	return data
 
-def getGroups(uuid):
-	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
-	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active from groups g inner join
-	people p where g.id = p.group_id and g.admin = (select id from users where uuid = '%s') order by p.group_id;""" % (uuid)
-	print(query)
-	conn = sqlite3.connect('secretsanta.db')
-	cursor= conn.cursor()
-	cursor.execute(query)
-	if cursor == None:
-		return None
-	rows = [x for x in cursor]
-	cols = [x[0] for x in cursor.description]
-	raw_data = []
-	"""
-	data=[
-		{name: groupname,
-		id:groupid,
-		sent:,
-		people: [
-			{id, name, email,active},
-			{id, name, email,active}
-		]
-		}
-	]
-	"""
-	for row in rows:
-		dataSingle = {}
-		for prop, val in zip(cols, row):
-			dataSingle[prop] = val
-		raw_data.append(dataSingle)
-	conn.close()
 
+
+def structure_group(raw_data):
 	lastGroup ="null"
 	data =[]
 	for i in raw_data:
@@ -148,10 +119,57 @@ def getGroups(uuid):
 		person["email"]= i["email"]
 		person["active"]= i["active"]
 		data[(len(data))-1]["people"].append(person)
+	return data
+
+def getGroups(uuid):
+	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
+	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active from groups g inner join
+	people p where g.id = p.group_id and g.admin = (select id from users where uuid = '%s') order by p.group_id;""" % (uuid)
+	print(query)
+	conn = sqlite3.connect('secretsanta.db')
+	cursor= conn.cursor()
+	cursor.execute(query)
+	if cursor == None:
+		return None
+	rows = [x for x in cursor]
+	cols = [x[0] for x in cursor.description]
+	raw_data = []
+
+	for row in rows:
+		dataSingle = {}
+		for prop, val in zip(cols, row):
+			dataSingle[prop] = val
+		raw_data.append(dataSingle)
+	conn.close()
+	data = structure_group(raw_data)
+	print ("Operation done successfully")
+	return data
+
+def getGroup(g_id):
+	#query = """select * from groups where id = %s""" % (g_id)
+	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active from groups g inner join
+	people p where g.id = p.group_id and g.id = %s""" % (g_id)
+
+	conn = sqlite3.connect('secretsanta.db')
+	cursor= conn.cursor()
+	cursor.execute(query)
+	if cursor == None:
+		return None
+	rows = [x for x in cursor]
+	cols = [x[0] for x in cursor.description]
+	conn.close()
+	raw_data = []
+
+	for row in rows:
+		dataSingle = {}
+		for prop, val in zip(cols, row):
+			dataSingle[prop] = val
+		raw_data.append(dataSingle)
+	data = structure_group(raw_data)
 
 	print ("Operation done successfully")
-	print(data)
 	return data
+
 
 def addGroup(groupName, userInfo):
 	if uniqueEntry("""select * from groups where group_name = '%s' and
@@ -206,6 +224,5 @@ def add_person(vars, creds):
 	cursor.execute(query)
 	conn.commit()
 	conn.close()
-	return {"success":True,"message":"Person added"}
-
-
+	group = getGroup(vars["group_id"])
+	return {"success":True,"message":"Person added","updated_g_id": vars["group_id"], "updated_group": group}
