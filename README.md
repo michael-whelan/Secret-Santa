@@ -23,4 +23,16 @@ Another aspect of the second part is the use of google account to send the email
 
 
 ## The Database
- 
+The database for testing was very simple. 
+
+- SQLite locally controlled.
+- The second phase is mySQL hosted (most likely on pythonanywhere)
+The model for stage 1 and 2 was identical.
+3 Tables:
+    **Groups**
+        The set of groups created by different users. Creating a group sets the user as the admin of that group. This allows the user to see the group in full detail and set the group between private and public. The admin can also add people to a group.  
+    **Users**
+        A table containing all the users that access the site (via login). This keeps track of login details and uuids for quick temporary login
+    **People**
+        These are the people within groups. Much simpler than the users as they themselves don't log in and are just a name and email.
+        
