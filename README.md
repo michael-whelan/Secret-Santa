@@ -16,6 +16,10 @@ Public groups will allow unregistered people to make changes to groups.
 Private groups will only be editable by the group admin.
 
 
+### Nots
+Every person in a group can be assigned a bunch of "Nots", other people in the group that they shouldn't be assigned.
+Most groups won't require many Nots
+
 
 ## The Front End
 
