@@ -5,6 +5,7 @@ import Dialog from "../Dialog/Dialog.js"
 import Button from '@material-ui/core/Button';
 
 export default class LeftPanel extends Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {user : this.props.user, userGroups: this.props.groups,
@@ -12,6 +13,10 @@ export default class LeftPanel extends Component {
 		this.getGroups();
 		this.diText="";
 		this.showGroups = false;
+		this.newGroupName = null;
+		this.dialog = [
+			{"type":"text", "label":"Group Name", "writeTo": this.newGroupName}
+		];
 	}
 
 	handleChange = event => {
@@ -45,7 +50,36 @@ export default class LeftPanel extends Component {
 		});
 	}
 
-	createGroup=()=>{
+	createGroup = event => {
+		event.preventDefault();
+
+		var config = {
+			headers : {'X-User-ID': this.state.user.uuid,
+			'Content-Type': 'application/json'
+			}
+		};
+
+		var data = {
+			'groupname':this.newGroupName
+		};
+
+		axios.post('http://localhost:8080/creategroup', data,config)
+		.then(res => {
+			if(res.status === 200){
+				if(res.data.success){
+					this.setState({ cgDialogOpen : false });
+					//continue to deal with new group
+				}
+
+				this.getGroups();
+			}
+		})
+		.catch(error => {
+			console.log(error);
+		});
+	}
+
+	openDialog = () =>{
 		this.setState({ cgDialogOpen : true });
 	}
 
@@ -64,11 +98,11 @@ export default class LeftPanel extends Component {
 			<div>
 			{this.state.user!=="null" &&
 				<div className="left-panel">
-					<Button variant="outlined" color="primary" onClick={this.createGroup}>
+					<Button variant="outlined" color="primary" onClick={this.openDialog}>
 						Create Group
 					</Button>
 					<Dialog user= {this.state.user} openDialog = {this.state.cgDialogOpen} title={"Create Group"}
-					inputName={"Group Name"} text={this.diText} getGroups={this.getGroups} btnName={"Create"}/>
+					elemList={this.dialog} text={this.diText} btnName={"Create"} btnAction={this.createGroup}/>
 					{this.state.userGroups!=="null"&&
 					<ul>
 						{

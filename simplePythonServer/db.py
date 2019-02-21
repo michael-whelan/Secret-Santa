@@ -24,17 +24,18 @@ def days_between(d1, d2):
     return abs((d2 - d1).days)
 
 def check_credentials(uuid,email,passw):
+	print("check_creds")
 	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
 	newUUID = uuid
 
 	#retrieve info from DB
 	userInfo = getUser(uuid,email,passw)
-	print(userInfo)
 	if userInfo is None or userInfo == {}:
 		return None
 	#get sent info from client
 	if uuid is not None:
 		if days_between(userInfo["uuid_date"],nowTime) < 1:
+			print("creds valid")
 			return {"uuid":uuid,"email":userInfo["email"]}
 			#newUUID=generate_uuid()
 		return None
@@ -42,6 +43,7 @@ def check_credentials(uuid,email,passw):
 	passl = userInfo["salt"] +passw
 	passSec = hashlib.sha224(passl).hexdigest()
 	if email == userInfo["email"] and passSec == userInfo["pass"]:
+		print("creds valid")
 		if days_between(userInfo["uuid_date"],nowTime) >= 1:
 			newUUID=generate_uuid()
 			update_uuid(userInfo["id"],newUUID, nowTime)
@@ -179,6 +181,7 @@ def addGroup(groupName, userInfo):
 			values ('%s', '%s', '%s', (select id from users where uuid = '%s'), 0,0);""" % (
 				groupName, nowTime,nowTime,userInfo["uuid"]
 			)
+		print(query)
 		conn = sqlite3.connect('secretsanta.db')
 		cursor= conn.cursor()
 		cursor.execute(query)

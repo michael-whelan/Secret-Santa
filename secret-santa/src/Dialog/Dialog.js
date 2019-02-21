@@ -23,37 +23,10 @@ export default class FormDialog extends Component {
 		this.setState({ open: false });
 	};
 
-	createGroup = event => {
-		event.preventDefault();
-		var config = {
-			headers : {'X-User-ID': this.state.user.uuid,
-			'Content-Type': 'application/json'
-			}
-		};
-
-		var data = {
-			'groupname':this.groupName
-		};
-
-		axios.post('http://localhost:8080/creategroup', data,config)
-		.then(res => {
-			if(res.status === 200){
-				if(res.data.success){
-					this.handleClose();
-					//continue to deal with new group
-				}
-
-				this.props.getGroups();
-			}
-		})
-		.catch(error => {
-			console.log(error);
-		});
-	}
-
 	handleTyping = e =>{
 		var inputValue = e.target.value;
-		this.groupName = inputValue;
+		const arrPos = parseInt(e.target.id);
+		this.props.elemList[arrPos].writeTo = inputValue;
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -63,6 +36,25 @@ export default class FormDialog extends Component {
 		if (nextProps.user !== this.state.user) {
 			this.setState({ user: nextProps.user });
 		}
+	}
+
+	createInput = () => {
+		var textFields = [];
+		const {elemList} = this.props;
+		for(var i =0; i < elemList.length; ++i){
+			var textF = <TextField
+				autoFocus
+				margin="dense"
+				key = {i.toString()}
+				id={i.toString()}
+				label={elemList[i].label}
+				type={elemList[i].type}
+				fullWidth
+				onChange = {this.handleTyping}
+			/>
+			textFields.push(textF);
+		}
+		return textFields;
 	}
 
 	render() {
@@ -78,21 +70,13 @@ export default class FormDialog extends Component {
 			<DialogContentText>
 				{this.state.message}
 			</DialogContentText>
-			<TextField
-				autoFocus
-				margin="dense"
-				id="name"
-				label={this.props.inputName}
-				type="email"
-				fullWidth
-				onChange = {this.handleTyping}
-			/>
+				{this.createInput()}
 			</DialogContent>
 			<DialogActions>
 			<Button onClick={this.handleClose} color="primary">
 				Cancel
 			</Button>
-			<Button onClick={this.createGroup} color="primary">
+			<Button onClick={this.props.btnAction} color="primary">
 				{this.props.btnName}
 			</Button>
 			</DialogActions>
