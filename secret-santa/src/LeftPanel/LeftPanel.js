@@ -13,9 +13,8 @@ export default class LeftPanel extends Component {
 		this.getGroups();
 		this.diText="";
 		this.showGroups = false;
-		this.newGroupName = null;
 		this.dialog = [
-			{"type":"text", "label":"Group Name", "writeTo": this.newGroupName}
+			{"type":"text", "label":"Group Name", "writeTo": ""}
 		];
 	}
 
@@ -60,7 +59,7 @@ export default class LeftPanel extends Component {
 		};
 
 		var data = {
-			'groupname':this.newGroupName
+			'groupname':this.dialog[0].writeTo
 		};
 
 		axios.post('http://localhost:8080/creategroup', data,config)

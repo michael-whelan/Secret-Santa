@@ -36,7 +36,7 @@ class App extends Component {
 
 	checkLogin = () => {
 		const uuidCookie = this.getCookie("uuid");
-		if(uuidCookie == null || uuidCookie.length < 10){
+		if(uuidCookie === null || uuidCookie.length < 10){
 			return;
 		}
 		var authOptions = {

@@ -14,7 +14,8 @@ export default class GroupDetails extends Component {
 	}
 
 	handleChange = event => {
-		//console.log(event.target.value,event.target.title);
+		event.target.className = "unsaved";
+		console.log(event.target);
 		//*****Should add a color to say changed/unsaved ******
 		//clearTimeout(this.timer);
 		//this.timer = setTimeout(this.triggerChange, WAIT_INTERVAL);
@@ -27,11 +28,12 @@ export default class GroupDetails extends Component {
 		if (e.keyCode === ENTER_KEY) {
 			var parts = e.target.title.split("-");
 			//clearTimeout(this.timer);
-			this.triggerChange(e.target.value, parts[0],parts[1],parts[2]);
+			this.triggerChange(e.target.value, parts[0],parts[1],parts[2],e.target.id);
 		}
 	}
 
-	triggerChange = (val, group_id,col,id) => {
+	triggerChange = (val, group_id,col,id,elemId) => {
+		console.log(elemId);
 		var authOptions = {
 			method: 'put',
 			url: 'http://localhost:8080/updateperson',
@@ -50,12 +52,13 @@ export default class GroupDetails extends Component {
 
 		axios(authOptions)
 		.then(res => {
-			if(res.status === 200){
+			if(res.status === 200){//updated person
 				if(res.data.success){
-					console.log(res.data)
+					console.log(elemId,res.data);
+					document.getElementById(elemId).classList.remove("unsaved");
 				}
 			}
-			if(res.status === 202){
+			if(res.status === 202){//added person
 				if(res.data.success){
 					console.log(res.data)
 					this.props.updateGroup(res.data.updated_g_id, res.data.updated_group[0]);
@@ -98,12 +101,12 @@ export default class GroupDetails extends Component {
 
 		}
 		const gid = this.state.activeGroup.group_id;
-		var person = <div className="person">
+		var person = <div className="person" key={"person-"+single.person_id}>
 				<Button variant="outlined" color="primary"
 				onClick={this.showAlert.bind(this,"Are you sure you want to delete: "+single.name)}>-</Button>
-				<input type="text" key={"name-"+single.person_id} title={gid+"-name-"+single.person_id}
+				<input type="text" key={"name-"+single.person_id} id={"pname-"+single.person_id} title={gid+"-name-"+single.person_id}
 					defaultValue={single.name} onChange ={this.handleChange}  onKeyDown={this.handleKeyDown}/>
-				<input type="text" key={"email-"+single.person_id} title={gid+"-email-"+single.person_id}
+				<input type="text" key={"email-"+single.person_id} id={"pemail-"+single.person_id} title={gid+"-email-"+single.person_id}
 					defaultValue={single.email} onChange ={this.handleChange}  onKeyDown={this.handleKeyDown}/>
 				<Button variant="outlined" color="primary"
 				onClick={this.showAlert.bind(this,"You are adding a not field")}>Nots</Button>

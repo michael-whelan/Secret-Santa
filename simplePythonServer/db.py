@@ -83,10 +83,8 @@ def getUser(u,e,recpass):
 	conn = sqlite3.connect('secretsanta.db')
 	if u is not None:
 		query = "SELECT * from users where uuid = '%s'" % (u)
-		print(query)
 	else:
 		query = "SELECT * from users where email = '%s'" % (e)
-	print(query)
 	cursor = conn.execute(query)
 	if cursor == None:
 		return None
@@ -127,7 +125,6 @@ def getGroups(uuid):
 	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
 	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active from groups g inner join
 	people p where g.id = p.group_id and g.admin = (select id from users where uuid = '%s') order by p.group_id;""" % (uuid)
-	print(query)
 	conn = sqlite3.connect('secretsanta.db')
 	cursor= conn.cursor()
 	cursor.execute(query)
@@ -188,6 +185,7 @@ def addGroup(groupName, userInfo):
 		conn.commit()
 		new_group_id = cursor.lastrowid
 		conn.close()
+		add_person({"col":"name", "group_id": new_group_id, "newVal": ""})
 		return {"group_id":new_group_id,"group_name":groupName,"success":True,"message":"New Group created"}
 	return {"message": "Group creation error","success":False}
 	for group in groups:
@@ -209,7 +207,7 @@ def update_person(vars, creds):
 	conn.close()
 	return {"success":True,"message":"Person updated"}
 
-def add_person(vars, creds):
+def add_person(vars):
 	#Should first check that user is valid to make change
 	new_name = ""
 	new_email = ""

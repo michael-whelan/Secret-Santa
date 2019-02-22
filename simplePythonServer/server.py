@@ -156,7 +156,7 @@ class Handler (BaseHTTPRequestHandler) :
 
 			if creds is not None:
 				postvars = self.parse_POST()
-				newPerson = db.add_person(postvars,creds)
+				newPerson = db.add_person(postvars)
 				if newPerson["success"]:
 					self.send_response(202)
 					self.wfile.write("\n")
@@ -197,14 +197,17 @@ class Handler (BaseHTTPRequestHandler) :
 				if creds is not None:
 					postvars = self.parse_POST()
 					info = db.update_person(postvars,creds)
+					print("info", info)
 					if info["success"]:
 						self.send_response(200)
 						self.wfile.write("\n")
-						json.dump({"message": "worked","approved":True} ,self.wfile)
+						print("update response")
+						json.dump({"message": "worked","success":True} ,self.wfile)
 					else:
 						self.send_response(201)
 						self.wfile.write("\n")
 						json.dump({"message": "Error updating","approved":False},self.wfile)
+
 					self.end_headers()
 					return
 				self.send_response(404)
