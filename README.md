@@ -17,7 +17,7 @@ Private groups will only be editable by the group admin.
 
 
 ### Nots
-Every person in a group can be assigned a bunch of "Nots", other people in the group that they shouldn't be assigned.
+Every person in a group can be assigned a bunch of _"Nots"_, other people in the group that they shouldn't be assigned.
 Most groups won't require many Nots
 
 
