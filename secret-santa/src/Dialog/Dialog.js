@@ -13,6 +13,7 @@ export default class FormDialog extends Component {
 		super(props);
 		this.state = {open: false, message:""};
 		this.groupName = "null";
+		this.dropSuggest = ["one", "two", "three","four"];
 	}
 
 	handleClickOpen = () => {

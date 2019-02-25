@@ -1,0 +1,35 @@
+.left-panel {
+	height: 90%;
+	width: 160px;
+	position: absolute;
+	z-index: 1;
+	top: 4.6em;
+	left: 0;
+	overflow-x: hidden;
+	/*border-right: black solid 2px;*/
+}
+
+div.right:before {
+	content : "";
+	position: absolute;
+	left    : 0;
+	top     : 6em;
+	height  : 85%;
+	width   : 20%;
+	min-width: 14em;
+	border-right:3px solid #000;
+  }
+
+.left-panel ul li {
+	font-size: initial;
+}
+
+.left-panel ul {
+	color: black;
+	background-color: transparent;
+}
+
+.left-panel li:hover {
+	background-color: #282c34;
+	color: white;
+}

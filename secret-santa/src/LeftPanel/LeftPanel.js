@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../App.css";
+import "./LeftPanel.css";
 import axios from "axios";
 import Dialog from "../Dialog/Dialog.js"
 import Button from '@material-ui/core/Button';

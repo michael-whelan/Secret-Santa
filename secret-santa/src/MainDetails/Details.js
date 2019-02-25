@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "../App.css";
 import Button from '@material-ui/core/Button';
 import axios from "axios";
+import Dialog from "../Dialog/Dialog.js"
+import Dropdown from '../Dropdown/Dropdown.js';
 
 const WAIT_INTERVAL = 1000;
 const ENTER_KEY = 13;
@@ -9,8 +11,15 @@ const ENTER_KEY = 13;
 export default class GroupDetails extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {groups: this.props.groups, activeGroup: null, changeAllowed:true, user: this.props.user};
+		this.state = {groups: this.props.groups, activeGroup: null, changeAllowed:true, user: this.props.user,
+		people :[]};
 		this.people =[];
+		this.dialog = [
+			{"type":"text", "label":"Not person 1:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
+			{"type":"text", "label":"Not person 2:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
+			{"type":"text", "label":"Not person 3:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
+			{"type":"text", "label":"Not person 4:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
+		];
 	}
 
 	handleChange = event => {
@@ -76,10 +85,7 @@ export default class GroupDetails extends Component {
 			this.setState({ groups: nextProps.groups });
 		}
 
-		if (nextProps.activeGroup !== this.state.activeGroup) {
-			this.people =[];
-			this.setState({ activeGroup: nextProps.activeGroup });
-		}
+		this.setState({ activeGroup: nextProps.activeGroup, people: this.generatePeople() });
 
 		if (nextProps.user !== this.state.user) {
 			this.setState({ user: nextProps.user });
@@ -88,7 +94,7 @@ export default class GroupDetails extends Component {
 
 	showAlert = (msg) =>{
 		alert(msg);
-		console.log(this.people);
+		console.log(this.state.people);
 	}
 
 	addPerson = (sing) =>{
@@ -139,19 +145,23 @@ export default class GroupDetails extends Component {
 			group = this.state.activeGroup;
 		}
 
-		this.people = this.generatePeople();
 		return (
 			<div className="Details">
 			{this.props.activeGroupId!=="null" ? (
 				<>
 				<h1>{group.group_name}</h1>
-				{this.people}
+				{this.state.people}
 				<Button variant="outlined" color="primary"
 					onClick={this.addPerson.bind(this,null)}>+</Button>
 				</>
 			):(
 				<p> Nothing to see here</p>
 			)}
+			{this.state.activeGroup ?(
+				<Dropdown dropList ={{"suggestions": this.state.activeGroup.people,"suggestion_show": "name"}}/>
+			):(null)
+
+			}
 			</div>
 		);
 	}
