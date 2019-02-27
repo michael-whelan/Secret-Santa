@@ -9,7 +9,7 @@ export default class LeftPanel extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {user : this.props.user, userGroups: this.props.groups,
-			cgDialogOpen:false};
+			cgDialogOpen:false, group_list_elems : []};
 		this.getGroups();
 		this.diText="";
 		this.showGroups = false;
@@ -27,7 +27,7 @@ export default class LeftPanel extends Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.groups !== this.state.userGroups) {
 			this.showGroups=true;
-			this.setState({ userGroups: nextProps.groups });
+			this.setState({ userGroups: nextProps.groups }, this.updateGroups());
 		}
 
 		if(nextProps.user !== this.state.user){
@@ -39,6 +39,17 @@ export default class LeftPanel extends Component {
 		event.preventDefault();
 	}
 
+	updateGroups = () => {
+		var groupList =[];
+		if(this.state.userGroups !=="null" && this.state.userGroups !==null){
+			for (var i =0; i < this.state.userGroups.length; ++i){
+				var group = this.state.userGroups[i];
+				groupList.push(<li key={i} onClick={this.props.showGroupById.bind(this,group.group_id,i)}>{group.group_name}</li>);
+			}
+		}
+		this.setState({ group_list_elems: groupList });
+	}
+
 	getGroups(){
 		var config = {
 		headers: {'X-User-ID': this.state.user.uuid}
@@ -46,6 +57,7 @@ export default class LeftPanel extends Component {
 		axios.get('http://localhost:8080/getgroups', config)
 		.then(res => {
 			this.props.updateGroups(res.data);
+			this.updateGroups();
 		});
 	}
 
@@ -83,16 +95,6 @@ export default class LeftPanel extends Component {
 	}
 
 	render() {
-		var groupList =[];
-		console.log(this.state.userGroups);
-		if(this.state.userGroups !=="null" && this.state.userGroups !==null){
-			for (var i =0; i < this.state.userGroups.length; ++i){
-				var group = this.state.userGroups[i];
-				console.log(group);
-				groupList.push(<li key={i} onClick={this.props.showGroupById.bind(this,group.group_id,i)}>{group.group_name}</li>);
-			}
-		}
-
 		return (
 			<div>
 			{this.state.user!=="null" &&
@@ -105,7 +107,7 @@ export default class LeftPanel extends Component {
 					{this.state.userGroups!=="null"&&
 					<ul>
 						{
-							groupList
+							this.state.group_list_elems
 						}
 					</ul>
 					}

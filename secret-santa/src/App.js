@@ -62,7 +62,6 @@ class App extends Component {
 	}
 
 	updateGroup = (g_id, group)=>{
-		console.log(g_id, group);
 		var glist = [];
 		var pos = null;
 		for(var i = 0; i < this.state.groups.length; ++i){

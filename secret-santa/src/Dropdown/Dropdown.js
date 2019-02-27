@@ -64,8 +64,6 @@ class Dropdown extends React.Component {
 
 	render() {
 		var items = this.createLi();
-		console.log(items);
-		console.log(this.state.dropList);
 		return (
 			<div	className="dropdown" style = {{background:"red",width:"200px"}} >
 			<div className="button" onClick={this.showDropdownMenu}>{this.state.selection}</div>

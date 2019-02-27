@@ -27,6 +27,8 @@ div.right:before {
 .left-panel ul {
 	color: black;
 	background-color: transparent;
+	box-shadow: 0px 0px 0px;
+	cursor: pointer;
 }
 
 .left-panel li:hover {

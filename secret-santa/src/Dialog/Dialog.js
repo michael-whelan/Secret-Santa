@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import axios from "axios";
+import IntegrationDownshift from '../AutoSuggest/Autocomplete.js'
 
 export default class FormDialog extends Component {
 	constructor(props){
@@ -39,23 +39,40 @@ export default class FormDialog extends Component {
 		}
 	}
 
+	createTextField = (index,elem) => {
+		return (<TextField
+			autoFocus
+			margin="dense"
+			key = {index.toString()}
+			id={index.toString()}
+			label={elem.label}
+			type={elem.type}
+			fullWidth
+			onChange = {this.handleTyping}
+		/>
+		);
+	}
+
+	createAutoComplete = (index,elem) =>{
+		console.log(elem.suggestions);
+		//return(<IntegrationDownshift suggestions={elem.suggestions}/>);
+	}
+//<IntegrationDownshift/>
 	createInput = () => {
-		var textFields = [];
+		var gen_elems = [];
 		const {elemList} = this.props;
+		console.log(elemList)
 		for(var i =0; i < elemList.length; ++i){
-			var textF = <TextField
-				autoFocus
-				margin="dense"
-				key = {i.toString()}
-				id={i.toString()}
-				label={elemList[i].label}
-				type={elemList[i].type}
-				fullWidth
-				onChange = {this.handleTyping}
-			/>
-			textFields.push(textF);
+			var elem = null;
+			if (elemList[i].type === "text"){
+				elem = this.createTextField(i,elemList[i]);
+			}
+			else if(elemList[i].type === "textSuggest"){
+				elem = this.createAutoComplete(i,elemList[i]);
+			}
+			gen_elems.push(elem);
 		}
-		return textFields;
+		return gen_elems;
 	}
 
 	render() {

@@ -5,6 +5,7 @@ import axios from "axios";
 import Dialog from "../Dialog/Dialog.js"
 import Dropdown from '../Dropdown/Dropdown.js';
 
+
 const WAIT_INTERVAL = 1000;
 const ENTER_KEY = 13;
 
@@ -12,13 +13,13 @@ export default class GroupDetails extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {groups: this.props.groups, activeGroup: null, changeAllowed:true, user: this.props.user,
-		people :[]};
+		people :[], notListDialogOpen: false};
 		this.people =[];
 		this.dialog = [
-			{"type":"text", "label":"Not person 1:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
-			{"type":"text", "label":"Not person 2:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
-			{"type":"text", "label":"Not person 3:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
-			{"type":"text", "label":"Not person 4:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
+			{"type":"textSuggest", "label":"Not person 1:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
+			{"type":"textSuggest", "label":"Not person 2:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
+			{"type":"textSuggest", "label":"Not person 3:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
+			{"type":"textSuggest", "label":"Not person 4:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
 		];
 	}
 
@@ -42,7 +43,6 @@ export default class GroupDetails extends Component {
 	}
 
 	triggerChange = (val, group_id,col,id,elemId) => {
-		console.log(elemId);
 		var authOptions = {
 			method: 'put',
 			url: 'http://localhost:8080/updateperson',
@@ -69,7 +69,6 @@ export default class GroupDetails extends Component {
 			}
 			if(res.status === 202){//added person
 				if(res.data.success){
-					console.log(res.data)
 					this.props.updateGroup(res.data.updated_g_id, res.data.updated_group[0]);
 					//continue to deal with new group
 				}
@@ -85,7 +84,7 @@ export default class GroupDetails extends Component {
 			this.setState({ groups: nextProps.groups });
 		}
 
-		this.setState({ activeGroup: nextProps.activeGroup, people: this.generatePeople() });
+		this.setState({activeGroup: nextProps.activeGroup }, ()=> this.generatePeople());
 
 		if (nextProps.user !== this.state.user) {
 			this.setState({ user: nextProps.user });
@@ -97,14 +96,16 @@ export default class GroupDetails extends Component {
 		console.log(this.state.people);
 	}
 
+	openDialog = () =>{
+		this.setState({ notListDialogOpen : true });
+	}
+
 	addPerson = (sing) =>{
 		var addDirect = false;
 		var single = sing;
 		if (single === null){
 			single = {"name":"","email":"","person_id":"new"};
 			addDirect = true;
-		console.log("adding new",single);
-
 		}
 		const gid = this.state.activeGroup.group_id;
 		var person = <div className="person" key={"person-"+single.person_id}>
@@ -115,7 +116,7 @@ export default class GroupDetails extends Component {
 				<input type="text" key={"email-"+single.person_id} id={"pemail-"+single.person_id} title={gid+"-email-"+single.person_id}
 					defaultValue={single.email} onChange ={this.handleChange}  onKeyDown={this.handleKeyDown}/>
 				<Button variant="outlined" color="primary"
-				onClick={this.showAlert.bind(this,"You are adding a not field")}>Nots</Button>
+				onClick={this.openDialog}>Nots</Button>
 			</div>
 
 		if(!addDirect){return person;}
@@ -135,21 +136,16 @@ export default class GroupDetails extends Component {
 			var single = peopleList[i];
 			list.push(this.addPerson(single));
 		}
-		return list;
+		this.setState({people: list});
 	}
 
 	render() {
-		var group = {};
-
-		if(this.state.groups != null){
-			group = this.state.activeGroup;
-		}
 
 		return (
 			<div className="Details">
 			{this.props.activeGroupId!=="null" ? (
 				<>
-				<h1>{group.group_name}</h1>
+				<h1>{this.state.activeGroup.group_name}</h1>
 				{this.state.people}
 				<Button variant="outlined" color="primary"
 					onClick={this.addPerson.bind(this,null)}>+</Button>
@@ -157,10 +153,10 @@ export default class GroupDetails extends Component {
 			):(
 				<p> Nothing to see here</p>
 			)}
-			{this.state.activeGroup ?(
-				<Dropdown dropList ={{"suggestions": this.state.activeGroup.people,"suggestion_show": "name"}}/>
+			{this.state.activeGroup && this.state.notListDialogOpen ?(
+				<Dialog user= {this.state.user} openDialog = {this.state.notListDialogOpen} title={"Nots"}
+				elemList={{"suggestions": this.state.activeGroup.people,"type": "textSuggest"}} text={this.diText} btnName={"Create"} btnAction={this.createGroup}/>
 			):(null)
-
 			}
 			</div>
 		);
