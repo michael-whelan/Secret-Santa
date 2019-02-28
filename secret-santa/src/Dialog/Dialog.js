@@ -13,7 +13,6 @@ export default class FormDialog extends Component {
 		super(props);
 		this.state = {open: false, message:""};
 		this.groupName = "null";
-		this.dropSuggest = ["one", "two", "three","four"];
 	}
 
 	handleClickOpen = () => {
@@ -32,6 +31,7 @@ export default class FormDialog extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.openDialog !== this.state.open) {
+			console.log("opne sesame");
 			this.setState({ open: nextProps.openDialog });
 		}
 		if (nextProps.user !== this.state.user) {
@@ -55,7 +55,7 @@ export default class FormDialog extends Component {
 
 	createAutoComplete = (index,elem) =>{
 		console.log(elem.suggestions);
-		//return(<IntegrationDownshift suggestions={elem.suggestions}/>);
+		return(<IntegrationDownshift suggestions={elem.suggestions}/>);
 	}
 //<IntegrationDownshift/>
 	createInput = () => {

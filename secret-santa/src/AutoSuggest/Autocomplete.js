@@ -180,7 +180,7 @@ DownshiftMultiple.propTypes = {
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 250,
+    height: 150,
   },
   container: {
     flexGrow: 1,

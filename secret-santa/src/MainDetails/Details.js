@@ -3,8 +3,6 @@ import "../App.css";
 import Button from '@material-ui/core/Button';
 import axios from "axios";
 import Dialog from "../Dialog/Dialog.js"
-import Dropdown from '../Dropdown/Dropdown.js';
-
 
 const WAIT_INTERVAL = 1000;
 const ENTER_KEY = 13;
@@ -13,14 +11,9 @@ export default class GroupDetails extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {groups: this.props.groups, activeGroup: null, changeAllowed:true, user: this.props.user,
-		people :[], notListDialogOpen: false};
+		people :[], notListDialogOpen: false, dialog: null};
 		this.people =[];
-		this.dialog = [
-			{"type":"textSuggest", "label":"Not person 1:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
-			{"type":"textSuggest", "label":"Not person 2:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
-			{"type":"textSuggest", "label":"Not person 3:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
-			{"type":"textSuggest", "label":"Not person 4:", "writeTo": "", "suggestions": this.people,"suggestion_show": "name"},
-		];
+
 	}
 
 	handleChange = event => {
@@ -97,6 +90,7 @@ export default class GroupDetails extends Component {
 	}
 
 	openDialog = () =>{
+		console.log("opendialog");
 		this.setState({ notListDialogOpen : true });
 	}
 
@@ -127,7 +121,7 @@ export default class GroupDetails extends Component {
 
 	generatePeople = () =>{
 		var list =[];
-
+		var dialogOptions = [];
 		if(typeof this.state.activeGroup !== "object" || this.state.activeGroup === null){
 			return [];
 		}
@@ -135,8 +129,11 @@ export default class GroupDetails extends Component {
 		for(var i =0; i < peopleList.length;++i){
 			var single = peopleList[i];
 			list.push(this.addPerson(single));
+			if(single !== null){
+				dialogOptions.push({"label": single.name, "key":single.person_id});
+			}
 		}
-		this.setState({people: list});
+		this.setState({people: list, dialog: dialogOptions});
 	}
 
 	render() {
@@ -153,9 +150,9 @@ export default class GroupDetails extends Component {
 			):(
 				<p> Nothing to see here</p>
 			)}
-			{this.state.activeGroup && this.state.notListDialogOpen ?(
+			{this.state.activeGroup  ?(
 				<Dialog user= {this.state.user} openDialog = {this.state.notListDialogOpen} title={"Nots"}
-				elemList={{"suggestions": this.state.activeGroup.people,"type": "textSuggest"}} text={this.diText} btnName={"Create"} btnAction={this.createGroup}/>
+				elemList={[{"suggestions": this.state.dialog, "type": "textSuggest"}]} text={this.diText} btnName={"Create"} btnAction={this.createGroup}/>
 			):(null)
 			}
 			</div>
