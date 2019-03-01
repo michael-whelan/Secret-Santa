@@ -65,7 +65,7 @@ class App extends Component {
 		var glist = [];
 		var pos = null;
 		for(var i = 0; i < this.state.groups.length; ++i){
-			if(this.state.groups[i].group_id == g_id){
+			if(this.state.groups[i].group_id === g_id){
 				glist.push(group);
 				pos = i;
 			}

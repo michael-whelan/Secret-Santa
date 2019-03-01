@@ -93,6 +93,9 @@ export default class GroupDetails extends Component {
 		console.log("opendialog");
 		this.setState({ notListDialogOpen : true });
 	}
+	closeDialog = () =>{
+		this.setState({ notListDialogOpen : false });
+	}
 
 	addPerson = (sing) =>{
 		var addDirect = false;
@@ -151,7 +154,7 @@ export default class GroupDetails extends Component {
 				<p> Nothing to see here</p>
 			)}
 			{this.state.activeGroup  ?(
-				<Dialog user= {this.state.user} openDialog = {this.state.notListDialogOpen} title={"Nots"}
+				<Dialog user= {this.state.user} openDialog = {this.state.notListDialogOpen} title={"Nots"} closeDialog={this.closeDialog}
 				elemList={[{"suggestions": this.state.dialog, "type": "textSuggest"}]} text={this.diText} btnName={"Create"} btnAction={this.createGroup}/>
 			):(null)
 			}

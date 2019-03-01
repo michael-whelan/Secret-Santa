@@ -94,6 +94,10 @@ export default class LeftPanel extends Component {
 		this.setState({ cgDialogOpen : true });
 	}
 
+	closeDialog = () =>{
+		this.setState({ cgDialogOpen : false });
+	}
+
 	render() {
 		return (
 			<div>
@@ -102,8 +106,9 @@ export default class LeftPanel extends Component {
 					<Button variant="outlined" color="primary" onClick={this.openDialog}>
 						Create Group
 					</Button>
-					<Dialog user= {this.state.user} openDialog = {this.state.cgDialogOpen} title={"Create Group"}
-					elemList={this.dialog} text={this.diText} btnName={"Create"} btnAction={this.createGroup}/>
+					<Dialog user= {this.state.user} openDialog = {this.state.cgDialogOpen} closeDialog={this.closeDialog}
+					title={"Create Group"} elemList={this.dialog} text={this.diText} btnName={"Create"}
+					btnAction={this.createGroup}/>
 					{this.state.userGroups!=="null"&&
 					<ul>
 						{

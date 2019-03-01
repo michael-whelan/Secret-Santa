@@ -20,7 +20,9 @@ export default class FormDialog extends Component {
 	};
 
 	handleClose = () => {
-		this.setState({ open: false });
+		//this.setState({this.props.openDialog : false});
+		this.props.closeDialog();
+//		this.setState({ open: false });
 	};
 
 	handleTyping = e =>{
