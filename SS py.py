@@ -110,7 +110,7 @@ def sendMessage(person):
 	####smtp_host = 'smtp.live.com'        # microsoft
 	smtp_host = 'smtp.gmail.com'       # google
 	#smtp_host = 'smtp.mail.yahoo.com'  # yahoo
-	login, password = 'santysecrets@gmail.com', 'blitzen123'
+	login, password = 'santysecrets@gmail.com', '*******'
 
 	msg = MIMEText("To "+str(person.name)+", \n\nYou're secret santa giftee is "+str(person.chosen.name), 'plain', 'utf-8')
 	msg['Subject'] = Header('Secret Santa', 'utf-8')
