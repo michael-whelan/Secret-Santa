@@ -11,9 +11,8 @@ export default class GroupDetails extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {groups: this.props.groups, activeGroup: null, changeAllowed:true, user: this.props.user,
-		people :[], notListDialogOpen: false, dialog: null};
+		people :[], notListDialogOpen: false, dialog: null, openPerson :null};
 		this.people =[];
-
 	}
 
 	handleChange = event => {
@@ -89,9 +88,13 @@ export default class GroupDetails extends Component {
 		console.log(this.state.people);
 	}
 
-	openDialog = () =>{
+	acceptNots = (arr) => {
+		console.log(arr);
+	}
+
+	openDialog = event =>{
 		console.log("opendialog");
-		this.setState({ notListDialogOpen : true });
+		this.setState({ notListDialogOpen : true, openPerson: event.target.title});
 	}
 	closeDialog = () =>{
 		this.setState({ notListDialogOpen : false });
@@ -112,7 +115,7 @@ export default class GroupDetails extends Component {
 					defaultValue={single.name} onChange ={this.handleChange}  onKeyDown={this.handleKeyDown}/>
 				<input type="text" key={"email-"+single.person_id} id={"pemail-"+single.person_id} title={gid+"-email-"+single.person_id}
 					defaultValue={single.email} onChange ={this.handleChange}  onKeyDown={this.handleKeyDown}/>
-				<Button variant="outlined" color="primary"
+				<Button variant="outlined" color="primary" title={single.person_id}
 				onClick={this.openDialog}>Nots</Button>
 			</div>
 
@@ -154,8 +157,9 @@ export default class GroupDetails extends Component {
 				<p> Nothing to see here</p>
 			)}
 			{this.state.activeGroup  ?(
-				<Dialog user= {this.state.user} openDialog = {this.state.notListDialogOpen} title={"Nots"} closeDialog={this.closeDialog}
-				elemList={[{"suggestions": this.state.dialog, "type": "textSuggest"}]} text={this.diText} btnName={"Create"} btnAction={this.createGroup}/>
+				<Dialog user= {this.state.user} openDialog = {this.state.notListDialogOpen} title={"Nots"}
+				 closeDialog={this.closeDialog} elemList={[{"suggestions": this.state.dialog, "type": "textSuggest"}]}
+				  placeHolder={"Choose a Person"} text={this.diText} btnName={"Create"} btnAction={this.createGroup}/>
 			):(null)
 			}
 			</div>

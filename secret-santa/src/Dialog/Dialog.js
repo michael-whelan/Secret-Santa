@@ -57,7 +57,7 @@ export default class FormDialog extends Component {
 
 	createAutoComplete = (index,elem) =>{
 		console.log(elem.suggestions);
-		return(<IntegrationDownshift suggestions={elem.suggestions}/>);
+		return(<IntegrationDownshift placeHolder={this.props.placeHolder} suggestions={elem.suggestions}/>);
 	}
 //<IntegrationDownshift/>
 	createInput = () => {

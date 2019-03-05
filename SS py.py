@@ -22,14 +22,14 @@ class Person:
 		self.not_list =[]
 		self.possible_list =[]
 		self.chosen=False
-	
+
 	def collect(self, users):
 		b = users[:]
 		self.fillPossible(b)
 		if len(self.possible_list) == 0:
 			raise ValueError('Ran out of options. Need to reseed')
 		return self.choose()
-		
+
 	def fillPossible(self, users):
 		if self in users:
 			users.remove(self)
@@ -73,7 +73,7 @@ def fillTest():
 		while tempInt > 0:
 			user.not_list.append(random.choice(usersG))
 			tempInt-=1
-	
+
 
 def main():
 	fails = 0
@@ -93,7 +93,7 @@ def main():
 	print('success:', success)
 	print('fails:', fails)
 
-				
+
 def loopUsers():
 	remaining = usersG[:]
 	try:
@@ -104,7 +104,7 @@ def loopUsers():
 		return True
 	except Exception as error:
 		return False
-		
+
 
 def sendMessage(person):
 	####smtp_host = 'smtp.live.com'        # microsoft
@@ -129,5 +129,3 @@ def sendMessage(person):
 if __name__ == "__main__":
 	main()
 	#sendMessage('santysecrets@gmail.com','seagullmania93@gmail.com')
-
-	
