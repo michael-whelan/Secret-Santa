@@ -4,9 +4,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 export default class HeaderBar extends Component {
-	constructor(props) {
-		super(props);
-	}
 
 	handleChange = event => {
 	this.setState({

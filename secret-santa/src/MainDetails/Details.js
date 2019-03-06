@@ -83,13 +83,13 @@ export default class GroupDetails extends Component {
 		}
 	}
 
+	addNot = (person_id, not_id) =>{
+		console.log(person_id, not_id);
+	}
+
 	showAlert = (msg) =>{
 		alert(msg);
 		console.log(this.state.people);
-	}
-
-	acceptNots = (arr) => {
-		console.log(arr);
 	}
 
 	openDialog = event =>{
@@ -159,7 +159,7 @@ export default class GroupDetails extends Component {
 			{this.state.activeGroup  ?(
 				<Dialog user= {this.state.user} openDialog = {this.state.notListDialogOpen} title={"Nots"}
 				 closeDialog={this.closeDialog} elemList={[{"suggestions": this.state.dialog, "type": "textSuggest"}]}
-				  placeHolder={"Choose a Person"} text={this.diText} btnName={"Create"} btnAction={this.createGroup}/>
+				  placeHolder={"Choose a Person"} text={this.diText} btnName={"Create"} btnAction={this.addNot}/>
 			):(null)
 			}
 			</div>
