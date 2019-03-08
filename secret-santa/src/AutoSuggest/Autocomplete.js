@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import Chip from '@material-ui/core/Chip';
 
 var suggestions = [
 		{ label: 'Nothing to show' },
@@ -36,7 +35,8 @@ function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, sele
 	return (
 		<MenuItem
 			{...itemProps}
-			key={suggestion.label}
+			key={suggestion.key}
+			title={suggestion.key}
 			selected={isHighlighted}
 			component="div"
 			style={{
@@ -140,6 +140,7 @@ function IntegrationDownshift(props) {
 											itemProps: getItemProps({ item: suggestion.label }),
 											highlightedIndex,
 											selectedItem,
+											key : getItemProps({ item: suggestion.key }),
 										}),
 									)}
 								</Paper>
