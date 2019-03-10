@@ -1,59 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
-import Downshift from 'downshift';
-import { withStyles } from '@material-ui/core/styles';
+import Autosuggest from 'react-autosuggest';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
 
-var suggestions = [
-		{ label: 'Nothing to show' },
-];
-function renderInput(inputProps) {
-	const { InputProps, classes, ref, ...other } = inputProps;
+let suggestions = [
+	{label: 'Nothing to see here'},
+]
+
+
+function renderInputComponent(inputProps) {
+	const { classes, inputRef = () => {}, ref, ...other } = inputProps;
 
 	return (
 		<TextField
+			fullWidth
 			InputProps={{
-				inputRef: ref,
-				classes: {
-					root: classes.inputRoot,
-					input: classes.inputInput,
+				inputRef: node => {
+					ref(node);
+					inputRef(node);
 				},
-				...InputProps,
+				classes: {
+					input: classes.input,
+				},
 			}}
 			{...other}
 		/>
 	);
 }
 
-function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
-	const isHighlighted = highlightedIndex === index;
-	const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
+function renderSuggestion(suggestion, { query, isHighlighted }) {
+	const matches = match(suggestion.label, query);
+	const parts = parse(suggestion.label, matches);
 
 	return (
-		<MenuItem
-			{...itemProps}
-			key={suggestion.key}
-			title={suggestion.key}
-			selected={isHighlighted}
-			component="div"
-			style={{
-				fontWeight: isSelected ? 500 : 400,
-			}}
-		>
-			{suggestion.label}
+		<MenuItem selected={isHighlighted} component="div" key ={suggestion.key} title={suggestion.key}>
+			<div>
+				{parts.map((part, index) =>
+					part.highlight ? (
+						<span key={String(index)} style={{ fontWeight: 500 }}>
+							{part.text}
+						</span>
+					) : (
+						<strong key={String(index)} style={{ fontWeight: 300 }}>
+							{part.text}
+						</strong>
+					),
+				)}
+			</div>
 		</MenuItem>
 	);
 }
-renderSuggestion.propTypes = {
-	highlightedIndex: PropTypes.number,
-	index: PropTypes.number,
-	itemProps: PropTypes.object,
-	selectedItem: PropTypes.string,
-	suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
-};
 
 function getSuggestions(value) {
 	const inputValue = deburr(value.trim()).toLowerCase();
@@ -74,87 +76,113 @@ function getSuggestions(value) {
 			});
 }
 
+function getSuggestionValue(suggestion) {
+	return suggestion.label;
+}
+
 const styles = theme => ({
 	root: {
+		height: 200,
 		flexGrow: 1,
-		height: 150,
 	},
 	container: {
-		flexGrow: 1,
 		position: 'relative',
 	},
-	paper: {
+	suggestionsContainerOpen: {
 		position: 'absolute',
 		zIndex: 1,
 		marginTop: theme.spacing.unit,
 		left: 0,
 		right: 0,
 	},
-	chip: {
-		margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+	suggestion: {
+		display: 'block',
 	},
-	inputRoot: {
-		flexWrap: 'wrap',
-	},
-	inputInput: {
-		width: 'auto',
-		flexGrow: 1,
+	suggestionsList: {
+		margin: 0,
+		padding: 0,
+		listStyleType: 'none',
 	},
 	divider: {
 		height: theme.spacing.unit * 2,
 	},
 });
 
+class IntegrationAutosuggest extends React.Component {
+	state = {
+		single: '',
+		suggestions: [],
+	};
 
-function IntegrationDownshift(props) {
-	const { classes } = props;
-	suggestions = props.suggestions;
-	const placeHolder = props.placeHolder
-	return (
-		<div className={classes.root}>
-			<Downshift id="downshift-simple">
-				{({
-					getInputProps,
-					getItemProps,
-					getMenuProps,
-					highlightedIndex,
-					inputValue,
-					isOpen,
-					selectedItem,
-				}) => (
-					<div className={classes.container}>
-						{renderInput({
-							fullWidth: true,
-							classes,
-							InputProps: getInputProps({
-								placeholder: placeHolder,
-							}),
-						})}
-						<div {...getMenuProps()}>
-							{isOpen ? (
-								<Paper className={classes.paper} square>
-									{getSuggestions(inputValue).map((suggestion, index) =>
-										renderSuggestion({
-											suggestion,
-											index,
-											itemProps: getItemProps({ item: suggestion.label }),
-											highlightedIndex,
-											selectedItem,
-											key : getItemProps({ item: suggestion.key }),
-										}),
-									)}
-								</Paper>
-							) : null}
-						</div>
-					</div>
-				)}
-			</Downshift>
-		</div>
-	);
+	handleSuggestionsFetchRequested = ({ value }) => {
+		this.setState({
+			suggestions: getSuggestions(value),
+		});
+	};
+
+	handleSuggestionsClearRequested = () => {
+		this.setState({
+			suggestions: [],
+		});
+	};
+
+	handleChange = name => (event, { newValue }) => {
+		this.setState({
+			[name]: newValue,
+		});
+	};
+
+	handleSelectionMade = (event, { suggestion}) =>{
+		console.log("selectionMade");
+		console.log( suggestion);
+	}
+
+	render() {
+		const { classes } = this.props;
+	const placeHolder = this.props.placeHolder;
+	suggestions = this.props.suggestions;
+
+		const autosuggestProps = {
+			renderInputComponent,
+			suggestions: this.state.suggestions,
+			onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
+			onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
+			getSuggestionValue,
+			renderSuggestion,
+		};
+
+		return (
+			<div className={classes.root}>
+				<Autosuggest onSuggestionSelected={this.handleSelectionMade}
+					{...autosuggestProps}
+					inputProps={{
+						classes,
+						placeholder: placeHolder,
+						value: this.state.single,
+						onChange: this.handleChange('single'),
+					}}
+					theme={{
+						container: classes.container,
+						suggestionsContainerOpen: classes.suggestionsContainerOpen,
+						suggestionsList: classes.suggestionsList,
+						suggestion: classes.suggestion,
+					}}
+					renderSuggestionsContainer={options => (
+						<Paper {...options.containerProps} square>
+							{options.children}
+						</Paper>
+					)}
+				/>
+			</div>
+		);
+	}
 }
 
-IntegrationDownshift.propTypes = {
+IntegrationAutosuggest.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(IntegrationDownshift);
+export default withStyles(styles)(IntegrationAutosuggest);
+
+
+

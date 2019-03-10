@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import IntegrationDownshift from '../AutoSuggest/Autocomplete.js'
+import IntegrationAutosuggest from '../AutoSuggest/Autocomplete.js'
 
 export default class FormDialog extends Component {
 	constructor(props){
@@ -57,7 +57,7 @@ export default class FormDialog extends Component {
 
 	createAutoComplete = (index,elem) =>{
 		console.log(elem.suggestions);
-		return(<IntegrationDownshift placeHolder={this.props.placeHolder} suggestions={elem.suggestions}/>);
+		return(<IntegrationAutosuggest placeHolder={this.props.placeHolder} key ="1" suggestions={elem.suggestions}/>);
 	}
 //<IntegrationDownshift/>
 	createInput = () => {
