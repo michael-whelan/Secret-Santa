@@ -6,12 +6,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import IntegrationAutosuggest from '../AutoSuggest/Autocomplete.js'
+import IntegrationAutosuggest from '../AutoSuggest/Autocomplete.js';
+import SelectLabel from '../SelectLabel/SelectLabel.js';
 
 export default class FormDialog extends Component {
 	constructor(props){
 		super(props);
-		this.state = {open: false, message:""};
+		this.state = {open: false, message:"", slabelList:[]};
 		this.groupName = "null";
 	}
 
@@ -55,9 +56,29 @@ export default class FormDialog extends Component {
 		);
 	}
 
+	createSelectLabel = (elem) => {
+		const lblLen = this.state.slabelList.length;
+		const sLabel = <SelectLabel label={elem.label} arrKey = {lblLen} id = {elem.key}
+			removeLabel={this.removeSelectLabel}/>
+		var newArray = this.state.slabelList.slice();
+		newArray.push(sLabel);
+		this.setState({slabelList:newArray})
+	}
+
+	removeSelectLabel = index => {
+		var newArray = this.state.slabelList.slice();
+		newArray.splice(index, 1);
+		this.setState({slabelList:newArray})
+	}
+
 	createAutoComplete = (index,elem) =>{
 		console.log(elem.suggestions);
-		return(<IntegrationAutosuggest placeHolder={this.props.placeHolder} key ="1" suggestions={elem.suggestions}/>);
+		return(<>
+			<IntegrationAutosuggest placeHolder={this.props.placeHolder} key ="1"
+				suggestions={elem.suggestions} genLabel={this.createSelectLabel}/>
+			<div name="labelHolder">{this.state.slabelList}</div>
+			</>
+		);
 	}
 //<IntegrationDownshift/>
 	createInput = () => {

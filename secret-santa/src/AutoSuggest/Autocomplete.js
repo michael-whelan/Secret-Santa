@@ -82,7 +82,7 @@ function getSuggestionValue(suggestion) {
 
 const styles = theme => ({
 	root: {
-		height: 200,
+		height: 100,
 		flexGrow: 1,
 	},
 	container: {
@@ -133,8 +133,7 @@ class IntegrationAutosuggest extends React.Component {
 	};
 
 	handleSelectionMade = (event, { suggestion}) =>{
-		console.log("selectionMade");
-		console.log( suggestion);
+		this.props.genLabel(suggestion);
 	}
 
 	render() {
