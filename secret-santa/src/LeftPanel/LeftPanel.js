@@ -108,7 +108,7 @@ export default class LeftPanel extends Component {
 					</Button>
 					<Dialog user= {this.state.user} openDialog = {this.state.cgDialogOpen} closeDialog={this.closeDialog}
 					title={"Create Group"} elemList={this.dialog} text={this.diText} btnName={"Create"}
-					btnAction={this.createGroup}/>
+					btnAction={this.createGroup} showCancel={true}/>
 					{this.state.userGroups!=="null"&&
 					<ul>
 						{

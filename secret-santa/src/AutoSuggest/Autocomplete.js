@@ -132,7 +132,7 @@ class IntegrationAutosuggest extends React.Component {
 		});
 	};
 
-	handleSelectionMade = (event, { suggestion}) =>{
+	handleSelectionMade = (event, {suggestion}) =>{
 		this.props.genLabel(suggestion);
 	}
 

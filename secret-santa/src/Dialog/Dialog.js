@@ -34,7 +34,6 @@ export default class FormDialog extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.openDialog !== this.state.open) {
-			console.log("opne sesame");
 			this.setState({ open: nextProps.openDialog });
 		}
 		if (nextProps.user !== this.state.user) {
@@ -57,12 +56,14 @@ export default class FormDialog extends Component {
 	}
 
 	createSelectLabel = (elem) => {
+		console.log("owner",this.props.ownerId,elem.label,elem.key);
 		const lblLen = this.state.slabelList.length;
-		const sLabel = <SelectLabel label={elem.label} arrKey = {lblLen} id = {elem.key}
+		const sLabel = <SelectLabel label={elem.label} key={elem.key} arrKey = {lblLen} id = {elem.key}
 			removeLabel={this.removeSelectLabel}/>
 		var newArray = this.state.slabelList.slice();
 		newArray.push(sLabel);
-		this.setState({slabelList:newArray})
+		this.setState({slabelList:newArray});
+		//this.props.update
 	}
 
 	removeSelectLabel = index => {
@@ -72,9 +73,8 @@ export default class FormDialog extends Component {
 	}
 
 	createAutoComplete = (index,elem) =>{
-		console.log(elem.suggestions);
 		return(<>
-			<IntegrationAutosuggest placeHolder={this.props.placeHolder} key ="1"
+			<IntegrationAutosuggest placeHolder={this.props.placeHolder} key ={index}
 				suggestions={elem.suggestions} genLabel={this.createSelectLabel}/>
 			<div name="labelHolder">{this.state.slabelList}</div>
 			</>
@@ -84,7 +84,6 @@ export default class FormDialog extends Component {
 	createInput = () => {
 		var gen_elems = [];
 		const {elemList} = this.props;
-		console.log(elemList)
 		for(var i =0; i < elemList.length; ++i){
 			var elem = null;
 			if (elemList[i].type === "text"){
@@ -99,30 +98,32 @@ export default class FormDialog extends Component {
 	}
 
 	render() {
-	return (
-		<div>
-		<Dialog
-			open={this.state.open}
-			onClose={this.handleClose}
-			aria-labelledby="form-dialog-title"
-		>
-			<DialogTitle id="form-dialog-title">{this.props.title}</DialogTitle>
-			<DialogContent>
-			<DialogContentText>
-				{this.state.message}
-			</DialogContentText>
-				{this.createInput()}
-			</DialogContent>
-			<DialogActions>
-			<Button onClick={this.handleClose} color="primary">
-				Cancel
-			</Button>
-			<Button onClick={this.props.btnAction} color="primary">
-				{this.props.btnName}
-			</Button>
-			</DialogActions>
-		</Dialog>
-		</div>
-	);
+		return (
+			<div>
+			<Dialog
+				open={this.state.open}
+				onClose={this.handleClose}
+				aria-labelledby="form-dialog-title"
+			>
+				<DialogTitle id="form-dialog-title">{this.props.title}</DialogTitle>
+				<DialogContent>
+				<DialogContentText>
+					{this.state.message}
+				</DialogContentText>
+					{this.createInput()}
+				</DialogContent>
+				<DialogActions>
+				{this.props.showCancel &&
+				<Button onClick={this.handleClose} color="primary">
+					Cancel
+				</Button>
+				}
+				<Button onClick={this.props.btnAction} color="primary">
+					{this.props.btnName}
+				</Button>
+				</DialogActions>
+			</Dialog>
+			</div>
+		);
 	}
 }
