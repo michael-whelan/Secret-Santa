@@ -91,8 +91,9 @@ export default class GroupDetails extends Component {
 		console.log(this.state.people);
 	}
 
-	openDialog = event =>{
-		this.setState({ notListDialogOpen : true, openPerson: event.target.id});
+	openDialog = (event,nots) =>{
+		console.log(event,nots);
+		this.setState({ notListDialogOpen : true, openPerson: event.target.id, nots: nots});
 	}
 	closeDialog = () =>{
 		this.setState({ notListDialogOpen : false });
@@ -114,7 +115,7 @@ export default class GroupDetails extends Component {
 				<input type="text" key={"email-"+single.person_id} id={"pemail-"+single.person_id} title={gid+"-email-"+single.person_id}
 					defaultValue={single.email} onChange ={this.handleChange}  onKeyDown={this.handleKeyDown}/>
 				<Button variant="outlined" color="primary" key={single.person_id} id={single.person_id}
-				onClick={this.openDialog}>Nots</Button>
+				onClick={this.openDialog.bind(single.nots)}>Nots</Button>
 			</div>
 
 		if(!addDirect){return person;}

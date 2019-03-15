@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IntegrationAutosuggest from '../AutoSuggest/Autocomplete.js';
 import SelectLabel from '../SelectLabel/SelectLabel.js';
+import axios from "axios";
 
 export default class FormDialog extends Component {
 	constructor(props){
@@ -39,6 +40,30 @@ export default class FormDialog extends Component {
 		if (nextProps.user !== this.state.user) {
 			this.setState({ user: nextProps.user });
 		}
+	}
+
+	updateNots = (id, notList) => {
+		var authOptions = {
+			method: 'put',
+			url: 'http://localhost:8080/updatepersonnots',
+			headers: {'X-User-ID': this.state.user.uuid,
+			'Access-Control-Allow-Origin': '*'},
+			data : {
+				'id':id,'col': "nots",'newVal': notList
+			},
+			json: true
+		};
+		axios(authOptions)
+		.then(res => {
+			if(res.status === 200){//updated person
+				if(res.data.success){
+					console.log(res.data.message);
+				}
+			}
+		})
+		.catch(error => {
+			console.log(error);
+		});
 	}
 
 	createTextField = (index,elem) => {

@@ -146,7 +146,7 @@ def getGroups(uuid):
 
 def getGroup(g_id):
 	#query = """select * from groups where id = %s""" % (g_id)
-	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active from groups g inner join
+	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active,p.nots from groups g inner join
 	people p where g.id = p.group_id and g.id = %s""" % (g_id)
 
 	conn = sqlite3.connect('secretsanta.db')
