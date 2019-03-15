@@ -11,7 +11,7 @@ export default class GroupDetails extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {groups: this.props.groups, activeGroup: null, changeAllowed:true, user: this.props.user,
-		people :[], notListDialogOpen: false, dialog: null, openPerson :null};
+		people :[], notListDialogOpen: false, dialog: null, openPerson :null, activeNots: null};
 	}
 
 	handleChange = event => {
@@ -91,8 +91,7 @@ export default class GroupDetails extends Component {
 		console.log(this.state.people);
 	}
 
-	openDialog = (event,nots) =>{
-		console.log(event,nots);
+	openDialog = (nots,event) =>{
 		this.setState({ notListDialogOpen : true, openPerson: event.target.id, nots: nots});
 	}
 	closeDialog = () =>{
@@ -115,7 +114,7 @@ export default class GroupDetails extends Component {
 				<input type="text" key={"email-"+single.person_id} id={"pemail-"+single.person_id} title={gid+"-email-"+single.person_id}
 					defaultValue={single.email} onChange ={this.handleChange}  onKeyDown={this.handleKeyDown}/>
 				<Button variant="outlined" color="primary" key={single.person_id} id={single.person_id}
-				onClick={this.openDialog.bind(single.nots)}>Nots</Button>
+				onClick={this.openDialog.bind(this,single.nots)}>Nots</Button>
 			</div>
 
 		if(!addDirect){return person;}
@@ -155,9 +154,9 @@ export default class GroupDetails extends Component {
 			):(
 				<p> Nothing to see here</p>
 			)}
-			{this.state.activeGroup  ?(
+			{this.state.activeGroup && this.state.notListDialogOpen ? (
 				<Dialog user= {this.state.user} openDialog = {this.state.notListDialogOpen} title={"Nots"} ownerId={this.state.openPerson}
-				 closeDialog={this.closeDialog} elemList={[{"suggestions": this.state.dialog, "type": "textSuggest"}]}
+				 closeDialog={this.closeDialog} elemList={[{"suggestions": this.state.dialog, "type": "textSuggest"}]} notList={this.state.no}
 				  placeHolder={"Choose a Person"} text={this.diText} btnName={"Close"} btnAction={this.closeDialog} showCancel={false}/>
 			):(null)
 			}

@@ -14,7 +14,8 @@ export default class FormDialog extends Component {
 	constructor(props){
 		super(props);
 		this.state = {open: false, message:"", slabelList:[]};
-		this.groupName = "null";
+        this.groupName = "null";
+        console.log(props.notList);
 	}
 
 	handleClickOpen = () => {
@@ -39,10 +40,12 @@ export default class FormDialog extends Component {
 		}
 		if (nextProps.user !== this.state.user) {
 			this.setState({ user: nextProps.user });
-		}
+        }
 	}
 
-	updateNots = (id, notList) => {
+
+    /*removable?? */
+    updateNots = (id, notList) => {
 		var authOptions = {
 			method: 'put',
 			url: 'http://localhost:8080/updatepersonnots',

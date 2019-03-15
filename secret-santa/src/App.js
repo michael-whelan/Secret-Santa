@@ -58,6 +58,7 @@ class App extends Component {
 	}
 
 	updateGroups = (groupList)=>{
+        console.log( groupList)
 		this.setState({groups: groupList});
 	}
 

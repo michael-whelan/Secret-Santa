@@ -118,12 +118,13 @@ def structure_group(raw_data):
 		person["name"]= i["name"]
 		person["email"]= i["email"]
 		person["active"]= i["active"]
+		person["nots"]= i["nots"]
 		data[(len(data))-1]["people"].append(person)
 	return data
 
 def getGroups(uuid):
 	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
-	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active from groups g inner join
+	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active, p.nots from groups g inner join
 	people p where g.id = p.group_id and g.admin = (select id from users where uuid = '%s') order by p.group_id;""" % (uuid)
 	conn = sqlite3.connect('secretsanta.db')
 	cursor= conn.cursor()
