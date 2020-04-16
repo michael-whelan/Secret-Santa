@@ -1,0 +1,11 @@
+.list-group-item {
+	width: 100%;
+    border-style: none;
+    background-color: #282c34;
+
+}
+
+.list-group-item:hover {
+	background-color: #282c34;
+	color: red;
+}

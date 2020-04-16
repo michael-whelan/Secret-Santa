@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ListGroup from "react-bootstrap/ListGroup";
+import "./ListItem.css";
 
-const ToDo = ({ title }) => <ListGroup.Item>{title}</ListGroup.Item>;
+const ListItem = ({ title }) => <ListGroup.Item>{title}</ListGroup.Item>;
 
-ToDo.propTypes = {
+ListItem.propTypes = {
 	title: PropTypes.string.isRequired,
 };
 
-export default ToDo;
+export default ListItem;

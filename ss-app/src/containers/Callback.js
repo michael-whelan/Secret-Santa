@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
-import { handleAuthenticationCallback } from "../actions";
+import { handleAuthenticationCallback } from "../store/Sidebar/actions";
 
 const mapStateToProps = (state) => {
 	return {
