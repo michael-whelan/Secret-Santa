@@ -23,5 +23,4 @@ ToDoList.propTypes = {
 	).isRequired,
 };
 
-
 export default ToDoList;
