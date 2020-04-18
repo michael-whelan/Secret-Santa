@@ -8,11 +8,9 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	console.log("map disp", typeof selectGroup);
-	return {
-		selectGroup: () => dispatch(selectGroup),
-	};
-};
+const mapDispatchToProps = dispatch => ({
+	selectGroup() {dispatch(selectGroup)},
+});
+const SidebarContainer = connect(mapStateToProps, mapDispatchToProps)(Sidebar);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export { SidebarContainer };

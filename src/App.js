@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import Callback from "./containers/Callback";
-import SidebarContainer from "./containers/SidebarContainer";
+import { SidebarContainer } from "./containers/SidebarContainer";
 import "./App.css";
 
 class App extends Component {

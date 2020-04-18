@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import ListGroup from "react-bootstrap/ListGroup";
 import "./ListItem.css";
 
-const logStuff = () => {
-	console.log("stuff");
-};
-
 const ListItem = ({ title, selectGroup }) => {
 	console.log(selectGroup);
-	return <ListGroup.Item onClick={selectGroup}>{title}</ListGroup.Item>;
+	const logStuff = () => {
+		console.log("stuff");
+		selectGroup();
+	};
+
+	return <ListGroup.Item onClick={logStuff}>{title}</ListGroup.Item>;
 };
 
 ListItem.propTypes = {
