@@ -2,14 +2,8 @@ import React from "react";
 import "./Sidebar.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListItem from "../ListItem/ListItem";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
 
 const SideBar = ({ groups, selectGroup }) => {
-	const logStuff = () => {
-		console.log("stuff");
-		//selectGroup();
-	};
-
 	return (
 		<div className="sidebar">
 			<div className="sidebar-header">
@@ -18,7 +12,7 @@ const SideBar = ({ groups, selectGroup }) => {
 
 			<ListGroup>
 				{groups.map((groups, index) => (
-					<ListItem key={index} {...groups} selectGroup={logStuff} />
+					<ListItem key={index} {...groups} selectGroup={selectGroup}/>
 				))}
 			</ListGroup>
 		</div>
