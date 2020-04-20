@@ -1,6 +1,9 @@
-import { RENDER_GROUP_LIST } from "./actions";
-import { USER_PROFILE_LOADED } from "./actions";
-import { SELECT_GROUP } from "./actions";
+import {
+	RENDER_GROUP,
+	RENDER_GROUP_LIST,
+	SELECT_GROUP,
+	USER_PROFILE_LOADED,
+} from "./types";
 
 const initialState = {
 	groupList: [],
@@ -17,10 +20,15 @@ export default function sidebarReducer(state = initialState, action) {
 			return {
 				...state,
 				user: action.user,
-            };
-        case SELECT_GROUP:
-            console.log("Group Selected");
-            return state;
+			};
+		case SELECT_GROUP:
+			return {
+				...state,
+				selectedGroup: action.data,
+			};
+		case RENDER_GROUP:
+			console.log(action);
+			return state;
 		default:
 			return state;
 	}
