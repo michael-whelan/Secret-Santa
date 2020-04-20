@@ -19,9 +19,9 @@ def uniqueEntry(q):
 		return False
 
 def days_between(d1, d2):
-    d1 = datetime.datetime.strptime(d1, "%Y-%m-%d")
-    d2 = datetime.datetime.strptime(d2, "%Y-%m-%d")
-    return abs((d2 - d1).days)
+	d1 = datetime.datetime.strptime(d1, "%Y-%m-%d")
+	d2 = datetime.datetime.strptime(d2, "%Y-%m-%d")
+	return abs((d2 - d1).days)
 
 def check_credentials(uuid,email,passw):
 	print("check_creds")
@@ -126,6 +126,9 @@ def getGroups(uuid):
 	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
 	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active, p.nots from groups g inner join
 	people p where g.id = p.group_id and g.admin = (select id from users where uuid = '%s') order by p.group_id;""" % (uuid)
+	
+	if uuid == 'test':
+		query = """SELECT * from groups""" 
 	conn = sqlite3.connect('secretsanta.db')
 	cursor= conn.cursor()
 	cursor.execute(query)
@@ -141,15 +144,16 @@ def getGroups(uuid):
 			dataSingle[prop] = val
 		raw_data.append(dataSingle)
 	conn.close()
-	data = structure_group(raw_data)
+	#print(raw_data)
+	#data = structure_group(raw_data)
 	print ("Operation done successfully")
-	return data
+	return raw_data	
 
 def getGroup(g_id):
 	#query = """select * from groups where id = %s""" % (g_id)
 	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active,p.nots from groups g inner join
 	people p where g.id = p.group_id and g.id = %s""" % (g_id)
-
+	print(query )
 	conn = sqlite3.connect('secretsanta.db')
 	cursor= conn.cursor()
 	cursor.execute(query)

@@ -3,18 +3,17 @@ import PropTypes from "prop-types";
 import ListGroup from "react-bootstrap/ListGroup";
 import "./ListItem.css";
 
-const ListItem = ({ title, selectGroup }) => {
-	console.log(selectGroup);
-	const logStuff = () => {
-		console.log("stuff");
-		selectGroup();
-	};
+const ListItem = ( {group_name ,id, selectGroup} ) => {
+	const handleSelect = () => {
+		selectGroup(id);
+    };
 
-	return <ListGroup.Item onClick={logStuff}>{title}</ListGroup.Item>;
+	return <ListGroup.Item onClick={handleSelect}>{group_name}</ListGroup.Item>;
 };
 
 ListItem.propTypes = {
-	title: PropTypes.string.isRequired,
+	group_name: PropTypes.string.isRequired,
+	selectGroup: PropTypes.func.isRequired,
 };
 
 export default ListItem;

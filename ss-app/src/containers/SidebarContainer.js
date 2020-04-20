@@ -8,9 +8,9 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = dispatch => ({
-	selectGroup() {dispatch(selectGroup)},
-});
+const mapDispatchToProps = {
+	selectGroup,
+};
 const SidebarContainer = connect(mapStateToProps, mapDispatchToProps)(Sidebar);
 
 export { SidebarContainer };

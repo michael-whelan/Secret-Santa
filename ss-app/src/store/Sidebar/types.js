@@ -1,0 +1,5 @@
+export const RENDER_GROUP = "@Sidebar/RENDER_GROUP";
+export const RENDER_GROUP_LIST = "@Sidebar/RENDER_GROUP_LIST";
+export const USER_PROFILE_LOADED = "@Sidebar/USER_PROFILE_LOADED";
+export const HANDLE_AUTHENTICATION_CALLBACK = "@Sidebar/HANDLE_AUTHENTICATION_CALLBACK";
+export const SELECT_GROUP = "@Sidebar/SELECT_GROUP";

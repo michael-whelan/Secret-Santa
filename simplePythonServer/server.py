@@ -41,6 +41,7 @@ class Handler (BaseHTTPRequestHandler) :
 		self.end_headers()
 
 	def do_GET(self) :
+		print(self.path)
 		# Look for main page
 		if self.path=="/":
 			self.path="/index.html"
@@ -48,8 +49,9 @@ class Handler (BaseHTTPRequestHandler) :
 		if self.path == "/getgroups" or self.path == "/getgroups/":
 			#send response code:
 			print("connection made /getgroups")
-			creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'),
-				self.headers.getheader('X-User-Pass'))
+			#creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'),
+			#	self.headers.getheader('X-User-Pass'))
+			creds= {'uuid': 'test'}
 			par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
 			print(par)
 			if creds is not None:
@@ -60,6 +62,20 @@ class Handler (BaseHTTPRequestHandler) :
 				self.wfile.write("\n")
 				#send response:
 				json.dump(db.getGroups(creds['uuid']), self.wfile)
+				self.end_headers
+				return
+			else:
+				self.send_response(404)
+				return
+		if self.path.split('?')[0] == "/getgroup":
+			print("connection made /getgroup/")
+			creds= {'uuid': 'test'}
+			par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
+			if creds is not None:
+				self.send_response(200)
+				self.send_header("Content-type:", "application/json")
+				self.wfile.write("\n")
+				json.dump(db.getGroup(par['id'][0]), self.wfile)
 				self.end_headers
 				return
 			else:
