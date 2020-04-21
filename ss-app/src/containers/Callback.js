@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
-import { handleAuthenticationCallback } from "../store/Sidebar/actions";
 
 const mapStateToProps = (state) => {
 	return {
@@ -11,7 +10,6 @@ const mapStateToProps = (state) => {
 
 let Callback = ({ dispatch, user }) => {
 	if (user) return <Redirect to="/" />;
-	dispatch(handleAuthenticationCallback());
 
 	return <div className="text-center">Loading user profile.</div>;
 };
