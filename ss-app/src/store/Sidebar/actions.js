@@ -29,9 +29,7 @@ const loadGroups = (message) => ({
 	type: LOAD_GROUP_LIST,
 });
 
-
 export const loadGroupList = () => {
-	
 	return function (dispatch) {
 		dispatch(loadGroups);
 		return axios
