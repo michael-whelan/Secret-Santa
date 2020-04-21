@@ -1,8 +1,8 @@
 .list-group-item {
 	width: 100%;
-    border-style: none;
+	border-style: none;
     background-color: #282c34;
-
+    font-size: medium;
 }
 
 .list-group-item:hover {

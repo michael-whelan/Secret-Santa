@@ -3,13 +3,16 @@ import PropTypes from "prop-types";
 import ListGroup from "react-bootstrap/ListGroup";
 import "./ListItem.css";
 
-const ListItem = ({ group, selectGroup }) => {
+const ListItem = ({ group, selectGroup, selected }) => {
 	const handleSelect = () => {
 		selectGroup(group);
 	};
 
 	return (
-		<ListGroup.Item onClick={handleSelect}>
+		<ListGroup.Item
+			onClick={handleSelect}
+			className={selected && "active"}
+		>
 			{group.group_name}
 		</ListGroup.Item>
 	);

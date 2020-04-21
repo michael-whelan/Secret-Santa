@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Sidebar.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListItem from "../ListItem/ListItem";
 
 const SideBar = ({ groups, selectGroup }) => {
-    console.log(groups)
+	const [state, setState] = useState("");
+	const handleSelect = (group) => {
+		selectGroup(group);
+		//() => setSelected((selected = group.id));
+	};
 	return (
 		<div className="sidebar">
 			<div className="sidebar-header">
-				<h3>Sidebar Header</h3>
+				<h3>Group List</h3>
 			</div>
 
 			<ListGroup>
-				{groups.map((groups, index) => (
-					<ListItem key={index} group= {groups} selectGroup={selectGroup}/>
+				{groups.map((group, index) => (
+					<ListItem
+						key={index}
+						group={group}
+						selectGroup={handleSelect}
+					/>
 				))}
 			</ListGroup>
 		</div>
