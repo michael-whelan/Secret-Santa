@@ -3,7 +3,8 @@ import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
 
 const mapStateToProps = (state) => {
 	return {
-		group: state.sidebar.selectedGroup,
+        groupDetails: state.sidebar.selectedGroup,
+        people:state.activeGroup.people
 	};
 };
 

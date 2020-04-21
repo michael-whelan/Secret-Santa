@@ -2,12 +2,14 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 
 // Import Reducers
 import sidebarReducer from "./Sidebar/reducers";
+import ActiveGroupReducer from "./ActiveGroup/reducers";
 
 // Import Middleware
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
-	sidebar: sidebarReducer,
+    sidebar: sidebarReducer,
+    activeGroup: ActiveGroupReducer,
 });
 
 export default function configureStore(preloadedState) {

@@ -169,10 +169,10 @@ def getGroup(g_id):
 		for prop, val in zip(cols, row):
 			dataSingle[prop] = val
 		raw_data.append(dataSingle)
-	data = structure_group(raw_data)
+	#data = structure_group(raw_data)
 
 	print ("Operation done successfully")
-	return data
+	return raw_data
 
 
 def addGroup(groupName, userInfo):

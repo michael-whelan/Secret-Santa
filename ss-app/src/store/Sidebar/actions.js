@@ -4,18 +4,26 @@ import {
 	RENDER_GROUP_LIST,
 	LOAD_GROUP_LIST_ERROR,
 } from "./types";
+
+import { loadSelectedGroup } from "../ActiveGroup/actions";
+
 import axios from "axios";
 
 const endpoint = "http://localhost:8080/";
 
-export const selectGroup = (data) => {
+export const selectGroup = (data) => (dispatch) => {
+	dispatch(doSelectGroup(data));
+	dispatch(loadSelectedGroup(data.id));
+};
+
+const doSelectGroup = (data) => {
 	return {
 		type: SELECT_GROUP,
 		data: data,
 	};
 };
 
-export const renderGroupList = (data) => ({
+const renderGroupList = (data) => ({
 	type: RENDER_GROUP_LIST,
 	groupList: data,
 });
@@ -31,7 +39,7 @@ const loadGroups = (message) => ({
 
 export const loadGroupList = () => {
 	return function (dispatch) {
-		dispatch(loadGroups);
+		dispatch(loadGroups());
 		return axios
 			.get(endpoint + "getgroups")
 			.then(({ data }) => {

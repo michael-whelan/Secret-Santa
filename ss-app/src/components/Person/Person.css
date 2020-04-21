@@ -1,0 +1,21 @@
+.list-group .edit-person-btn {
+	width: fit-content;
+    float: right;
+}
+.list-group {
+    display: inline-block;
+    margin-top:10vh;
+}
+
+.person-name-lbl {
+    font-size: medium;
+    display: inline-block;
+    margin-right: 5vw;
+}
+
+.person {
+	display: block;
+    margin-bottom: 1vh;
+    min-height: 45px;
+    min-width: 200px;
+}

@@ -1,5 +1,4 @@
 import {
-	RENDER_GROUP,
 	RENDER_GROUP_LIST,
 	SELECT_GROUP,
 	LOAD_GROUP_LIST_ERROR,
@@ -27,9 +26,6 @@ export default function sidebarReducer(state = initialState, action) {
 				...state,
 				groupList: [],
 			};
-		case RENDER_GROUP:
-			console.log(action);
-			return state;
 		default:
 			return state;
 	}
