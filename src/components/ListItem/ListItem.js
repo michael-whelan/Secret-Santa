@@ -3,16 +3,23 @@ import PropTypes from "prop-types";
 import ListGroup from "react-bootstrap/ListGroup";
 import "./ListItem.css";
 
-const ListItem = ( {group_name ,id, selectGroup} ) => {
+const ListItem = ({ group, selectGroup }) => {
 	const handleSelect = () => {
-		selectGroup(id);
-    };
+		selectGroup(group);
+	};
 
-	return <ListGroup.Item onClick={handleSelect}>{group_name}</ListGroup.Item>;
+	return (
+		<ListGroup.Item onClick={handleSelect}>
+			{group.group_name}
+		</ListGroup.Item>
+	);
 };
 
 ListItem.propTypes = {
-	group_name: PropTypes.string.isRequired,
+	group: PropTypes.shape({
+		id: PropTypes.number.isRequired,
+		group_name: PropTypes.string.isRequired,
+	}).isRequired,
 	selectGroup: PropTypes.func.isRequired,
 };
 
