@@ -2,7 +2,7 @@ import {
 	RENDER_GROUP,
 	RENDER_GROUP_LIST,
 	SELECT_GROUP,
-	USER_PROFILE_LOADED,
+	LOAD_GROUP_LIST_ERROR,
 } from "./types";
 
 const initialState = {
@@ -16,15 +16,16 @@ export default function sidebarReducer(state = initialState, action) {
 				...state,
 				groupList: action.groupList,
 			};
-		case USER_PROFILE_LOADED:
-			return {
-				...state,
-				user: action.user,
-			};
 		case SELECT_GROUP:
 			return {
 				...state,
 				selectedGroup: action.data,
+			};
+		case LOAD_GROUP_LIST_ERROR:
+			console.log(action.data);
+			return {
+				...state,
+				groupList: [],
 			};
 		case RENDER_GROUP:
 			console.log(action);

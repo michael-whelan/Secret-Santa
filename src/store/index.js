@@ -4,8 +4,6 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import sidebarReducer from "./Sidebar/reducers";
 
 // Import Middleware
-import createSagaMiddleware from "redux-saga";
-import rootSaga from "../sagas";
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
@@ -13,9 +11,8 @@ const rootReducer = combineReducers({
 });
 
 export default function configureStore(preloadedState) {
-	const sagaMiddleware = createSagaMiddleware();
 
-	const middleware = [sagaMiddleware, thunk];
+	const middleware = [thunk];
 	const middlewareEnhancer = applyMiddleware(...middleware);
 
 	const composeEnhancers =
@@ -23,7 +20,6 @@ export default function configureStore(preloadedState) {
 	const enhancer = composeEnhancers(middlewareEnhancer);
 
 	const store = createStore(rootReducer, preloadedState, enhancer);
-	sagaMiddleware.run(rootSaga);
 
 	return store;
 }
