@@ -4,11 +4,8 @@ import ListGroup from "react-bootstrap/ListGroup";
 import ListItem from "../ListItem/ListItem";
 
 const SideBar = ({ groups, selectGroup }) => {
-	const [state, setState] = useState("");
-	const handleSelect = (group) => {
-		selectGroup(group);
-		//() => setSelected((selected = group.id));
-	};
+	const [sgroup, setGroup] = useState({});
+
 	return (
 		<div className="sidebar">
 			<div className="sidebar-header">
@@ -20,7 +17,8 @@ const SideBar = ({ groups, selectGroup }) => {
 					<ListItem
 						key={index}
 						group={group}
-						selectGroup={handleSelect}
+						setGroup={(group) => setGroup(group)}
+						selectGroup={(group) => selectGroup(group)}
 					/>
 				))}
 			</ListGroup>
