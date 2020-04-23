@@ -4,17 +4,13 @@ import "./Person.css";
 import Button from "react-bootstrap/Button";
 
 const Person = ({ name, editAction }) => {
-    const doEdit = ()=>{
-        editAction(name);
-    }
-    
-    return (
+	return (
 		<div className="person">
 			<div className="person-name-lbl">{name}</div>
 			<Button
 				className="edit-person-btn"
 				variant="outline-primary"
-				onClick={doEdit}
+				onClick={editAction}
 			>
 				Edit
 			</Button>

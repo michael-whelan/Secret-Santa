@@ -1,0 +1,2 @@
+export const UPDATE_PERSON = "@Modal/UPDATE_PERSON";
+export const UPDATE_PERSON_ERROR = "@Modal/UPDATE_PERSON_ERROR";

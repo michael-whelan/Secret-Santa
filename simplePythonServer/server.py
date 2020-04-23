@@ -212,13 +212,17 @@ class Handler (BaseHTTPRequestHandler) :
 			try:
 				if creds is not None:
 					postvars = self.parse_POST()
-					info = db.update_person(postvars,creds)
-					print("info", info)
+					#info = db.update_person(postvars,creds)
+					#print("info", info)
+					self.wfile.write("\n")
+					print("update response")
+					self.send_response(200)
+					return
 					if info["success"]:
-						self.send_response(200)
 						self.wfile.write("\n")
 						print("update response")
-						json.dump({"message": "worked","success":True} ,self.wfile)
+						self.send_response(200)
+						#json.dump({"message": "worked","success":True} ,self.wfile)
 					else:
 						self.send_response(201)
 						self.wfile.write("\n")
