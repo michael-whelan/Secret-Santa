@@ -5,22 +5,26 @@ import PersonContainer from "../../containers/PersonContainer";
 import ModalContainer from "../../containers/ModalContainer";
 
 const ActiveGroup = ({ groupDetails = {}, people = [] }) => {
-    const [modalShow, setModalShow] = React.useState(false);
-    const logStuff=(p)=>{
-        console.log(p)
-    }
+	const [modalShow, setModalShow] = React.useState(false);
+	const logStuff = (p) => {
+		console.log("log at the top");
+		setModalShow(!modalShow);
+	};
 	return (
 		<div className="main-area">
-            <ModalContainer/>
+			<ModalContainer
+				show={modalShow}
+				onHide={() => setModalShow(false)}
+			/>
 			<div className="activegroup">
 				<div className="activegroup-header">
 					<h2>{groupDetails.group_name}</h2>
 				</div>
 				<ListGroup>
-					{people.map((people, index) => (
+					{people.map((p, index) => (
 						<PersonContainer
 							key={index}
-							{...people}
+							person={p}
 							clickAction={logStuff}
 						/>
 					))}
