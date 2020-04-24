@@ -1,16 +1,11 @@
 import React from "react";
 import Person from "../components/Person/Person";
 
-const PersonContainer = (person, clickAction) => {
-	const editCLick = (p) => {
-        console.log(p.name);
-        console.log(clickAction)
-		//clickAction(p);
-	};
+const PersonContainer = ({ person, clickAction }) => {
 	return (
 		<Person
 			name={person.name}
-			editAction={() => editCLick(person)}
+			editAction={() => clickAction(person)}
 		></Person>
 	);
 };

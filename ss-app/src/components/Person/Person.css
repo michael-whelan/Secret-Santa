@@ -1,21 +1,33 @@
 .list-group .edit-person-btn {
 	width: fit-content;
-    float: right;
+	float: right;
 }
 .list-group {
-    display: inline-block;
-    margin-top:10vh;
+	display: inline-block;
+	margin-top: 10vh;
 }
 
 .person-name-lbl {
-    font-size: medium;
-    display: inline-block;
-    margin-right: 5vw;
+	font-size: medium;
+	display: inline-block;
+	margin-right: 5vw;
 }
 
 .person {
 	display: block;
-    margin-bottom: 1vh;
-    min-height: 45px;
-    min-width: 200px;
+	margin-bottom: 1vh;
+	min-height: 45px;
+	min-width: 200px;
+}
+
+.edit-person-btn.btn {
+	outline: none !important;
+	outline-offset: none !important;
+	outline-color: red;
+}
+
+.edit-person-btn.btn:focus {
+	outline: none !important;
+	outline-color: red;
+	outline-offset: none !important;
 }
