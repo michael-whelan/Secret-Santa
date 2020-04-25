@@ -3,18 +3,33 @@ import "./ActiveGroup.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import PersonContainer from "../../containers/PersonContainer";
 import ModalContainer from "../../containers/ModalContainer";
+import PropTypes from "prop-types";
 
 const ActiveGroup = ({ groupDetails = {}, people = [] }) => {
 	const [modalShow, setModalShow] = React.useState(false);
-	const logStuff = (p) => {
-		console.log("log at the top");
-		setModalShow(!modalShow);
-	};
+	const [activePerson, setActivePerson] = React.useState({});
+
+	const modalMap = [
+		{
+			label: "Name",
+			type: "text",
+			default: "Username",
+			link: "name",
+		},
+		{
+			label: "email",
+			type: "text",
+			default: "email",
+			link: "email",
+		},
+	];
 	return (
 		<div className="main-area">
 			<ModalContainer
 				show={modalShow}
 				onHide={() => setModalShow(false)}
+				modalMap={modalMap}
+				person={activePerson}
 			/>
 			<div className="activegroup">
 				<div className="activegroup-header">
@@ -25,13 +40,21 @@ const ActiveGroup = ({ groupDetails = {}, people = [] }) => {
 						<PersonContainer
 							key={index}
 							person={p}
-							clickAction={logStuff}
+							clickAction={() => {
+								setModalShow(!modalShow);
+								setActivePerson(p);
+							}}
 						/>
 					))}
 				</ListGroup>
 			</div>
 		</div>
 	);
+};
+
+ActiveGroup.propTypes = {
+	groupDetails: PropTypes.object,
+	people: PropTypes.array,
 };
 
 export default ActiveGroup;

@@ -47,13 +47,10 @@ class Handler (BaseHTTPRequestHandler) :
 			self.path="/index.html"
 
 		if self.path == "/getgroups" or self.path == "/getgroups/":
-			#send response code:
-			print("connection made /getgroups")
 			#creds = db.check_credentials(self.headers.getheader('X-User-ID'), self.headers.getheader('X-User-Email'),
 			#	self.headers.getheader('X-User-Pass'))
 			creds= {'uuid': 'test'}
 			par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
-			print(par)
 			if creds is not None:
 				self.send_response(200)
 				#send headers:
@@ -81,55 +78,21 @@ class Handler (BaseHTTPRequestHandler) :
 			else:
 				self.send_response(404)
 				return
-		if self.path == "/login" or self.path == "/login/":
-			print("connection made /login")
-			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
-				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
-			if creds is not None:
-				self.send_response(200)
-				self.send_header("Content-type:", "application/json")
-				self.wfile.write("\n")
-				json.dump(creds,self.wfile)
-				self.end_headers()
-				return
+		# if self.path == "/login" or self.path == "/login/":
+		# 	print("connection made /login")
+		# 	creds = db.check_credentials(self.headers.getheader('X-User-ID'),
+		# 		self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+		# 	if creds is not None:
+		# 		self.send_response(200)
+		# 		self.send_header("Content-type:", "application/json")
+		# 		self.wfile.write("\n")
+		# 		json.dump(creds,self.wfile)
+		# 		self.end_headers()
+		# 		return
 
-			# Send code 200
-			#self.response.out.write()
-			self.send_response(401)
-			self.end_headers()
+		# 	self.send_response(401)
+		# 	self.end_headers()
 
-		try:
-			#Check the file extension required and
-			#set the right mime type
-			sendReply = False
-			if self.path.endswith(".html"):
-				mimetype='text/html'
-				sendReply = True
-			if self.path.endswith(".woff"):
-				mimetype='font/opentype'
-				sendReply = True
-			if self.path.endswith(".ttf"):
-				mimetype='font/opentype'
-				sendReply = True
-			if self.path.endswith(".js"):
-				mimetype='application/javascript'
-				sendReply = True
-			if self.path.endswith(".css"):
-				mimetype='text/css'
-				sendReply = True
-
-			if sendReply == True:
-				#Open the static file requested and send it
-				f = open(curdir + sep + self.path)
-				self.send_response(200)
-				self.send_header('Content-type',mimetype)
-				self.end_headers()
-				self.wfile.write(f.read())
-				f.close()
-			return
-
-		except IOError:
-			self.send_error(404,'File Not Found: %s' % self.path)
 
 	def parse_POST(self):
 		length = int(self.headers.getheader('content-length'))
@@ -204,21 +167,17 @@ class Handler (BaseHTTPRequestHandler) :
 
 
 	def do_PUT(self):
-		# Look for POST request
 		if self.path == "/updateperson" or self.path == "/updateperson/":
 			print("connection made /updateperson")
-			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
-				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			#creds = db.check_credentials(self.headers.getheader('X-User-ID'),
+			#	self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			creds= {'uuid': 'test'}
 			try:
 				if creds is not None:
 					postvars = self.parse_POST()
-					#info = db.update_person(postvars,creds)
-					#print("info", info)
-					self.wfile.write("\n")
-					print("update response")
-					self.send_response(200)
-					return
-					if info["success"]:
+					dbupdate = db.update_person(postvars,creds)
+
+					if dbupdate:
 						self.wfile.write("\n")
 						print("update response")
 						self.send_response(200)

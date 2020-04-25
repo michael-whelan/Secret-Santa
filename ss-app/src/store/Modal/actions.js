@@ -4,7 +4,7 @@ import axios from "axios";
 
 const endpoint = "http://localhost:8080/";
 
-export const updatePersonStore = (person) => ({
+const updatePersonStore = (person) => ({
 	type: UPDATE_PERSON,
 	data: person,
 });
@@ -15,11 +15,13 @@ const updatePersonError = (message) => ({
 });
 
 export const updatePerson = (n_person) => {
+	const {name,email,person_id} = n_person;
 	return function (dispatch) {
 		return axios
-			.get(endpoint + "/updateperson")
-			.then(({ response }) => {
+			.put(endpoint + "updateperson", {name,email,person_id})
+			.then((response) => {
 				if (response.status === 200) {
+					//console.log(n_person)
 					dispatch(updatePersonStore(n_person));
 				} else {
 					console.log("Something is up!!");

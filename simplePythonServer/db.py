@@ -94,9 +94,9 @@ def getUser(u,e,recpass):
 	for row in rows:
 		for prop, val in zip(cols, row):
 			data[prop] = val
-	print ("Operation done successfully")
+	
 	conn.close()
-
+	print ("getUser done successfully")
 	return data
 
 
@@ -146,7 +146,7 @@ def getGroups(uuid):
 	conn.close()
 	#print(raw_data)
 	#data = structure_group(raw_data)
-	print ("Operation done successfully")
+	print ("getGroups done successfully")
 	return raw_data	
 
 def getGroup(g_id):
@@ -171,7 +171,7 @@ def getGroup(g_id):
 		raw_data.append(dataSingle)
 	#data = structure_group(raw_data)
 
-	print ("Operation done successfully")
+	print ("getGroup done successfully")
 	return raw_data
 
 
@@ -198,19 +198,31 @@ def addGroup(groupName, userInfo):
 			return False
 	return True
 
-def update_person(vars, creds):
-	#Should first check that user is valid to make change
-	query = """update people set %s = '%s' where id = %s""" % (
-				vars["col"], vars["newVal"], vars["id"]
-			)
+def make_update_strings(vars):
+	ret_string = ""
+	for var in vars:
+		print(var)
+		ret_string = ret_string + "%s = '%s', " % (var, vars[var]) 
+	return ret_string[:-2]
 
-	print(query)
-	conn = sqlite3.connect('secretsanta.db')
-	cursor = conn.cursor()
-	cursor.execute(query)
-	conn.commit()
-	conn.close()
-	return {"success":True,"message":"Person updated"}
+
+def update_person(vars, creds):
+	id = vars.pop("person_id", None)
+	update_string = make_update_strings(vars)
+	#Should first check that user is valid to make change
+	query = """update people set %s where id = %s""" % (
+				update_string, id
+			)
+	try:
+		conn = sqlite3.connect('secretsanta.db')
+		cursor = conn.cursor()
+		cursor.execute(query)
+		conn.commit()
+		conn.close()
+		return True
+	except:
+		print("Error: Something went wrong")
+		return False
 
 def add_person(vars):
 	#Should first check that user is valid to make change
