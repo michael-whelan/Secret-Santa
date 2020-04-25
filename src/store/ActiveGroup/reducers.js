@@ -15,16 +15,16 @@ export default function ActiveGroupReducer(state = initialState, action) {
 		case STORE_SELECTED_GROUP:
 			return { ...state, people: action.people };
 		case UPDATE_PERSON:
-			const { person_id } = action.person;
-			console.log(state.people);
-			// state.map((peep) => {
-			// 	if (peep.id === id) {
-			// 		peep.name = newName;
-			// 	}
-			// 	return peep;
-			// });
-
-			return state;
+			const { person_id } = action.data;
+			console.log(action.data);
+			let people = state.people.map((peep) => {
+				if (peep.id === person_id) {
+					peep.name = action.data.name;
+					peep.email = action.data.email;
+				}
+				return peep;
+			});
+			return { ...state, people: people };
 		default:
 			return state;
 	}
