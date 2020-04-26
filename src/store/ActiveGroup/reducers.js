@@ -1,8 +1,9 @@
 import { LOAD_GROUP_ERROR, STORE_SELECTED_GROUP } from "./types";
-import { UPDATE_PERSON } from "../Modal/types";
+import { UPDATE_PERSON, UPDATE_PERSON_ERROR } from "../Modal/types";
 
 const initialState = {
 	people: [],
+	errorMsg: "",
 };
 
 export default function ActiveGroupReducer(state = initialState, action) {
@@ -10,7 +11,8 @@ export default function ActiveGroupReducer(state = initialState, action) {
 		case LOAD_GROUP_ERROR:
 			return {
 				...state,
-				activegroup: [],
+				people: [],
+				errorMsg: "Error Loading Group Info",
 			};
 		case STORE_SELECTED_GROUP:
 			return { ...state, people: action.people };
@@ -25,6 +27,10 @@ export default function ActiveGroupReducer(state = initialState, action) {
 				return peep;
 			});
 			return { ...state, people: people };
+		case UPDATE_PERSON_ERROR:
+			console.log("Error during update");
+			console.log(action.data);
+			return state;
 		default:
 			return state;
 	}

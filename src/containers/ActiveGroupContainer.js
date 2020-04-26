@@ -5,6 +5,7 @@ const mapStateToProps = (state) => {
 	return {
 		groupDetails: state.sidebar.selectedGroup,
 		people: state.activeGroup.people,
+		errorMsg: state.activeGroup.errorMsg,
 	};
 };
 

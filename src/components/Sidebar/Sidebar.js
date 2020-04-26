@@ -3,8 +3,7 @@ import "./Sidebar.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListItem from "../ListItem/ListItem";
 
-const SideBar = ({ groups, selectGroup }) => {
-	const [sgroup, setGroup] = useState({});
+const SideBar = ({ groups, selectGroup, errorMsg }) => {
 
 	return (
 		<div className="sidebar">
@@ -17,11 +16,11 @@ const SideBar = ({ groups, selectGroup }) => {
 					<ListItem
 						key={index}
 						group={group}
-						setGroup={(group) => setGroup(group)}
 						selectGroup={(group) => selectGroup(group)}
 					/>
 				))}
 			</ListGroup>
+			<span className="error">{errorMsg}</span>
 		</div>
 	);
 };

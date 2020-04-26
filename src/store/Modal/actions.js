@@ -15,19 +15,23 @@ const updatePersonError = (message) => ({
 });
 
 export const updatePerson = (n_person) => {
-	const {name,email,person_id} = n_person;
+	const { name, email, person_id } = n_person;
 	return function (dispatch) {
 		return axios
-			.put(endpoint + "updateperson", {name,email,person_id})
+			.put(endpoint + "updateperson", { name, email, person_id })
 			.then((response) => {
 				if (response.status === 200) {
-					//console.log(n_person)
+					console.log("200 response");
 					dispatch(updatePersonStore(n_person));
 				} else {
 					console.log("Something is up!!");
 					console.log(response);
+					dispatch(updatePersonError("sometjing"));
 				}
 			})
-			.catch((error) => dispatch(updatePersonError(error)));
+			.catch((error) => {
+				console.log("catch");
+				dispatch(updatePersonError(error));
+			});
 	};
 };
