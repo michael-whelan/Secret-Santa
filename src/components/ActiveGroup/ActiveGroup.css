@@ -3,3 +3,8 @@
 	top: 10vh;
 	left: 45%;
 }
+
+.add-person-btn {
+	display: block;
+	margin: auto;
+}

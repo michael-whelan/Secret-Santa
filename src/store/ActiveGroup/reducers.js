@@ -31,6 +31,10 @@ export default function ActiveGroupReducer(state = initialState, action) {
 			console.log("Error during update");
 			console.log(action.data);
 			return state;
+		case "DO_TEST":
+			console.log("test");
+			console.log(action.data);
+			return state;
 		default:
 			return state;
 	}

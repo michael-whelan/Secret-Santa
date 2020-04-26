@@ -5,7 +5,7 @@ const PersonContainer = ({ person, clickAction }) => {
 	return (
 		<Person
 			name={person.name}
-			editAction={() => clickAction(person)}
+			editAction={clickAction}
 		></Person>
 	);
 };

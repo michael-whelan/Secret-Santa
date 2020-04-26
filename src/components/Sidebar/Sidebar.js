@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Sidebar.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListItem from "../ListItem/ListItem";
