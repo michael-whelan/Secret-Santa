@@ -5,7 +5,7 @@ import PersonContainer from "../../containers/PersonContainer";
 import ModalContainer from "../../containers/ModalContainer";
 import PropTypes from "prop-types";
 
-const ActiveGroup = ({ groupDetails = {}, people = [] }) => {
+const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 	const [modalShow, setModalShow] = React.useState(false);
 	const [activePerson, setActivePerson] = React.useState({});
 
@@ -47,6 +47,7 @@ const ActiveGroup = ({ groupDetails = {}, people = [] }) => {
 						/>
 					))}
 				</ListGroup>
+				<span className="error">{errorMsg}</span>
 			</div>
 		</div>
 	);

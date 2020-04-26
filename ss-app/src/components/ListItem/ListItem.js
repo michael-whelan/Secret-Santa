@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import ListGroup from "react-bootstrap/ListGroup";
 import "./ListItem.css";
 
-const ListItem = ({ group,setGroup, selectGroup, selected }) => {
+const ListItem = ({ group, selectGroup, selected }) => {
 	const handleSelect = () => {
-        setGroup(group);
 		selectGroup(group);
 	};
 

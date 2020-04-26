@@ -2,9 +2,10 @@ import { connect } from "react-redux";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { selectGroup } from "../store/Sidebar/actions";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({sidebar}) => {
 	return {
-		groups: state.sidebar.groupList,
+		groups: sidebar.groupList,
+		errorMsg: sidebar.errorMsg,
 	};
 };
 

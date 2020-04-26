@@ -6,6 +6,7 @@ import {
 
 const initialState = {
 	groupList: [],
+	errorMsg: ""
 };
 
 export default function sidebarReducer(state = initialState, action) {
@@ -25,6 +26,7 @@ export default function sidebarReducer(state = initialState, action) {
 			return {
 				...state,
 				groupList: [],
+				errorMsg: "Error Loading groups",
 			};
 		default:
 			return state;
