@@ -12,17 +12,17 @@ function ModalPopup({
 	person,
 	doSubmit,
 	modalMap,
+	submitTitle="Submit",
+	dispatch,
 	...props
 }) {
 	const [tempPerson, updateTempPerson] = React.useState(person);
-
 	const handleChange = ({ target: { value, dataset } }) => {
 		console.log(value);
 		let localP = person;
 		localP[dataset.link] = value;
 		updateTempPerson(localP);
 	};
-
 	return (
 		<Modal
 			size="lg"
@@ -62,7 +62,7 @@ function ModalPopup({
 						props.onHide();
 					}}
 				>
-					Update
+					{submitTitle}
 				</Button>
 				<Button onClick={props.onHide}>Close</Button>
 			</Modal.Footer>

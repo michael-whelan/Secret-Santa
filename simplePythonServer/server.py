@@ -130,18 +130,23 @@ class Handler (BaseHTTPRequestHandler) :
 
 		if self.path == "/addperson" or self.path == "/addperson/":
 			print("connection made /addperson")
-			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
-				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
-
+			#creds = db.check_credentials(self.headers.getheader('X-User-ID'),
+			#	self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			creds= {'uuid': 'test'}
 			if creds is not None:
 				postvars = self.parse_POST()
 				newPerson = db.add_person(postvars)
+				print(newPerson)
+				self.send_response(200)
+				return
+				newPerson = db.add_person(postvars)
 				if newPerson["success"]:
-					self.send_response(202)
-					self.wfile.write("\n")
-					json.dump(newPerson ,self.wfile)
+					self.send_response(200)
+					#self.wfile.write("\n")
+					#json.dump(newPerson ,self.wfile)
 				else:
-					json.dump({"message": "Error adding person","approved":False},self.wfile)
+					self.send_response(400)
+					#json.dump({"message": "Error adding person","approved":False},self.wfile)
 				self.end_headers()
 				return
 			self.send_response(404)

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import ModalPopup from "../components/Modal/Modal";
-import { updatePerson } from "../store/Modal/actions";
+//import { updatePerson } from "../store/Modal/actions";
 
 const mapStateToProps = (state) => {
 	return {
@@ -8,11 +8,11 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = {
-	doSubmit: updatePerson,
-};
+// const mapDispatchToProps = {
+// 	updatePerson,
+// };
 
 
-const ModalContainer = connect(mapStateToProps, mapDispatchToProps)(ModalPopup);
+const ModalContainer = connect(mapStateToProps)(ModalPopup);
 
 export default ModalContainer;

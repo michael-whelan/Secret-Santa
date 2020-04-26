@@ -226,12 +226,8 @@ def update_person(vars, creds):
 
 def add_person(vars):
 	#Should first check that user is valid to make change
-	new_name = ""
-	new_email = ""
-	if vars["col"] == "name":
-		new_name = vars["newVal"]
-	if vars["col"] == "email":
-		new_email = vars["newVal"]
+	new_name = vars["name"]
+	new_email = vars["email"]
 	query = """insert into people(group_id, name, email, active) values (%s, '%s', '%s',%s)""" % (
 				vars["group_id"], new_name, new_email,1
 			)
