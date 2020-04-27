@@ -1,14 +1,14 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ModalPopup from "../components/Modal/Modal";
 import { updatePerson, addPerson } from "../store/Modal/actions";
 
 const ModalContainer = ({ group_id, modalType, ...props }) => {
 	const dispatch = useDispatch();
 
-	const {
-		activeGroup: { people },
-	} = useSelector((state) => state);
+	// const {
+	// 	activeGroup: { people },
+	// } = useSelector((state) => state);
 
 	const dispatcher = (func, vars) => {
 		dispatch(func(vars, group_id));
@@ -18,7 +18,6 @@ const ModalContainer = ({ group_id, modalType, ...props }) => {
 		<ModalPopup
 			{...props}
 			modalMap={getModalMap(modalType)}
-			people
 			dispatcher={dispatcher}
 		/>
 	);
@@ -31,13 +30,13 @@ const getModalMap = (type) => {
 				{
 					label: "Name",
 					type: "text",
-					default: "Username",
+					placeholder: "Username",
 					link: "name",
 				},
 				{
 					label: "email",
 					type: "text",
-					default: "email",
+					placeholder: "email",
 					link: "email",
 				},
 				{
@@ -58,13 +57,13 @@ const getModalMap = (type) => {
 				{
 					label: "Name",
 					type: "text",
-					default: "Username",
+					placeholder: "Username",
 					link: "name",
 				},
 				{
 					label: "email",
 					type: "text",
-					default: "email",
+					placeholder: "email",
 					link: "email",
 				},
 				{
@@ -72,6 +71,15 @@ const getModalMap = (type) => {
 					type: "button",
 					color: "primary",
 					func: addPerson,
+				},
+			];
+		default:
+			return [
+				{
+					label: "This is a test. You shouldnt see this",
+					type: "label",
+					default: "",
+					link: "",
 				},
 			];
 	}
