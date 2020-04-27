@@ -40,10 +40,10 @@ export const updatePerson = (n_person) => {
 
 export const addPerson = (n_person, group_id) => {
 	const { name, email } = n_person;
-	console.log(n_person,group_id);
+	console.log(n_person, group_id);
 	return function (dispatch) {
 		return axios
-			.post(endpoint + "addperson", { name, email, group_id})
+			.post(endpoint + "addperson", { name, email, group_id })
 			.then((response) => {
 				if (response.status === 200) {
 					dispatch(loadSelectedGroup(group_id));

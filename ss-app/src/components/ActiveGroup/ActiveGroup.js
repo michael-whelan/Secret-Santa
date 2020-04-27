@@ -7,45 +7,19 @@ import Button from "react-bootstrap/Button";
 
 import PropTypes from "prop-types";
 
-const ActiveGroup = ({
-	groupDetails = {},
-	people = [],
-	errorMsg = "",
-	doUpdate,
-	doAddPerson,
-}) => {
+const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 	const [modalShow, setModalShow] = React.useState(false);
-	const [modalMap, setModalMap] = React.useState([]);
-	const [modalType, setModalType] = React.useState("edit");
-	const [modalSubButton, setModalSubButton] = React.useState("Update");
 	const [activePerson, setActivePerson] = React.useState({});
+	const [modalType, setModalType] = React.useState("update");
 
-	const modalSubmit = (val) => {
-		modalType === "edit" ? doUpdate(val) : doAddPerson(val, groupDetails.id);
-	};
-	const personMap = [
-		{
-			label: "Name",
-			type: "text",
-			default: "Username",
-			link: "name",
-		},
-		{
-			label: "email",
-			type: "text",
-			default: "email",
-			link: "email",
-		},
-	];
 	return (
 		<div className="main-area">
 			<ModalContainer
 				show={modalShow}
 				onHide={() => setModalShow(false)}
-				modalMap={modalMap}
 				person={activePerson}
-				submitTitle={modalSubButton}
-				doSubmit={modalSubmit}
+				group_id={groupDetails.id}
+				modalType={modalType}
 			/>
 			<div className="activegroup">
 				<div className="activegroup-header">
@@ -58,10 +32,8 @@ const ActiveGroup = ({
 							person={p}
 							clickAction={() => {
 								setModalShow(!modalShow);
+								setModalType("update");
 								setActivePerson(p);
-								setModalMap(personMap);
-								setModalType("edit");
-								setModalSubButton("Update");
 							}}
 						/>
 					))}
@@ -71,10 +43,9 @@ const ActiveGroup = ({
 						variant="outline-primary"
 						className="add-person-btn"
 						onClick={() => {
-							setModalMap(personMap);
-							setModalType("add");
-							setModalSubButton("Add");
 							setModalShow(!modalShow);
+							setActivePerson({});
+							setModalType("add");
 						}}
 					>
 						Add Person
