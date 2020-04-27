@@ -1,5 +1,5 @@
 import { LOAD_GROUP_ERROR, STORE_SELECTED_GROUP } from "./types";
-import { UPDATE_PERSON, UPDATE_PERSON_ERROR } from "../Modal/types";
+import { UPDATE_PERSON, UPDATE_PERSON_ERROR, ADD_PERSON } from "../Modal/types";
 
 const initialState = {
 	people: [],
@@ -29,6 +29,9 @@ export default function ActiveGroupReducer(state = initialState, action) {
 		case UPDATE_PERSON_ERROR:
 			console.log("Error during update");
 			console.log(action.data);
+			return state;
+		case ADD_PERSON:
+			console.log("new Person Added");
 			return state;
 		case "DO_TEST":
 			console.log("test");

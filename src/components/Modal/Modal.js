@@ -8,7 +8,6 @@ import FormControl from "react-bootstrap/FormControl";
 
 function ModalPopup({
 	heading = "Modal Heading",
-	people,
 	person = {},
 	modalMap,
 	dispatch,
@@ -21,6 +20,25 @@ function ModalPopup({
 		localP[dataset.link] = value;
 		updateTempPerson(localP);
 	};
+
+	const textInput = (label, link, placeholder, index) => {
+		return (
+			<InputGroup className="mb-3" key={index}>
+				<InputGroup.Prepend>
+					<InputGroup.Text id="basic-addon1">{label}</InputGroup.Text>
+				</InputGroup.Prepend>
+				<FormControl
+					placeholder={placeholder}
+					aria-label={placeholder}
+					aria-describedby="basic-addon1"
+					data-link={link}
+					defaultValue={person[link]}
+					onChange={handleChange.bind(this)}
+				/>
+			</InputGroup>
+		);
+	};
+
 	return (
 		<Modal
 			size="lg"
@@ -37,23 +55,10 @@ function ModalPopup({
 				<h4>Centered Modal</h4>
 				{modalMap.map(
 					(elem, index) =>
-						elem.type !== "button" && (
-							<InputGroup className="mb-3" key={index}>
-								<InputGroup.Prepend>
-									<InputGroup.Text id="basic-addon1">
-										{elem.label}
-									</InputGroup.Text>
-								</InputGroup.Prepend>
-								<FormControl
-									placeholder={elem.default}
-									aria-label={elem.default}
-									aria-describedby="basic-addon1"
-									data-link={elem.link}
-									defaultValue={person[elem.link]}
-									onChange={handleChange.bind(this)}
-								/>
-							</InputGroup>
-						)
+						elem.type === "text" &&
+						textInput(elem.label, elem.link, elem.default, index)
+						// elem.type === "label" && 
+						// showLabel(elem.label)
 				)}
 			</Modal.Body>
 			<Modal.Footer>
