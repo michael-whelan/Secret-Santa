@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
-import { updatePerson, addPerson, doTestExport } from "../store/Modal/actions";
+import { doTestExport } from "../store/Modal/actions";
 
 const mapStateToProps = (state) => {
 	return {
@@ -10,13 +10,6 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = {
-	doUpdate: updatePerson,
-	doAddPerson: addPerson,
-};
-const ActiveGroupContainer = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ActiveGroup);
+const ActiveGroupContainer = connect(mapStateToProps)(ActiveGroup);
 
 export { ActiveGroupContainer };

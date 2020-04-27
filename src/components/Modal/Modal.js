@@ -9,16 +9,14 @@ import FormControl from "react-bootstrap/FormControl";
 function ModalPopup({
 	heading = "Modal Heading",
 	people,
-	person,
-	doSubmit,
+	person = {},
 	modalMap,
-	submitTitle="Submit",
 	dispatch,
+	dispatcher,
 	...props
 }) {
 	const [tempPerson, updateTempPerson] = React.useState(person);
 	const handleChange = ({ target: { value, dataset } }) => {
-		console.log(value);
 		let localP = person;
 		localP[dataset.link] = value;
 		updateTempPerson(localP);
@@ -37,34 +35,51 @@ function ModalPopup({
 			</Modal.Header>
 			<Modal.Body>
 				<h4>Centered Modal</h4>
-				{modalMap.map((elem, index) => (
-					<InputGroup className="mb-3" key={index}>
-						<InputGroup.Prepend>
-							<InputGroup.Text id="basic-addon1">
-								{elem.label}
-							</InputGroup.Text>
-						</InputGroup.Prepend>
-						<FormControl
-							placeholder={elem.default}
-							aria-label={elem.default}
-							aria-describedby="basic-addon1"
-							data-link={elem.link}
-							defaultValue={person[elem.link]}
-							onChange={handleChange.bind(this)}
-						/>
-					</InputGroup>
-				))}
+				{modalMap.map(
+					(elem, index) =>
+						elem.type !== "button" && (
+							<InputGroup className="mb-3" key={index}>
+								<InputGroup.Prepend>
+									<InputGroup.Text id="basic-addon1">
+										{elem.label}
+									</InputGroup.Text>
+								</InputGroup.Prepend>
+								<FormControl
+									placeholder={elem.default}
+									aria-label={elem.default}
+									aria-describedby="basic-addon1"
+									data-link={elem.link}
+									defaultValue={person[elem.link]}
+									onChange={handleChange.bind(this)}
+								/>
+							</InputGroup>
+						)
+				)}
 			</Modal.Body>
 			<Modal.Footer>
+				{modalMap.map(
+					(elem, index) =>
+						elem.type === "button" && (
+							<Button
+								key={index}
+								variant={elem.color}
+								onClick={() => {
+									dispatcher(elem.func, tempPerson);
+									props.onHide();
+								}}
+							>
+								{elem.label}
+							</Button>
+						)
+				)}
 				<Button
 					onClick={() => {
-						doSubmit(tempPerson);
 						props.onHide();
+						updateTempPerson({});
 					}}
 				>
-					{submitTitle}
+					Close
 				</Button>
-				<Button onClick={props.onHide}>Close</Button>
 			</Modal.Footer>
 		</Modal>
 	);
