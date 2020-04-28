@@ -15,6 +15,8 @@ function ModalPopup({
 	...props
 }) {
 	const [tempPerson, updateTempPerson] = React.useState(person);
+	tempPerson !== person && updateTempPerson(person);
+
 	const handleChange = ({ target: { value, dataset } }) => {
 		let localP = person;
 		localP[dataset.link] = value;
@@ -57,8 +59,8 @@ function ModalPopup({
 					(elem, index) =>
 						elem.type === "text" &&
 						textInput(elem.label, elem.link, elem.default, index)
-						// elem.type === "label" && 
-						// showLabel(elem.label)
+					// elem.type === "label" &&
+					// showLabel(elem.label)
 				)}
 			</Modal.Body>
 			<Modal.Footer>

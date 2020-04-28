@@ -214,11 +214,7 @@ def update_person(vars, creds):
 				update_string, id
 			)
 	try:
-		conn = sqlite3.connect('secretsanta.db')
-		cursor = conn.cursor()
-		cursor.execute(query)
-		conn.commit()
-		conn.close()
+		do_query(query)
 		return True
 	except:
 		print("Error: Something went wrong")
@@ -232,11 +228,27 @@ def add_person(vars):
 				vars["group_id"], new_name, new_email,1
 			)
 
-	print(query)
-	conn = sqlite3.connect('secretsanta.db')
-	cursor = conn.cursor()
-	cursor.execute(query)
-	conn.commit()
-	conn.close()
+	do_query(query)
 	group = getGroup(vars["group_id"])
 	return {"success":True,"message":"Person added","updated_g_id": vars["group_id"], "updated_group": group}
+
+def delete_person(vars, creds):
+	#do cred check
+	print("vars", vars['id'])
+	if vars["id"][0]:
+		try:
+			query = """delete from people where id = %s""" % (
+						vars["id"][0]
+					)
+			do_query(query)
+			return 200
+		except:
+			return 400
+	return 400
+
+def do_query(q):
+	conn = sqlite3.connect('secretsanta.db')
+	cursor = conn.cursor()
+	cursor.execute(q)
+	conn.commit()
+	conn.close()

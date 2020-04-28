@@ -1,4 +1,9 @@
-import { UPDATE_PERSON, UPDATE_PERSON_ERROR, ADD_PERSON } from "./types";
+import {
+	UPDATE_PERSON,
+	UPDATE_PERSON_ERROR,
+	ADD_PERSON,
+	DELETE_PERSON,
+} from "./types";
 import { loadSelectedGroup } from "../ActiveGroup/actions";
 
 import axios from "axios";
@@ -12,6 +17,10 @@ const updatePersonStore = (person) => ({
 
 const addedPerson = () => ({
 	type: ADD_PERSON,
+});
+
+const deletedPerson = () => ({
+	type: DELETE_PERSON,
 });
 
 const updatePersonError = (message) => ({
@@ -42,8 +51,7 @@ export const updatePerson = (n_person) => {
 	};
 };
 
-export const addPerson = (n_person, group_id) => {
-	const { name, email } = n_person;
+export const addPerson = ({ name, email }, group_id) => {
 	return function (dispatch) {
 		return axios
 			.post(endpoint + "addperson", { name, email, group_id })
@@ -61,13 +69,15 @@ export const addPerson = (n_person, group_id) => {
 	};
 };
 
-export const deletePerson = (person_id) => {
+export const deletePerson = ({ person_id }, group_id) => {
+	console.log(person_id);
 	return function (dispatch) {
 		return axios
-			.post(endpoint + "deleteperson", { person_id })
+			.delete(endpoint + "deleteperson?id="+person_id)
 			.then((response) => {
 				if (response.status === 200) {
-					console.log("deleted a person");
+					dispatch(deletedPerson());
+					dispatch(loadSelectedGroup(group_id));
 				} else {
 					dispatch(updatePersonError(response));
 				}

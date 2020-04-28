@@ -65,7 +65,6 @@ class Handler (BaseHTTPRequestHandler) :
 				self.send_response(404)
 				return
 		if self.path.split('?')[0] == "/getgroup":
-			print("connection made /getgroup/")
 			creds= {'uuid': 'test'}
 			par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
 			if creds is not None:
@@ -112,7 +111,6 @@ class Handler (BaseHTTPRequestHandler) :
 	def do_POST(self):
 		# Look for POST request
 		if self.path == "/creategroup" or self.path == "/creategroup/":
-			print("connection made /creategroup")
 			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
 				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
 
@@ -129,7 +127,6 @@ class Handler (BaseHTTPRequestHandler) :
 			self.end_headers()
 
 		if self.path == "/addperson" or self.path == "/addperson/":
-			print("connection made /addperson")
 			#creds = db.check_credentials(self.headers.getheader('X-User-ID'),
 			#	self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
 			creds= {'uuid': 'test'}
@@ -173,7 +170,6 @@ class Handler (BaseHTTPRequestHandler) :
 
 	def do_PUT(self):
 		if self.path == "/updateperson" or self.path == "/updateperson/":
-			print("connection made /updateperson")
 			#creds = db.check_credentials(self.headers.getheader('X-User-ID'),
 			#	self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
 			creds= {'uuid': 'test'}
@@ -203,6 +199,15 @@ class Handler (BaseHTTPRequestHandler) :
 				print("***********pipe************")
 				self.send_response(404)
 				self.end_headers()
+
+	def do_DELETE(self):
+		if self.path.split('?')[0] == "/deleteperson":
+			creds= {'uuid': 'test'}
+			par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
+			print("par",par)
+			status = db.delete_person(par,creds)
+			self.send_response(status)
+			self.end_headers()
 
 server = HTTPServer(("localhost", PORT), Handler)
 print ("serving at port", PORT)
