@@ -178,14 +178,17 @@ def getGroup(g_id):
 def addGroup(groupName, userInfo):
 	#and admin = (select id from users where uuid = '%s') userInfo["uuid"]
 	if uniqueEntry("""select * from groups where group_name = '%s'""" % (groupName)):
-		nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
-		query = """insert into groups (group_name,date_created,last_update_date,admin,public,sent)
-			values ('%s', '%s', '%s', (select id from users where uuid = '%s'), 0,0);""" % (
-				groupName,nowTime,nowTime,1
-			)
-		print(query)
-		do_query(query)
-		return 200
+		try:
+			nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
+			query = """insert into groups (group_name,date_created,last_update_date,admin,public,sent)
+				values ('%s', '%s', '%s', (select id from users where uuid = '%s'), 0,0);""" % (
+					groupName,nowTime,nowTime,1
+				)
+			print(query)
+			do_query(query)
+			return 200
+		except:
+			return 400
 		#add_person({"col":"name", "group_id": new_group_id, "newVal": ""})
 		#return {"group_id":new_group_id,"group_name":groupName,"success":True,"message":"New Group created"}
 	return 400

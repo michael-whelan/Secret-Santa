@@ -116,9 +116,7 @@ class Handler (BaseHTTPRequestHandler) :
 			creds= {'uuid': 'test'}
 			if creds is not None:
 				postvars = self.parse_POST()
-				print(postvars)
-				status =200
-				#status = db.addGroup(postvars["groupname"],creds)
+				status = db.addGroup(postvars["group_name"],creds)
 				self.send_response(status)
 				self.end_headers()
 				return
