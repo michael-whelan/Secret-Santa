@@ -88,6 +88,27 @@ const getModalMap = (type) => {
 					func: addGroup,
 				},
 			];
+		case "update-group":
+			return [
+				{
+					label: "Group Name",
+					type: "text",
+					placeholder: "Group Name",
+					link: "group_name",
+				},
+				{
+					label: "DELETE",
+					type: "button",
+					color: "danger",
+					func: doTestExport,
+				},
+				{
+					label: "Update",
+					type: "button",
+					color: "primary",
+					func: doTestExport,
+				},
+			];
 		default:
 			return [
 				{

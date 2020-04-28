@@ -214,10 +214,10 @@ def update_person(vars, creds):
 			)
 	try:
 		do_query(query)
-		return True
+		return 200
 	except:
 		print("Error: Something went wrong")
-		return False
+		return 400
 
 def add_person(vars):
 	#Should first check that user is valid to make change
@@ -226,10 +226,12 @@ def add_person(vars):
 	query = """insert into people(group_id, name, email, active) values (%s, '%s', '%s',%s)""" % (
 				vars["group_id"], new_name, new_email,1
 			)
-
-	do_query(query)
-	group = getGroup(vars["group_id"])
-	return {"success":True,"message":"Person added","updated_g_id": vars["group_id"], "updated_group": group}
+	try:
+		do_query(query)
+		return 200
+	except:
+		print("Error: Adding person")
+		return 400
 
 def delete_person(vars, creds):
 	#do cred check

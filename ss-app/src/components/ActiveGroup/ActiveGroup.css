@@ -8,3 +8,19 @@
 	display: block;
 	margin: auto;
 }
+
+.group-title {
+	display: inline;
+}
+.group-edit {
+	display: none;
+	width: 25px;
+	position: absolute;
+}
+
+.activegroup-header:hover .group-edit {
+	display: inline-block;
+	width: 25px;
+	top: 15px;
+	position: absolute;
+}
