@@ -23,26 +23,65 @@ Most groups won't require many Nots
 
 ## The Front End
 
-The front end of the site is built in ReactJS and using MaterialUI to handle parts of the interface.
+The front end of the site is built in ReactJS and using ~~MaterialUI~~ (bootstrap) to handle parts of the interface.
 
-The aim is to make simple stand alone components that can be reused in other projects if needed. 
+The aim with this project is to get to grips with some of the new trends in React, functional componants, [hooks](https://reactjs.org/docs/hooks-intro.html), and using [react router](https://reacttraining.com/react-router/web/example/basic) to create unique urls to allow sharing of content better.
 
 This will require building the app with a data layer seperate to the "dumb" components.
 
-App -> Component data layer -> Component Renderer
+App -> Component data layer(container) -> Component Renderer(Component)
 
-This will mean that each component will require two files instead of one, but that the "dumb" render layer will be the majority of the component and can be reused in different projects simply by firing data to it, and made to look different depending on that data.
+### Connecting to RESTful service:
 
+I'm using the [axios](https://github.com/axios/axios) library to connect to my simple python API. It's a standard in React devlopment and comes with excellent documentation. 
+
+```javascript
+export const loadGroupList = () => {
+	return function (dispatch) {
+		dispatch(loadGroups());//simple action 
+		return axios
+			.get(endpoint + "getgroups")//the actual getter connection
+			.then(({ data }) => {
+				dispatch(renderGroupList(data));//what to do once the get returns (status: 200)
+			})
+			.catch((error) => dispatch(loadGroupsError(error)));//some simple error handling for the client
+	};
+};
+
+```
 
 ## The Python
-
 
 
 The server side logic for the app is in two parts:
 
 ### 1. API 
 
-A simple rest server used for all the account and data management. This includes the user log in/registration, the creation of groups by registered users and the allocation of unique IDs to these groups.
+A simple rest server used for data management (groups + settings, people in those groups etc). 
+Using pythons BaseHTTPServer to handle my REST requests:
+```python
+from BaseHTTPServer import HTTPServer
+from BaseHTTPServer import BaseHTTPRequestHandler
+import os
+class Handler (BaseHTTPRequestHandler) :
+  def do_GET(self) :
+    #in case of success
+    self.send_response(200)
+    json.dump('content for get', self.wfile)
+    return
+  def do_POST(self):
+    #do post stuff
+  def do_PUT(self):
+    #do put stuff
+  def do_DELETE(self):
+    #do delete stuff
+
+#Simple serving
+server = HTTPServer(("localhost", PORT), Handler)
+print ("serving at port", PORT)
+server.serve_forever()
+
+```
 
 **--NOT DONE--**
  
