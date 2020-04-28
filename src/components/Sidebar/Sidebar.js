@@ -8,7 +8,6 @@ import ModalContainer from "../../containers/ModalContainer";
 
 const SideBar = ({ groups, selectGroup, errorMsg }) => {
 	const [modalShow, setModalShow] = React.useState(false);
-	const [activeGroup, setActiveGroup] = React.useState({});
 	return (
 		<div className="sidebar">
 			<div className="sidebar-header">
@@ -39,7 +38,7 @@ const SideBar = ({ groups, selectGroup, errorMsg }) => {
 				show={modalShow}
 				onHide={() => setModalShow(false)}
 				group_id={null}
-				currData={activeGroup}
+				currData={{}}
 				heading={"Add New Group"}
 				modalType={"add-group"}
 			/>

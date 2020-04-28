@@ -4,12 +4,12 @@ import ListGroup from "react-bootstrap/ListGroup";
 import PersonContainer from "../../containers/PersonContainer";
 import ModalContainer from "../../containers/ModalContainer";
 import Button from "react-bootstrap/Button";
-
+import logo from "../../icons/icons8-edit-file-52.png";
 import PropTypes from "prop-types";
 
 const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 	const [modalShow, setModalShow] = React.useState(false);
-	const [activePerson, setActivePerson] = React.useState({});
+	const [activeObject, setActiveObject] = React.useState({});
 	const [modalType, setModalType] = React.useState("update");
 	const [modalHeading, setModalHeading] = React.useState("update");
 	return (
@@ -17,14 +17,23 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 			<ModalContainer
 				show={modalShow}
 				onHide={() => setModalShow(false)}
-				currData={activePerson}
+				currData={activeObject}
 				group_id={groupDetails.id}
 				modalType={modalType}
 				heading={modalHeading}
 			/>
 			<div className="activegroup">
-				<div className="activegroup-header">
-					<h2>{groupDetails.group_name}</h2>
+				<div
+					className="activegroup-header"
+					onClick={() => {
+						setModalType("update-group");
+						setModalShow(!modalShow);
+						setModalHeading("Edit Group");
+						setActiveObject(groupDetails);
+					}}
+				>
+					<h2 className="group-title">{groupDetails.group_name}</h2>
+					<img className="group-edit" src={logo} />
 				</div>
 				<ListGroup>
 					{people.map((p, index) => (
@@ -34,8 +43,8 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 							clickAction={() => {
 								setModalShow(!modalShow);
 								setModalType("update");
-								setActivePerson(p);
-								setModalHeading("Edit Person")
+								setActiveObject(p);
+								setModalHeading("Edit Person");
 							}}
 						/>
 					))}
@@ -46,9 +55,9 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 						className="add-person-btn"
 						onClick={() => {
 							setModalShow(!modalShow);
-							setActivePerson({});
+							setActiveObject({});
 							setModalType("add");
-							setModalHeading("Add New Person")
+							setModalHeading("Add New Person");
 						}}
 					>
 						Add Person

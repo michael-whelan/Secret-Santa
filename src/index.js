@@ -18,3 +18,4 @@ render(
 	</Provider>,
 	document.getElementById("root")
 );
+//<a target="_blank" href="https://icons8.com/icons/set/edit-file">Edit File icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
