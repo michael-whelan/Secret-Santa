@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import ModalPopup from "../components/Modal/Modal";
-import { updatePerson, addPerson } from "../store/Modal/actions";
+import { updatePerson, addPerson, deletePerson } from "../store/Modal/actions";
 
 const ModalContainer = ({ group_id, modalType, ...props }) => {
 	const dispatch = useDispatch();
@@ -11,6 +11,7 @@ const ModalContainer = ({ group_id, modalType, ...props }) => {
 	// } = useSelector((state) => state);
 
 	const dispatcher = (func, vars) => {
+		console.log(func, vars)
 		dispatch(func(vars, group_id));
 	};
 
@@ -43,7 +44,7 @@ const getModalMap = (type) => {
 					label: "DELETE",
 					type: "button",
 					color: "danger",
-					func: updatePerson,
+					func: deletePerson,
 				},
 				{
 					label: "Update",
