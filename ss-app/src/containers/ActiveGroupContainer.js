@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
-import { doTestExport } from "../store/Modal/actions";
 
 const mapStateToProps = (state) => {
 	return {

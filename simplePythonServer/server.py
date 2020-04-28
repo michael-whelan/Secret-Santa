@@ -111,16 +111,15 @@ class Handler (BaseHTTPRequestHandler) :
 	def do_POST(self):
 		# Look for POST request
 		if self.path == "/creategroup" or self.path == "/creategroup/":
-			creds = db.check_credentials(self.headers.getheader('X-User-ID'),
-				self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
-
+			#creds = db.check_credentials(self.headers.getheader('X-User-ID'),
+			#	self.headers.getheader('X-User-Email'), self.headers.getheader('X-User-Pass'))
+			creds= {'uuid': 'test'}
 			if creds is not None:
 				postvars = self.parse_POST()
-				newGroup = db.addGroup(postvars["groupname"],creds)
-				if newGroup["success"]:
-					json.dump(newGroup ,self.wfile)
-				else:
-					json.dump({"message": "Group name already exists","approved":False},self.wfile)
+				print(postvars)
+				status =200
+				#status = db.addGroup(postvars["groupname"],creds)
+				self.send_response(status)
 				self.end_headers()
 				return
 			self.send_response(404)

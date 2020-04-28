@@ -28,7 +28,7 @@ const renderGroupList = (data) => ({
 	groupList: data,
 });
 
-const loadGroupsError = (message) => ({
+export const loadGroupsError = (message) => ({
 	type: LOAD_GROUP_LIST_ERROR,
 	data: message,
 });

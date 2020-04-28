@@ -176,27 +176,23 @@ def getGroup(g_id):
 
 
 def addGroup(groupName, userInfo):
-	if uniqueEntry("""select * from groups where group_name = '%s' and
-	admin = (select id from users where uuid = '%s')""" % (groupName, userInfo["uuid"])):
+	#and admin = (select id from users where uuid = '%s') userInfo["uuid"]
+	if uniqueEntry("""select * from groups where group_name = '%s'""" % (groupName)):
 		nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
 		query = """insert into groups (group_name,date_created,last_update_date,admin,public,sent)
 			values ('%s', '%s', '%s', (select id from users where uuid = '%s'), 0,0);""" % (
-				groupName, nowTime,nowTime,userInfo["uuid"]
+				groupName,nowTime,nowTime,1
 			)
 		print(query)
-		conn = sqlite3.connect('secretsanta.db')
-		cursor= conn.cursor()
-		cursor.execute(query)
-		conn.commit()
-		new_group_id = cursor.lastrowid
-		conn.close()
-		add_person({"col":"name", "group_id": new_group_id, "newVal": ""})
-		return {"group_id":new_group_id,"group_name":groupName,"success":True,"message":"New Group created"}
-	return {"message": "Group creation error","success":False}
-	for group in groups:
-		if groupName == groups[group]["name"]:
-			return False
-	return True
+		do_query(query)
+		return 200
+		#add_person({"col":"name", "group_id": new_group_id, "newVal": ""})
+		#return {"group_id":new_group_id,"group_name":groupName,"success":True,"message":"New Group created"}
+	return 400
+	# for group in groups:
+	# 	if groupName == groups[group]["name"]:
+	# 		return False
+	# return True
 
 def make_update_strings(vars):
 	ret_string = ""

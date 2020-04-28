@@ -5,35 +5,14 @@
 	z-index: 1;
 	overflow-x: hidden;
 	background-color: #282c34;
-    color: white;
-    border-right: solid;
-    border-width: 1px;
+	color: white;
+	border-right: solid;
+	border-width: 1px;
 	/*border-right: black solid 2px;*/
 }
 
-div.right:before {
-	content: "";
-	position: absolute;
-	left: 0;
-	top: 6em;
-	height: 85%;
-	width: 20%;
-	min-width: 14em;
-	border-right: 3px solid #000;
-}
-
-.left-panel ul li {
-	font-size: initial;
-}
-
-.left-panel ul {
-	color: black;
-	background-color: transparent;
-	box-shadow: 0px 0px 0px;
-	cursor: pointer;
-}
-
-.left-panel li:hover {
-	background-color: #282c34;
-	color: white;
+.add-group-btn {
+	position: relative;
+	display: block;
+	left: 10%;
 }

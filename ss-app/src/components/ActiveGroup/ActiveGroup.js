@@ -11,15 +11,16 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 	const [modalShow, setModalShow] = React.useState(false);
 	const [activePerson, setActivePerson] = React.useState({});
 	const [modalType, setModalType] = React.useState("update");
-
+	const [modalHeading, setModalHeading] = React.useState("update");
 	return (
 		<div className="main-area">
 			<ModalContainer
 				show={modalShow}
 				onHide={() => setModalShow(false)}
-				person={activePerson}
+				currData={activePerson}
 				group_id={groupDetails.id}
 				modalType={modalType}
+				heading={modalHeading}
 			/>
 			<div className="activegroup">
 				<div className="activegroup-header">
@@ -34,6 +35,7 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 								setModalShow(!modalShow);
 								setModalType("update");
 								setActivePerson(p);
+								setModalHeading("Edit Person")
 							}}
 						/>
 					))}
@@ -46,6 +48,7 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 							setModalShow(!modalShow);
 							setActivePerson({});
 							setModalType("add");
+							setModalHeading("Add New Person")
 						}}
 					>
 						Add Person
