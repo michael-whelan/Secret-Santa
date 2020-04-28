@@ -37,15 +37,15 @@ I'm using the [axios](https://github.com/axios/axios) library to connect to my s
 
 ```javascript
 export const loadGroupList = () => {
-	return function (dispatch) {
-		dispatch(loadGroups());//simple action 
-		return axios
-			.get(endpoint + "getgroups")//the actual getter connection
-			.then(({ data }) => {
-				dispatch(renderGroupList(data));//what to do once the get returns (status: 200)
-			})
-			.catch((error) => dispatch(loadGroupsError(error)));//some simple error handling for the client
-	};
+  return function (dispatch) {
+    dispatch(loadGroups());//simple action 
+      return axios
+        .get(endpoint + "getgroups")//the actual getter connection
+        .then(({ data }) => {
+          dispatch(renderGroupList(data));//what to do once the get returns (status: 200)
+        })
+        .catch((error) => dispatch(loadGroupsError(error)));//some simple error handling for the client
+    };
 };
 
 ```
