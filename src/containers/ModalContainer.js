@@ -1,7 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import ModalPopup from "../components/Modal/Modal";
-import { updatePerson, addPerson, deletePerson } from "../store/Modal/actions";
+import { updatePerson, addPerson, deletePerson, addGroup } from "../store/Modal/actions";
+import { doTestExport } from "../store/Modal/actions";
 
 const ModalContainer = ({ group_id, modalType, ...props }) => {
 	const dispatch = useDispatch();
@@ -11,10 +12,8 @@ const ModalContainer = ({ group_id, modalType, ...props }) => {
 	// } = useSelector((state) => state);
 
 	const dispatcher = (func, vars) => {
-		console.log(func, vars)
 		dispatch(func(vars, group_id));
 	};
-
 	return (
 		<ModalPopup
 			{...props}
@@ -72,6 +71,21 @@ const getModalMap = (type) => {
 					type: "button",
 					color: "primary",
 					func: addPerson,
+				},
+			];
+		case "add-group":
+			return [
+				{
+					label: "Group Name",
+					type: "text",
+					placeholder: "My Group",
+					link: "groupname",
+				},
+				{
+					label: "Add",
+					type: "button",
+					color: "primary",
+					func: addGroup,
 				},
 			];
 		default:

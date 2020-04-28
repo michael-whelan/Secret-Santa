@@ -8,19 +8,19 @@ import FormControl from "react-bootstrap/FormControl";
 
 function ModalPopup({
 	heading = "Modal Heading",
-	person = {},
+	currData = {},
 	modalMap,
 	dispatch,
 	dispatcher,
 	...props
 }) {
-	const [tempPerson, updateTempPerson] = React.useState(person);
-	tempPerson !== person && updateTempPerson(person);
+	const [tempData, updateTempData] = React.useState(currData);
+	tempData !== currData && updateTempData(currData);
 
 	const handleChange = ({ target: { value, dataset } }) => {
-		let localP = person;
-		localP[dataset.link] = value;
-		updateTempPerson(localP);
+		let localDataObj = currData;
+		localDataObj[dataset.link] = value;
+		updateTempData(localDataObj);
 	};
 
 	const textInput = (label, link, placeholder, index) => {
@@ -34,7 +34,7 @@ function ModalPopup({
 					aria-label={placeholder}
 					aria-describedby="basic-addon1"
 					data-link={link}
-					defaultValue={person[link]}
+					defaultValue={currData[link]}
 					onChange={handleChange.bind(this)}
 				/>
 			</InputGroup>
@@ -71,7 +71,7 @@ function ModalPopup({
 								key={index}
 								variant={elem.color}
 								onClick={() => {
-									dispatcher(elem.func, tempPerson);
+									dispatcher(elem.func, tempData);
 									props.onHide();
 								}}
 							>
@@ -82,7 +82,7 @@ function ModalPopup({
 				<Button
 					onClick={() => {
 						props.onHide();
-						updateTempPerson({});
+						updateTempData({});
 					}}
 				>
 					Close
@@ -94,6 +94,7 @@ function ModalPopup({
 
 ModalPopup.propTypes = {
 	modalMap: PropTypes.array.isRequired,
+	currData: PropTypes.object.isRequired
 };
 
 export default ModalPopup;

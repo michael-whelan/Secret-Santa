@@ -37,8 +37,7 @@ export default function ActiveGroupReducer(state = initialState, action) {
 			console.log("Person Deleted");
 			return state;
 		case "DO_TEST":
-			console.log("test");
-			console.log(action.data);
+			console.log("test", action.data);
 			return state;
 		default:
 			return state;
