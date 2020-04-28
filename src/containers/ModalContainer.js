@@ -79,7 +79,7 @@ const getModalMap = (type) => {
 					label: "Group Name",
 					type: "text",
 					placeholder: "My Group",
-					link: "groupname",
+					link: "group_name",
 				},
 				{
 					label: "Add",
