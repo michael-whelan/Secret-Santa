@@ -7,6 +7,7 @@ import {
 } from "./types";
 import { loadSelectedGroup } from "../ActiveGroup/actions";
 import { loadGroupList, loadGroupsError } from "../Sidebar/actions";
+import { do_post, do_put, do_delete } from "../api/actions";
 
 import axios from "axios";
 
@@ -15,10 +16,6 @@ const endpoint = "http://localhost:8080/";
 const updatePersonStore = (person) => ({
 	type: UPDATE_PERSON,
 	data: person,
-});
-
-const addedPerson = () => ({
-	type: ADD_PERSON,
 });
 
 const addedGroup = () => ({
@@ -38,58 +35,50 @@ export const doTestExport = (group_name, group_id) => {
 	return { type: "DO_TEST", data: { group_name, group_id } };
 };
 
-export const updatePerson = (n_person) => {
+export const updatePerson = (n_person) => async (dispatch) => {
 	const { name, email, person_id } = n_person;
-	return function (dispatch) {
-		return axios
-			.put(endpoint + "updateperson", { name, email, person_id })
-			.then((response) => {
-				if (response.status === 200) {
-					dispatch(updatePersonStore(n_person));
-				} else {
-					dispatch(updatePersonError(response));
-				}
-			})
-			.catch((error) => {
-				dispatch(updatePersonError(error));
-			});
+	let response = await do_put(endpoint + "updateperson", {
+		name,
+		email,
+		person_id,
+	});
+	if (response.status === 200) {
+		dispatch(updatePersonStore(n_person));
+	} else {
+		dispatch(updatePersonError(response));
+	}
+	return {
+		type: ADD_PERSON,
 	};
 };
 
-export const addPerson = ({ name, email }, group_id) => {
-	return function (dispatch) {
-		return axios
-			.post(endpoint + "addperson", { name, email, group_id })
-			.then((response) => {
-				if (response.status === 200) {
-					dispatch(addedPerson());
-					dispatch(loadSelectedGroup(group_id));
-				} else {
-					dispatch(updatePersonError(response));
-				}
-			})
-			.catch((error) => {
-				dispatch(updatePersonError(error));
-			});
+export const addPerson = ({ name, email }, group_id = 4) => async (
+	dispatch
+) => {
+	let response = await do_post(endpoint + "addperson", {
+		name,
+		email,
+		group_id,
+	});
+	if (response.status === 200) {
+		dispatch(loadSelectedGroup(group_id));
+	} else {
+		dispatch(updatePersonError(response));
+	}
+	return {
+		type: ADD_PERSON,
 	};
 };
 
-export const deletePerson = ({ person_id }, group_id) => {
-	console.log(person_id);
-	return function (dispatch) {
-		return axios
-			.delete(endpoint + "deleteperson?id=" + person_id)
-			.then((response) => {
-				if (response.status === 200) {
-					dispatch(deletedPerson());
-					dispatch(loadSelectedGroup(group_id));
-				} else {
-					dispatch(updatePersonError(response));
-				}
-			})
-			.catch((error) => {
-				dispatch(updatePersonError(error));
-			});
+export const deletePerson = ({ person_id }, group_id) => async dispatch =>{
+	let response = await do_delete(endpoint + "deleteperson?id=" + person_id);
+	if (response.status === 200) {
+		dispatch(loadSelectedGroup(group_id));
+	} else {
+		dispatch(updatePersonError(response));
+	}
+	return {
+		type: DELETE_PERSON,
 	};
 };
 

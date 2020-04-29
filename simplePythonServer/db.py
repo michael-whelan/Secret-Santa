@@ -144,13 +144,10 @@ def getGroups(uuid):
 			dataSingle[prop] = val
 		raw_data.append(dataSingle)
 	conn.close()
-	#print(raw_data)
-	#data = structure_group(raw_data)
 	print ("getGroups done successfully")
 	return raw_data	
 
 def getGroup(g_id):
-	#query = """select * from groups where id = %s""" % (g_id)
 	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active,p.nots from groups g inner join
 	people p where g.id = p.group_id and g.id = %s""" % (g_id)
 	print(query )
@@ -169,14 +166,12 @@ def getGroup(g_id):
 		for prop, val in zip(cols, row):
 			dataSingle[prop] = val
 		raw_data.append(dataSingle)
-	#data = structure_group(raw_data)
 
 	print ("getGroup done successfully")
 	return raw_data
 
 
 def addGroup(groupName, userInfo):
-	#and admin = (select id from users where uuid = '%s') userInfo["uuid"]
 	if uniqueEntry("""select * from groups where group_name = '%s'""" % (groupName)):
 		try:
 			nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
@@ -189,13 +184,8 @@ def addGroup(groupName, userInfo):
 			return 200
 		except:
 			return 400
-		#add_person({"col":"name", "group_id": new_group_id, "newVal": ""})
-		#return {"group_id":new_group_id,"group_name":groupName,"success":True,"message":"New Group created"}
 	return 400
-	# for group in groups:
-	# 	if groupName == groups[group]["name"]:
-	# 		return False
-	# return True
+
 
 def make_update_strings(vars):
 	ret_string = ""
@@ -216,7 +206,25 @@ def update_person(vars, creds):
 		do_query(query)
 		return 200
 	except:
-		print("Error: Something went wrong")
+		print("Error: update_person")
+		return 400
+
+def update_group(vars, creds):
+	id = vars.pop("group_id", None)
+	update_string = make_update_strings(vars)
+	#Should first check that user is valid to make change
+	query = """update group set %s where id = %s""" % (
+				update_string, id
+			)
+	print("-----------------------")
+	print(query)
+	print("-----------------------")
+	return 200
+	try:
+		do_query(query)
+		return 200
+	except:
+		print("Error: update_person")
 		return 400
 
 def add_person(vars):
@@ -235,7 +243,6 @@ def add_person(vars):
 
 def delete_person(vars, creds):
 	#do cred check
-	print("vars", vars['id'])
 	if vars["id"][0]:
 		try:
 			query = """delete from people where id = %s""" % (

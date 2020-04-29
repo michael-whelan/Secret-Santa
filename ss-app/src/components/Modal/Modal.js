@@ -11,7 +11,6 @@ function ModalPopup({
 	currData = {},
 	modalMap,
 	dispatch,
-	dispatcher,
 	...props
 }) {
 	const [tempData, updateTempData] = React.useState(currData);
@@ -71,7 +70,7 @@ function ModalPopup({
 								key={index}
 								variant={elem.color}
 								onClick={() => {
-									dispatcher(elem.func, tempData);
+									elem.func(tempData);
 									props.onHide();
 								}}
 							>
