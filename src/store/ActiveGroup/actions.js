@@ -15,6 +15,7 @@ export const storeSelectedGroup = (data) => ({
 });
 
 export const loadSelectedGroup = (id) => {
+	console.log("load selected group")
 	return function (dispatch) {
 		return axios
 			.get(endpoint + "getgroup?id=" + id)
