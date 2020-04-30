@@ -1,6 +1,5 @@
-import { LOAD_GROUP_ERROR, STORE_SELECTED_GROUP } from "./types";
-
-import axios from "axios";
+import { LOAD_GROUP_ERROR, STORE_SELECTED_GROUP, FETCH_GROUP } from "./types";
+import { do_get } from "../api/actions";
 
 const endpoint = "http://localhost:8080/";
 
@@ -14,14 +13,14 @@ export const storeSelectedGroup = (data) => ({
 	people: data,
 });
 
-export const loadSelectedGroup = (id) => {
-	console.log("load selected group")
-	return function (dispatch) {
-		return axios
-			.get(endpoint + "getgroup?id=" + id)
-			.then(({ data }) => {
-				dispatch(storeSelectedGroup(data));
-			})
-			.catch((error) => dispatch(loadGroupError(error)));
-	};
+export const loadSelectedGroup = (id) => async (dispatch) => {
+	let response = await do_get(endpoint + "getgroup?id=" + id);
+	if (response.status === 200) {
+		dispatch(storeSelectedGroup(response.data));
+	} else {
+		dispatch(loadGroupError(response));
+	}
+	return {
+		type: FETCH_GROUP,
+	}
 };

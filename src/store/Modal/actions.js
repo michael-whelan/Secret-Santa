@@ -9,21 +9,11 @@ import { loadSelectedGroup } from "../ActiveGroup/actions";
 import { loadGroupList, loadGroupsError } from "../Sidebar/actions";
 import { do_post, do_put, do_delete } from "../api/actions";
 
-import axios from "axios";
-
 const endpoint = "http://localhost:8080/";
 
 const updatePersonStore = (person) => ({
 	type: UPDATE_PERSON,
 	data: person,
-});
-
-const addedGroup = () => ({
-	type: ADD_GROUP,
-});
-
-const deletedPerson = () => ({
-	type: DELETE_PERSON,
 });
 
 const updatePersonError = (message) => ({
@@ -82,20 +72,14 @@ export const deletePerson = ({ person_id }, group_id) => async dispatch =>{
 	};
 };
 
-export const addGroup = ({ group_name }) => {
-	return function (dispatch) {
-		return axios
-			.post(endpoint + "creategroup", { group_name })
-			.then((response) => {
-				if (response.status === 200) {
-					dispatch(addedGroup());
-					dispatch(loadGroupList());
-				} else {
-					dispatch(loadGroupsError(response));
-				}
-			})
-			.catch((error) => {
-				dispatch(loadGroupsError(error));
-			});
+export const addGroup = ({ group_name }) => async dispatch => {
+	let response = await do_post(endpoint + "creategroup", { group_name });
+	if (response.status === 200) {
+		dispatch(loadGroupList());
+	} else {
+		dispatch(loadGroupsError(response));
+	}
+	return {
+		type: ADD_GROUP,
 	};
 };

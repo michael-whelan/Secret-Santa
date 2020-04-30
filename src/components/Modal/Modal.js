@@ -58,8 +58,6 @@ function ModalPopup({
 					(elem, index) =>
 						elem.type === "text" &&
 						textInput(elem.label, elem.link, elem.default, index)
-					// elem.type === "label" &&
-					// showLabel(elem.label)
 				)}
 			</Modal.Body>
 			<Modal.Footer>
