@@ -5,7 +5,7 @@ import hashlib
 
 
 def generate_uuid():
-	return uuid.uuid4().hex
+	return uuid.uuid1().hex
 
 def uniqueEntry(q):
 	conn = sqlite3.connect('secretsanta.db')
@@ -145,6 +145,7 @@ def getGroups(uuid):
 		raw_data.append(dataSingle)
 	conn.close()
 	print ("getGroups done successfully")
+	print(generate_uuid())
 	return raw_data	
 
 def getGroup(g_id):
@@ -172,6 +173,9 @@ def getGroup(g_id):
 
 
 def addGroup(groupName, userInfo):
+	print("************************")
+	print("ADD Group owners uuid!!!")
+	print("************************")
 	if uniqueEntry("""select * from groups where group_name = '%s'""" % (groupName)):
 		try:
 			nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
