@@ -6,8 +6,7 @@ import {
 } from "./types";
 
 import { loadSelectedGroup } from "../ActiveGroup/actions";
-
-import axios from "axios";
+import { do_get } from "../api/actions";
 
 const endpoint = "http://localhost:8080/";
 
@@ -33,18 +32,16 @@ export const loadGroupsError = (message) => ({
 	data: message,
 });
 
-const loadGroups = (message) => ({
-	type: LOAD_GROUP_LIST,
-});
+export const loadGroupList = () => async dispatch =>{
+	let response = await do_get(endpoint + "getgroups");
 
-export const loadGroupList = () => {
-	return function (dispatch) {
-		dispatch(loadGroups());
-		return axios
-			.get(endpoint + "getgroups")
-			.then(({ data }) => {
-				dispatch(renderGroupList(data));
-			})
-			.catch((error) => dispatch(loadGroupsError(error)));
-	};
+	if (response.status === 200) {
+		dispatch(renderGroupList(response.data));
+	} else {
+		dispatch(loadGroupsError(response));
+	}
+	return {
+		type: LOAD_GROUP_LIST,
+	}
+
 };
