@@ -1,5 +1,14 @@
-import { LOAD_GROUP_ERROR, STORE_SELECTED_GROUP } from "./types";
-import { UPDATE_PERSON, UPDATE_PERSON_ERROR, ADD_PERSON, DELETE_PERSON } from "../Modal/types";
+import {
+	LOAD_GROUP_ERROR,
+	STORE_SELECTED_GROUP,
+	CLEAR_SELECTED_GROUP,
+} from "./types";
+import {
+	UPDATE_PERSON,
+	UPDATE_PERSON_ERROR,
+	ADD_PERSON,
+	DELETE_PERSON,
+} from "../Modal/types";
 
 const initialState = {
 	people: [],
@@ -36,6 +45,8 @@ export default function ActiveGroupReducer(state = initialState, action) {
 		case DELETE_PERSON:
 			console.log("Person Deleted");
 			return state;
+		case CLEAR_SELECTED_GROUP:
+			return initialState;
 		case "DO_TEST":
 			console.log("test", action.data);
 			return state;

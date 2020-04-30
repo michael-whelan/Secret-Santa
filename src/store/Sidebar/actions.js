@@ -15,7 +15,7 @@ export const selectGroup = (data) => (dispatch) => {
 	dispatch(loadSelectedGroup(data.id));
 };
 
-const doSelectGroup = (data) => {
+export const doSelectGroup = (data) => {
 	return {
 		type: SELECT_GROUP,
 		data: data,

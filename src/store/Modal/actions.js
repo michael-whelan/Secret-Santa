@@ -4,9 +4,15 @@ import {
 	ADD_PERSON,
 	DELETE_PERSON,
 	ADD_GROUP,
+	UPDATE_GROUP,
+	DELETE_GROUP,
 } from "./types";
-import { loadSelectedGroup } from "../ActiveGroup/actions";
-import { loadGroupList, loadGroupsError } from "../Sidebar/actions";
+import { loadSelectedGroup, clearSelectedGroup } from "../ActiveGroup/actions";
+import {
+	loadGroupList,
+	loadGroupsError,
+	doSelectGroup,
+} from "../Sidebar/actions";
 import { do_post, do_put, do_delete } from "../api/actions";
 
 const endpoint = "http://localhost:8080/";
@@ -60,7 +66,7 @@ export const addPerson = ({ name, email }, group_id = 4) => async (
 	};
 };
 
-export const deletePerson = ({ person_id }, group_id) => async dispatch =>{
+export const deletePerson = ({ person_id }, group_id) => async (dispatch) => {
 	let response = await do_delete(endpoint + "deleteperson?id=" + person_id);
 	if (response.status === 200) {
 		dispatch(loadSelectedGroup(group_id));
@@ -72,7 +78,7 @@ export const deletePerson = ({ person_id }, group_id) => async dispatch =>{
 	};
 };
 
-export const addGroup = ({ group_name }) => async dispatch => {
+export const addGroup = ({ group_name }) => async (dispatch) => {
 	let response = await do_post(endpoint + "creategroup", { group_name });
 	if (response.status === 200) {
 		dispatch(loadGroupList());
@@ -81,5 +87,37 @@ export const addGroup = ({ group_name }) => async dispatch => {
 	}
 	return {
 		type: ADD_GROUP,
+	};
+};
+
+export const updateGroup = ({ group_name }, group_id) => async (dispatch) => {
+	let response = await do_put(endpoint + "updategroup", {
+		group_name,
+		group_id,
+	});
+	if (response.status === 200) {
+		dispatch(loadGroupList()).then(dispatch(loadSelectedGroup(group_id)));
+	} else {
+		dispatch(loadGroupsError(response));
+	}
+	return {
+		type: UPDATE_GROUP,
+	};
+};
+
+export const deleteGroup = (group_id) => async (dispatch) => {
+	console.log("group_id", group_id);
+	let response = await do_delete(
+		endpoint + "deletegroup?group_id=" + group_id
+	);
+	if (response.status === 200) {
+		dispatch(loadGroupList());
+		dispatch(doSelectGroup({}));
+		dispatch(clearSelectedGroup());
+	} else {
+		dispatch(loadGroupsError(response));
+	}
+	return {
+		type: DELETE_GROUP,
 	};
 };
