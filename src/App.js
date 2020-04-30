@@ -1,11 +1,11 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 import Callback from "./containers/Callback";
-import { SidebarContainer } from "./containers/SidebarContainer";
-import { ActiveGroupContainer } from "./containers/ActiveGroupContainer";
+import SidebarContainer from "./containers/SidebarContainer";
+import ActiveGroupContainer from "./containers/ActiveGroupContainer";
 import "./App.css";
 
-function App() {
+const App = () => {
 	return (
 		<div>
 			<Route exact path="/login" />
@@ -15,12 +15,21 @@ function App() {
 				render={(props) => (
 					<div className="main">
 						<SidebarContainer />
-						<ActiveGroupContainer />
+					</div>
+				)}
+			/>
+			<Route
+				exact
+				path="/:group_url_id"
+				render={(props) => (
+					<div className="main">
+						<SidebarContainer />
+						<ActiveGroupContainer/>
 					</div>
 				)}
 			/>
 			<Route exact path="/callback" component={Callback} />
 		</div>
 	);
-}
+};
 export default App;

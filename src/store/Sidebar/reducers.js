@@ -4,9 +4,11 @@ import {
 	LOAD_GROUP_LIST_ERROR,
 } from "./types";
 
+import history from "../../history";
+
 const initialState = {
 	groupList: [],
-	errorMsg: ""
+	errorMsg: "",
 };
 
 export default function sidebarReducer(state = initialState, action) {
@@ -17,6 +19,7 @@ export default function sidebarReducer(state = initialState, action) {
 				groupList: action.groupList,
 			};
 		case SELECT_GROUP:
+			history.push(action.data.group_url_id);
 			return {
 				...state,
 				selectedGroup: action.data,
