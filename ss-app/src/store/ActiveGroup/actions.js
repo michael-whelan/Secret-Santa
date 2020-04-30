@@ -1,4 +1,9 @@
-import { LOAD_GROUP_ERROR, STORE_SELECTED_GROUP, FETCH_GROUP } from "./types";
+import {
+	LOAD_GROUP_ERROR,
+	STORE_SELECTED_GROUP,
+	FETCH_GROUP,
+	CLEAR_SELECTED_GROUP,
+} from "./types";
 import { do_get } from "../api/actions";
 
 const endpoint = "http://localhost:8080/";
@@ -8,9 +13,13 @@ const loadGroupError = (message) => ({
 	data: message,
 });
 
-export const storeSelectedGroup = (data) => ({
+const storeSelectedGroup = (data) => ({
 	type: STORE_SELECTED_GROUP,
 	people: data,
+});
+
+export const clearSelectedGroup = () => ({
+	type: CLEAR_SELECTED_GROUP,
 });
 
 export const loadSelectedGroup = (id) => async (dispatch) => {
@@ -22,5 +31,5 @@ export const loadSelectedGroup = (id) => async (dispatch) => {
 	}
 	return {
 		type: FETCH_GROUP,
-	}
+	};
 };

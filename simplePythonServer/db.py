@@ -213,19 +213,33 @@ def update_group(vars, creds):
 	id = vars.pop("group_id", None)
 	update_string = make_update_strings(vars)
 	#Should first check that user is valid to make change
-	query = """update group set %s where id = %s""" % (
+	query = """update groups set %s where id = %s""" % (
 				update_string, id
 			)
-	print("-----------------------")
-	print(query)
-	print("-----------------------")
-	return 200
 	try:
 		do_query(query)
 		return 200
 	except:
 		print("Error: update_person")
 		return 400
+
+def delete_group(vars, creds):
+	if vars["group_id"][0]:
+	#Should first check that user is valid to make change
+		try:
+			query1 = """delete from people where group_id =%s;""" % (
+					vars["group_id"][0]
+				)
+			query2 = """delete from groups where id = %s;""" % (
+					vars["group_id"][0]
+				)
+			do_query(query1)
+			do_query(query2)
+			return 200
+		except:
+			print("Error: delete_group")
+			return 400
+	return 400
 
 def add_person(vars):
 	#Should first check that user is valid to make change

@@ -75,13 +75,13 @@ export const getModalMap = (type, functionList) => {
 					label: "DELETE",
 					type: "button",
 					color: "danger",
-					func: functionList["doTestExport"],
+					func: functionList["localDeleteGroup"],
 				},
 				{
 					label: "Update",
 					type: "button",
 					color: "primary",
-					func: functionList["doTestExport"],
+					func: functionList["localUpdateGroup"],
 				},
 			];
 		default:

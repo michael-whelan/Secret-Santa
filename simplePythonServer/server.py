@@ -114,11 +114,13 @@ class Handler (BaseHTTPRequestHandler) :
 
 
 	def do_DELETE(self):
-		if self.path.split('?')[0] == "/deleteperson":
-			creds= {'uuid': 'test'}
+		creds= {'uuid': 'test'}
+		if creds is not None:
 			par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
-			print("par",par)
-			status = db.delete_person(par,creds)
+			if self.path.split('?')[0] == "/deleteperson":
+				status = db.delete_person(par,creds)
+			elif self.path.split('?')[0] == "/deletegroup":
+				status = db.delete_group(par,creds)
 			self.send_response(status)
 			self.end_headers()
 
