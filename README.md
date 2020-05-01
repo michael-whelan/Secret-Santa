@@ -83,12 +83,10 @@ server.serve_forever()
 
 ```
 
-**--NOT DONE--**
  
-Part of the planned python implementation is adding unique ids for the groups. This will be unique ids that will make public groups accessible through the URL. eg www.domain/12e333egwp where 12e333egwp is unique to a group.
-This will make sending groups easier, simply passing a url into a whatsapp or fb group and letting everyone add their own emails to the group. 
+Part of the planned python implementation is adding unique url ids for the groups. This will make public groups accessible through the URL. eg www.domain/12e333egwp where 12e333egwp is unique to a group.
+This will make sending/sharing groups easier, simply passing a url into a whatsapp or fb group and letting everyone add their own emails from there. 
 
-**--NOT DONE--**
 
 ### 2. The Hat Sorter
 The second part of the server logic is the actual hat sort function.
