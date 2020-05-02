@@ -2,6 +2,9 @@ import axios from "axios";
 
 import { GET_ERROR, POST_ERROR, PUT_ERROR, DELETE_ERROR } from "./types";
 
+const dom = "http://localhost:8080/";
+
+
 const getError = (message) => ({
 	type: GET_ERROR,
 	data: message,
@@ -23,7 +26,7 @@ const deleteError = (message) => ({
 });
 
 export const do_post = (endpoint, vars) => {
-	return axios.post(endpoint, vars).then((response) => {
+	return axios.post(dom+endpoint, vars).then((response) => {
 		return response;
 	});
 	// .catch((error) => {
@@ -31,7 +34,7 @@ export const do_post = (endpoint, vars) => {
 	// });
 };
 export const do_put = (endpoint, vars) => {
-	return axios.put(endpoint, vars).then((response) => {
+	return axios.put(dom+endpoint, vars).then((response) => {
 		return response;
 	});
 	// .catch((error) => {
@@ -40,7 +43,7 @@ export const do_put = (endpoint, vars) => {
 };
 
 export const do_delete = (endpoint) => {
-	return axios.delete(endpoint).then((response) => {
+	return axios.delete(dom+endpoint).then((response) => {
 		return response;
 	});
 	// .catch((error) => {
@@ -48,7 +51,7 @@ export const do_delete = (endpoint) => {
 	// });
 };
 export const do_get = (endpoint) => {
-	return axios.get(endpoint).then((response) => {
+	return axios.get(dom+endpoint).then((response) => {
 		return response;
 	});
 	// .catch((error) => {

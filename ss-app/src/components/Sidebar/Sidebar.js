@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import ModalContainer from "../../containers/ModalContainer";
 
 
-const SideBar = ({ groups, selectGroup, errorMsg , history}) => {
+const SideBar = ({ groups, selectGroup, errorMsg }) => {
 	const [modalShow, setModalShow] = React.useState(false);
 	return (
 		<div className="sidebar">

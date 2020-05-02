@@ -6,8 +6,6 @@ import {
 } from "./types";
 import { do_get } from "../api/actions";
 
-const endpoint = "http://localhost:8080/";
-
 const loadGroupError = (message) => ({
 	type: LOAD_GROUP_ERROR,
 	data: message,
@@ -23,7 +21,7 @@ export const clearSelectedGroup = () => ({
 });
 
 export const loadSelectedGroup = (id) => async (dispatch) => {
-	let response = await do_get(endpoint + "getgroup?id=" + id);
+	let response = await do_get("getgroup?id=" + id);
 	if (response.status === 200) {
 		dispatch(storeSelectedGroup(response.data));
 	} else {

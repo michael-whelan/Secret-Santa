@@ -2,9 +2,8 @@ import {
 	RENDER_GROUP_LIST,
 	SELECT_GROUP,
 	LOAD_GROUP_LIST_ERROR,
+	CLEAR_SELECTED_GROUP,
 } from "./types";
-
-import history from "../../history";
 
 const initialState = {
 	groupList: [],
@@ -19,11 +18,18 @@ export default function sidebarReducer(state = initialState, action) {
 				groupList: action.groupList,
 			};
 		case SELECT_GROUP:
-			history.push(action.data.group_url_id);
+			let group = state.groupList.find(
+				g=> g.group_url_id === action.data
+			);
 			return {
 				...state,
-				selectedGroup: action.data,
+				selectedGroup: group,
 			};
+		case CLEAR_SELECTED_GROUP:
+			return {
+				...state,
+				selectedGroup: {}
+			}
 		case LOAD_GROUP_LIST_ERROR:
 			console.log(action.data);
 			return {

@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { connect } from "react-redux";
-import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
-import { withRouter } from "react-router-dom";
+ import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
+import { withRouter, useRouteMatch } from "react-router-dom";
+import { selectGroup } from "../store/Sidebar/actions";
 
 const ActiveGroupContainer = () => {
 	const selectedGroup = useSelector((state) => state.sidebar.selectedGroup);
 	const people = useSelector((state) => state.activeGroup.people);
 	const errorMsg = useSelector((state) => state.activeGroup.errorMsg);
+	const dispatch = useDispatch();
+	const {
+		params: { group_url_id },
+	} = useRouteMatch("/group/:group_url_id");
+
+	useEffect(() => {
+		(!selectedGroup || selectedGroup.group_url_id !== group_url_id) &&
+			dispatch(selectGroup(group_url_id))
+	});
 
 	return (
 		<ActiveGroup
@@ -16,13 +25,6 @@ const ActiveGroupContainer = () => {
 			errorMsg={errorMsg}
 		/>
 	);
-	// return {
-	// 	groupDetails: state.sidebar.selectedGroup,
-	// 	people: state.activeGroup.people,
-	// 	errorMsg: state.activeGroup.errorMsg,
-	// };
 };
-
-//const ActiveGroupContainer = connect(mapStateToProps)(ActiveGroup);
 
 export default withRouter(ActiveGroupContainer);
