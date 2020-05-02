@@ -11,9 +11,12 @@ import {
 } from "../store/Modal/actions";
 import { doTestExport } from "../store/Modal/actions";
 import { getModalMap } from "../utils/ModalMap";
+import { useHistory } from "react-router";
 
 const ModalContainer = ({ group_id, modalType, ...props }) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
+
 
 	const localAddPerson = (vars) => {
 		dispatch(addPerson(vars, group_id));
@@ -31,7 +34,7 @@ const ModalContainer = ({ group_id, modalType, ...props }) => {
 		dispatch(updateGroup(vars, group_id));
 	};
 	const localDeleteGroup = (vars) => {
-		console.log("localDeleteGroup")
+		history.push(`/`);
 		dispatch(deleteGroup( group_id));
 	};
 

@@ -3,23 +3,24 @@ import {
 	LOAD_GROUP_LIST,
 	RENDER_GROUP_LIST,
 	LOAD_GROUP_LIST_ERROR,
+	CLEAR_SELECTED_GROUP,
 } from "./types";
 
-import { loadSelectedGroup } from "../ActiveGroup/actions";
 import { do_get } from "../api/actions";
+import { loadSelectedGroup } from "../ActiveGroup/actions";
 
-const endpoint = "http://localhost:8080/";
-
-export const selectGroup = (data) => (dispatch) => {
-	dispatch(doSelectGroup(data));
-	dispatch(loadSelectedGroup(data.id));
+export const selectGroup = (id) => (dispatch) => {
+	dispatch(loadSelectedGroup(id));
+	dispatch(doSelectGroup(id));
 };
 
-export const doSelectGroup = (data) => {
-	return {
-		type: SELECT_GROUP,
-		data: data,
-	};
+export const doSelectGroup = (id) => {
+	return id
+		? {
+				type: SELECT_GROUP,
+				data: id,
+		  }
+		: { type: CLEAR_SELECTED_GROUP };
 };
 
 const renderGroupList = (data) => ({
@@ -32,8 +33,8 @@ export const loadGroupsError = (message) => ({
 	data: message,
 });
 
-export const loadGroupList = () => async dispatch =>{
-	let response = await do_get(endpoint + "getgroups");
+export const loadGroupList = () => async (dispatch) => {
+	let response = await do_get("getgroups");
 
 	if (response.status === 200) {
 		dispatch(renderGroupList(response.data));
@@ -42,6 +43,5 @@ export const loadGroupList = () => async dispatch =>{
 	}
 	return {
 		type: LOAD_GROUP_LIST,
-	}
-
+	};
 };
