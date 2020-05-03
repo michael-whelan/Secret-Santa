@@ -5,7 +5,7 @@ import hashlib
 
 
 def generate_uuid():
-	return uuid.uuid4().hex
+	return uuid.uuid1().hex
 
 def uniqueEntry(q):
 	conn = sqlite3.connect('secretsanta.db')
@@ -145,11 +145,12 @@ def getGroups(uuid):
 		raw_data.append(dataSingle)
 	conn.close()
 	print ("getGroups done successfully")
+	print(generate_uuid())
 	return raw_data	
 
 def getGroup(g_id):
 	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active,p.nots from groups g inner join
-	people p where g.id = p.group_id and g.id = %s""" % (g_id)
+	people p where g.id = p.group_id and g.group_url_id = '%s'""" % (g_id)
 	print(query )
 	conn = sqlite3.connect('secretsanta.db')
 	cursor= conn.cursor()
@@ -172,17 +173,25 @@ def getGroup(g_id):
 
 
 def addGroup(groupName, userInfo):
+	print("************************")
+	print("ADD Group owners uuid!!!")
+	print("************************")
+	broken_query = "error"
 	if uniqueEntry("""select * from groups where group_name = '%s'""" % (groupName)):
 		try:
 			nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
-			query = """insert into groups (group_name,date_created,last_update_date,admin,public,sent)
-				values ('%s', '%s', '%s', (select id from users where uuid = '%s'), 0,0);""" % (
-					groupName,nowTime,nowTime,1
+			ugid = generate_uuid()
+			query = """insert into groups (group_name,date_created,last_update_date,admin,public,sent,group_url_id)
+				values ('%s', '%s', '%s', (select id from users where uuid = '%s'), 0,0,'%s');""" % (
+					groupName,nowTime,nowTime,1,ugid
 				)
+			broken_query =query 
 			print(query)
 			do_query(query)
 			return 200
 		except:
+			print("Error: add_group")
+			print(broken_query)
 			return 400
 	return 400
 
@@ -207,37 +216,45 @@ def update_person(vars, creds):
 		return 200
 	except:
 		print("Error: update_person")
+		print(query)
 		return 400
 
 def update_group(vars, creds):
 	id = vars.pop("group_id", None)
 	update_string = make_update_strings(vars)
 	#Should first check that user is valid to make change
-	query = """update groups set %s where id = %s""" % (
+	query = """update groups set %s where group_url_id = '%s'""" % (
 				update_string, id
 			)
 	try:
 		do_query(query)
 		return 200
 	except:
-		print("Error: update_person")
+		print("Error: update_group")
 		return 400
 
 def delete_group(vars, creds):
 	if vars["group_id"][0]:
 	#Should first check that user is valid to make change
+		broken_query1 = "error"
+		broken_query2 = "error"
 		try:
-			query1 = """delete from people where group_id =%s;""" % (
+			query1 = """delete from people where group_id =
+			(select id from groups where group_url_id = '%s');""" % (
 					vars["group_id"][0]
 				)
-			query2 = """delete from groups where id = %s;""" % (
+			query2 = """delete from groups where group_url_id = '%s';""" % (
 					vars["group_id"][0]
 				)
+			broken_query1 = query1
+			broken_query2 = query2
 			do_query(query1)
 			do_query(query2)
 			return 200
 		except:
 			print("Error: delete_group")
+			print(broken_query1)
+			print(broken_query2)
 			return 400
 	return 400
 
@@ -245,14 +262,18 @@ def add_person(vars):
 	#Should first check that user is valid to make change
 	new_name = vars["name"]
 	new_email = vars["email"]
-	query = """insert into people(group_id, name, email, active) values (%s, '%s', '%s',%s)""" % (
+	query = """insert into people(group_id, name, email, active) values (
+		(select id from groups where group_url_id = '%s')
+		, '%s', '%s',%s)""" % (
 				vars["group_id"], new_name, new_email,1
 			)
+	print(query)
 	try:
 		do_query(query)
 		return 200
 	except:
 		print("Error: Adding person")
+		print(query)
 		return 400
 
 def delete_person(vars, creds):

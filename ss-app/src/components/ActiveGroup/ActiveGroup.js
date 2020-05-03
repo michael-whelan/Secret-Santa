@@ -18,7 +18,7 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 				show={modalShow}
 				onHide={() => setModalShow(false)}
 				currData={activeObject}
-				group_id={groupDetails.id}
+				group_id={groupDetails.group_url_id}
 				modalType={modalType}
 				heading={modalHeading}
 			/>
