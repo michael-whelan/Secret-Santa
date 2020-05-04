@@ -1,43 +1,102 @@
-import auth0 from "auth0-js";
+import React, { useState, useEffect, useContext } from "react";
+import createAuth0Client from "@auth0/auth0-spa-js";
+import { storeUser } from "./store/Auth/actions";
+import { useDispatch } from "react-redux";
 
-const auth0Client = new auth0.WebAuth({
-	// the following three lines MUST be updated
-	domain: "dev-0yc43uz2.eu.auth0.com",
-	audience: "https://dev-0yc43uz2.eu.auth0.com/userinfo",
-	clientID: "f1KRkSNtw3YBz51l4Qi3V4HJyT62KSfK",
-	redirectUri: "http://localhost:3000/callback",
-	responseType: "id_token",
-	scope: "openid profile email",
-});
+const DEFAULT_REDIRECT_CALLBACK = () =>
+	window.history.replaceState({}, document.title, window.location.pathname);
 
-export function handleAuthentication() {
-	return new Promise((resolve, reject) => {
-		auth0Client.parseHash((err, authResult) => {
-			if (err) return reject(err);
-			if (!authResult || !authResult.idToken) {
-				return reject(err);
+export const Auth0Context = React.createContext();
+export const useAuth0 = () => useContext(Auth0Context);
+export const Auth0Provider = ({
+	children,
+	onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
+	...initOptions
+}) => {
+	const [isAuthenticated, setIsAuthenticated] = useState();
+	const [user, setUser] = useState();
+	const [auth0Client, setAuth0] = useState();
+	const [loading, setLoading] = useState(true);
+	const [popupOpen, setPopupOpen] = useState(false);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const initAuth0 = async () => {
+			const auth0FromHook = await createAuth0Client(initOptions);
+
+			setAuth0(auth0FromHook);
+
+			if (
+				window.location.search.includes("code=") &&
+				window.location.search.includes("state=")
+			) {
+				const {
+					appState,
+				} = await auth0FromHook.handleRedirectCallback();
+				onRedirectCallback(appState);
 			}
-			const idToken = authResult.idToken;
-			const profile = authResult.idTokenPayload;
-			// set the time that the id token will expire at
-			const expiresAt = authResult.idTokenPayload.exp * 1000;
-			resolve({
-				authenticated: true,
-				idToken,
-				profile,
-				expiresAt,
-			});
-		});
-	});
-}
 
-export function signIn() {
-	auth0Client.authorize();
-}
+			const isAuthenticated = await auth0FromHook.isAuthenticated();
 
-export function signOut() {
-	auth0Client.logout({
-		returnTo: "http://localhost:3000",
-		clientID: "f1KRkSNtw3YBz51l4Qi3V4HJyT62KSfK",
-	});
-}
+			setIsAuthenticated(isAuthenticated);
+
+			if (isAuthenticated) {
+				const user = await auth0FromHook.getUser();
+				setUser(user);
+				dispatch(storeUser(user));
+			}
+
+			setLoading(false);
+		};
+		initAuth0();
+		// eslint-disable-next-line
+	}, []);
+
+	const loginWithPopup = async (params = {}) => {
+		setPopupOpen(true);
+		try {
+			await auth0Client.loginWithPopup(params);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setPopupOpen(false);
+		}
+		const user = await auth0Client.getUser();
+		setUser(user);
+		dispatch(storeUser(user));
+		setIsAuthenticated(true);
+	};
+
+	const handleRedirectCallback = async () => {
+		setLoading(true);
+		await auth0Client.handleRedirectCallback();
+		const user = await auth0Client.getUser();
+		setLoading(false);
+		setIsAuthenticated(true);
+		setUser(user);
+		dispatch(storeUser(user));
+	};
+	return (
+		<Auth0Context.Provider
+			value={{
+				isAuthenticated,
+				user,
+				loading,
+				popupOpen,
+				loginWithPopup,
+				handleRedirectCallback,
+				getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
+				loginWithRedirect: (...p) => {
+					console.log(auth0Client);
+					auth0Client.loginWithRedirect(...p);
+				},
+				getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
+				getTokenWithPopup: (...p) =>
+					auth0Client.getTokenWithPopup(...p),
+				logout: (...p) => auth0Client.logout(...p),
+			}}
+		>
+			{children}
+		</Auth0Context.Provider>
+	);
+};

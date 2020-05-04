@@ -5,15 +5,32 @@ import App from "./App";
 import { loadGroupList } from "./store/Sidebar/actions";
 import configureStore from "./store/index";
 import { BrowserRouter } from "react-router-dom";
-
+import { Auth0Provider } from "./Auth";
+import config from "./auth_config.json";
+import history from "./history";
 
 const store = configureStore();
 store.dispatch(loadGroupList());
 
+const onRedirectCallback = (appState) => {
+	history.push(
+		appState && appState.targetUrl
+			? appState.targetUrl
+			: window.location.pathname
+	);
+};
+
 render(
 	<Provider store={store}>
 		<BrowserRouter>
-			<App />
+			<Auth0Provider
+				domain={config.domain}
+				client_id={config.clientId}
+				redirect_uri={window.location.origin}
+				onRedirectCallback={onRedirectCallback}
+			>
+				<App />
+			</Auth0Provider>
 		</BrowserRouter>
 	</Provider>,
 	document.getElementById("root")

@@ -3,17 +3,18 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 // Import Reducers
 import sidebarReducer from "./Sidebar/reducers";
 import ActiveGroupReducer from "./ActiveGroup/reducers";
-
+import authReducer from "./Auth/reducers";
 // Import Middleware
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
-    sidebar: sidebarReducer,
-    activeGroup: ActiveGroupReducer,
+	sidebar: sidebarReducer,
+	activeGroup: ActiveGroupReducer,
+	auth: authReducer,
 });
 
-export default function configureStore(preloadedState) {
 
+export default function configureStore(preloadedState) {
 	const middleware = [thunk];
 	const middlewareEnhancer = applyMiddleware(...middleware);
 
@@ -22,6 +23,5 @@ export default function configureStore(preloadedState) {
 	const enhancer = composeEnhancers(middlewareEnhancer);
 
 	const store = createStore(rootReducer, preloadedState, enhancer);
-
 	return store;
 }
