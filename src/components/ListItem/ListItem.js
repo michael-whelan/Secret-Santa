@@ -20,7 +20,7 @@ const ListItem = ({ group, selectGroup, selected }) => {
 
 ListItem.propTypes = {
 	group: PropTypes.shape({
-		id: PropTypes.number.isRequired,
+		group_url_id: PropTypes.string.isRequired,
 		group_name: PropTypes.string.isRequired,
 	}).isRequired,
 	selectGroup: PropTypes.func.isRequired,

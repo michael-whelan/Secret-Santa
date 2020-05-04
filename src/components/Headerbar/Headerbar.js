@@ -2,40 +2,51 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useAuth0 } from "../../Auth";
 import { Link } from "react-router-dom";
+import "./Headerbar.css";
 
 const Headerbar = () => {
-	const dispatch = useDispatch();
 	const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
-
-	// const signIn = () => {
-	// 	dispatch(parseHash());
-	// };
 	const user = useSelector((state) => state.auth.user);
+
 	return (
-		<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-			<Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+		<Navbar expand="lg" variant="dark">
+			<Navbar.Brand href="/">Secret Santa</Navbar.Brand>
 			<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 			<Navbar.Collapse id="responsive-navbar-nav">
 				<Nav className="mr-auto">
 					<Nav.Link href="#features">Features</Nav.Link>
 					<Nav.Link href="#pricing">Pricing</Nav.Link>
-					{!isAuthenticated && (
-						<button onClick={() => loginWithRedirect({})}>
-							Log in
-						</button>
-					)}
-
-					{isAuthenticated && (
-						<button onClick={() => logout()}>Log out</button>
-					)}
-					{isAuthenticated && (
+					{isAuthenticated && user && (
 						<span>
-							<Link to="/">Home</Link>&nbsp;
-							<Link to="/profile">Profile</Link>
+							<Link className="nav-link left" to="/">
+								Home
+							</Link>
+							<Link className="nav-link right" to="/profile">
+								<img
+									className="profile-picture"
+									src={user.picture}
+								/>
+							</Link>
 						</span>
+					)}
+					{!isAuthenticated && (
+						<Button
+							className="sign-in-btn"
+							onClick={() => loginWithRedirect({})}
+						>
+							Log in
+						</Button>
+					)}
+					{isAuthenticated && (
+						<Button
+							className="sign-out-btn"
+							onClick={() => logout()}
+						>
+							Log out
+						</Button>
 					)}
 				</Nav>
 			</Navbar.Collapse>

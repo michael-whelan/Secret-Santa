@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalPopup from "../components/Modal/Modal";
 import {
 	updatePerson,
@@ -15,27 +15,29 @@ import { useHistory } from "react-router";
 
 const ModalContainer = ({ group_id, modalType, ...props }) => {
 	const dispatch = useDispatch();
+	const user = useSelector((state) => state.auth.user);
+	const uuid = user ? user.sub : null;
 	const history = useHistory();
 
-
 	const localAddPerson = (vars) => {
-		dispatch(addPerson(vars, group_id));
+		dispatch(addPerson(vars, group_id, uuid));
 	};
 	const localUpdatePerson = (vars) => {
-		dispatch(updatePerson(vars, group_id));
+		dispatch(updatePerson(vars, group_id, uuid));
 	};
 	const localDeletePerson = (vars) => {
-		dispatch(deletePerson(vars, group_id));
+		dispatch(deletePerson(vars, group_id, uuid));
 	};
 	const localAddGroup = (vars) => {
-		dispatch(addGroup(vars, group_id));
+		console.log(user.sub)
+		dispatch(addGroup(vars, uuid));
 	};
 	const localUpdateGroup = (vars) => {
-		dispatch(updateGroup(vars, group_id));
+		dispatch(updateGroup(vars, group_id, uuid));
 	};
 	const localDeleteGroup = (vars) => {
 		history.push(`/`);
-		dispatch(deleteGroup( group_id));
+		dispatch(deleteGroup(group_id, uuid));
 	};
 
 	const funcs = {

@@ -29,12 +29,13 @@ export const doTestExport = (group_name, group_id) => {
 	return { type: "DO_TEST", data: { group_name, group_id } };
 };
 
-export const updatePerson = (n_person) => async (dispatch) => {
+export const updatePerson = (n_person,uuid) => async (dispatch) => {
 	const { name, email, person_id } = n_person;
 	let response = await do_put("updateperson", {
 		name,
 		email,
 		person_id,
+		uuid
 	});
 	if (response.status === 200) {
 		dispatch(updatePersonStore(n_person));
@@ -46,13 +47,14 @@ export const updatePerson = (n_person) => async (dispatch) => {
 	};
 };
 
-export const addPerson = ({ name, email }, group_id = 4) => async (
+export const addPerson = ({ name, email }, group_id = 0, uuid) => async (
 	dispatch
 ) => {
 	let response = await do_post("addperson", {
 		name,
 		email,
 		group_id,
+		uuid
 	});
 	if (response.status === 200) {
 		dispatch(loadSelectedGroup(group_id));
@@ -64,8 +66,8 @@ export const addPerson = ({ name, email }, group_id = 4) => async (
 	};
 };
 
-export const deletePerson = ({ person_id }, group_id) => async (dispatch) => {
-	let response = await do_delete("deleteperson?id=" + person_id);
+export const deletePerson = ({ person_id }, group_id,uuid) => async (dispatch) => {
+	let response = await do_delete("deleteperson?id=" + person_id, uuid);
 	if (response.status === 200) {
 		dispatch(loadSelectedGroup(group_id));
 	} else {
@@ -76,8 +78,9 @@ export const deletePerson = ({ person_id }, group_id) => async (dispatch) => {
 	};
 };
 
-export const addGroup = ({ group_name }) => async (dispatch) => {
-	let response = await do_post("creategroup", { group_name });
+export const addGroup = ({ group_name}, uuid) => async (dispatch) => {
+	console.log("my uuid:", uuid)
+	let response = await do_post("creategroup", { group_name,uuid });
 	if (response.status === 200) {
 		dispatch(loadGroupList());
 	} else {
@@ -88,10 +91,11 @@ export const addGroup = ({ group_name }) => async (dispatch) => {
 	};
 };
 
-export const updateGroup = ({ group_name }, group_id) => async (dispatch) => {
+export const updateGroup = ({ group_name }, group_id,uuid) => async (dispatch) => {
 	let response = await do_put("updategroup", {
 		group_name,
 		group_id,
+		uuid,
 	});
 	if (response.status === 200) {
 		dispatch(loadGroupList()).then(dispatch(loadSelectedGroup(group_id)));
@@ -103,8 +107,8 @@ export const updateGroup = ({ group_name }, group_id) => async (dispatch) => {
 	};
 };
 
-export const deleteGroup = (group_id) => async (dispatch) => {
-	let response = await do_delete("deletegroup?group_id=" + group_id);
+export const deleteGroup = (group_id,uuid) => async (dispatch) => {
+	let response = await do_delete("deletegroup?group_id=" + group_id, uuid);
 	if (response.status === 200) {
 		dispatch(loadGroupList());
 		dispatch(doSelectGroup(null));

@@ -1,0 +1,28 @@
+.sign-out-btn, .sign-in-btn{
+	position: absolute;
+	right: 1vw;
+}
+
+.nav-link{
+	display: inline-block;
+}
+
+.main .navbar{
+	background-color: red;
+	border-bottom: 1px;
+	border-color: white;
+	border-bottom-style: double;
+	font-size: medium;
+} 
+
+.profile-picture{
+	border-radius: 50%;
+	max-width: 30px;
+	margin-right: 5px;
+}
+
+.nav-link.right{
+	position: absolute;
+	right:7vw;
+	top: 0.5vh;
+}
