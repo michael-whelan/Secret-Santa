@@ -1,6 +1,5 @@
-import { USER_PROFILE_LOADED, HANDLE_AUTHENTICATION_CALLBACK } from "./types";
+import { USER_PROFILE_LOADED } from "./types";
 
 export const storeUser = (user) => {
-	console.log("storeUser")
 	return { type: USER_PROFILE_LOADED, data: user };
 };

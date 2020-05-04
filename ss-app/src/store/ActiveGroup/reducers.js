@@ -40,7 +40,6 @@ export default function ActiveGroupReducer(state = initialState, action) {
 			console.log(action.data);
 			return state;
 		case ADD_PERSON:
-			console.log("new Person Added");
 			return state;
 		case DELETE_PERSON:
 			console.log("Person Deleted");

@@ -124,9 +124,11 @@ def structure_group(raw_data):
 
 def getGroups(uuid):
 	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
-	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active, p.nots from groups g inner join
-	people p where g.id = p.group_id and g.admin = (select id from users where uuid = '%s') order by p.group_id;""" % (uuid)
-	
+	#query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active, p.nots from groups g inner join
+	#people p where g.id = p.group_id and g.admin_uuid = '%s' order by p.group_id;""" % (uuid)
+	query = """SELECT id as group_id,group_name,sent,group_url_id from groups 
+	where admin_uuid = '%s' order by id;""" % (uuid)
+	print(query)
 	if uuid == 'test':
 		query = """SELECT * from groups""" 
 	conn = sqlite3.connect('secretsanta.db')
@@ -173,17 +175,15 @@ def getGroup(g_id):
 
 
 def addGroup(groupName, userInfo):
-	print("************************")
-	print("ADD Group owners uuid!!!")
-	print("************************")
+	uuid = userInfo["uuid"]
 	broken_query = "error"
 	if uniqueEntry("""select * from groups where group_name = '%s'""" % (groupName)):
 		try:
 			nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
 			ugid = generate_uuid()
-			query = """insert into groups (group_name,date_created,last_update_date,admin,public,sent,group_url_id)
-				values ('%s', '%s', '%s', (select id from users where uuid = '%s'), 0,0,'%s');""" % (
-					groupName,nowTime,nowTime,1,ugid
+			query = """insert into groups (group_name,date_created,last_update_date,admin_uuid,public,sent,group_url_id)
+				values ('%s', '%s', '%s', '%s', 0,0,'%s');""" % (
+					groupName,nowTime,nowTime,uuid,ugid
 				)
 			broken_query =query 
 			print(query)
@@ -236,6 +236,9 @@ def update_group(vars, creds):
 def delete_group(vars, creds):
 	if vars["group_id"][0]:
 	#Should first check that user is valid to make change
+		if not user_group_rights(vars["group_id"][0],creds["uuid"]):
+			return 301
+		return 400
 		broken_query1 = "error"
 		broken_query2 = "error"
 		try:
@@ -288,6 +291,27 @@ def delete_person(vars, creds):
 		except:
 			return 400
 	return 400
+
+def user_group_rights(gid, uid):
+	print("***********")
+	try:
+		query = """select * from groups where group_url_id = '%s' and admin_uuid = '%s';""" % (
+			gid, uid
+		)
+		print(query )
+		conn = sqlite3.connect('secretsanta.db')
+		cursor= conn.cursor()
+		cursor.execute(query)
+		if cursor == None:
+			return None
+		rows = cursor.fetchall()
+		conn.close()
+		if len(rows) > 0:
+			return True
+		return False
+	except:
+		return False
+
 
 def do_query(q):
 	conn = sqlite3.connect('secretsanta.db')

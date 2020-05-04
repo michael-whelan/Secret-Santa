@@ -33,8 +33,8 @@ export const loadGroupsError = (message) => ({
 	data: message,
 });
 
-export const loadGroupList = () => async (dispatch) => {
-	let response = await do_get("getgroups");
+export const loadGroupList = (userId = null) => async (dispatch) => {
+	let response = await do_get("getgroups",userId);
 
 	if (response.status === 200) {
 		dispatch(renderGroupList(response.data));

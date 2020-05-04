@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import App from "./App";
-import { loadGroupList } from "./store/Sidebar/actions";
 import configureStore from "./store/index";
 import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "./Auth";
@@ -10,7 +9,6 @@ import config from "./auth_config.json";
 import history from "./history";
 
 const store = configureStore();
-store.dispatch(loadGroupList());
 
 const onRedirectCallback = (appState) => {
 	history.push(
@@ -28,6 +26,7 @@ render(
 				client_id={config.clientId}
 				redirect_uri={window.location.origin}
 				onRedirectCallback={onRedirectCallback}
+				responseType={"id_token"}
 			>
 				<App />
 			</Auth0Provider>

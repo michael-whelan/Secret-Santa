@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
- import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
+import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
 import { withRouter, useRouteMatch } from "react-router-dom";
 import { selectGroup } from "../store/Sidebar/actions";
 
@@ -15,7 +15,7 @@ const ActiveGroupContainer = () => {
 
 	useEffect(() => {
 		(!selectedGroup || selectedGroup.group_url_id !== group_url_id) &&
-			dispatch(selectGroup(group_url_id))
+			dispatch(selectGroup(group_url_id));
 	});
 
 	return (

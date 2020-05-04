@@ -27,6 +27,7 @@ Codes:
 200 success
 201 user already exists
 202 added person
+301 insuffient rights
 401 uuid not found
 402 group not found
 404 error in understanding request
@@ -51,14 +52,22 @@ class Handler (BaseHTTPRequestHandler) :
 			self.path="/index.html"
 		
 		creds= {'uuid': 'test'}
+
 		par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
+
+		try:
+			creds['uuid'] = par['uuid'][0]
+		except:
+			print("error: Cant capture uuid GET")
+		
 		if creds is not None:
 			self.send_response(200)
 			self.wfile.write("\n")
-			if self.path == "/getgroups" or self.path == "/getgroups/":
+			path = self.path.split('?')[0]
+			if path == "/getgroups" or path == "/getgroups/":
 				json.dump(db.getGroups(creds['uuid']), self.wfile)
-			if self.path.split('?')[0] == "/getgroup":
-				json.dump(db.getGroup(par['id'][0]), self.wfile)
+			if path == "/getgroup":
+				json.dump(db.getGroup(creds['uuid']), self.wfile)
 			self.end_headers
 			return
 		else:
@@ -84,8 +93,14 @@ class Handler (BaseHTTPRequestHandler) :
 
 	def do_POST(self):
 		creds= {'uuid': 'test'}
+		postvars = self.parse_POST()
+		print (postvars)
+		try:
+			creds['uuid'] = postvars['uuid']
+		except:
+			print("error: Cant capture uuid POST")
+		
 		if creds is not None:
-			postvars = self.parse_POST()
 			status = 404
 			if self.path == "/creategroup" or self.path == "/creategroup/":
 				status = db.addGroup(postvars["group_name"],creds)
@@ -115,8 +130,13 @@ class Handler (BaseHTTPRequestHandler) :
 
 	def do_DELETE(self):
 		creds= {'uuid': 'test'}
+		par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
+		try:
+			creds['uuid'] = par['uuid'][0]
+		except:
+			print("error: Cant capture uuid DELETE")
+		
 		if creds is not None:
-			par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
 			if self.path.split('?')[0] == "/deleteperson":
 				status = db.delete_person(par,creds)
 			elif self.path.split('?')[0] == "/deletegroup":
