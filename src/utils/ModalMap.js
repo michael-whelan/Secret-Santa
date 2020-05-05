@@ -57,6 +57,12 @@ export const getModalMap = (type, functionList) => {
 					link: "group_name",
 				},
 				{
+					label: "Public",
+					type: "check",
+					link: "public",
+					default: false,
+				},
+				{
 					label: "Add",
 					type: "button",
 					color: "primary",
@@ -70,6 +76,12 @@ export const getModalMap = (type, functionList) => {
 					type: "text",
 					placeholder: "Group Name",
 					link: "group_name",
+				},
+				{
+					label: "Public",
+					type: "check",
+					link: "public",
+					default: false,
 				},
 				{
 					label: "DELETE",

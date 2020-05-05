@@ -18,7 +18,6 @@ const SidebarContainer = () => {
 	return (
 		<Sidebar
 			selectGroup={(group) => {
-				//dispatch(loadSelectedGroup(group.group_url_id));
 				dispatch(selectGroup(group.group_url_id));
 				handleSelect(group);
 			}}

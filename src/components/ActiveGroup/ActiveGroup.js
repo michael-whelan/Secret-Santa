@@ -14,14 +14,16 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 	const [modalHeading, setModalHeading] = React.useState("update");
 	return (
 		<div className="main-area">
-			<ModalContainer
-				show={modalShow}
-				onHide={() => setModalShow(false)}
-				currData={activeObject}
-				group_id={groupDetails.group_url_id}
-				modalType={modalType}
-				heading={modalHeading}
-			/>
+			{modalShow && (
+				<ModalContainer
+					show={modalShow}
+					onHide={() => setModalShow(false)}
+					currData={Object.assign({}, activeObject)}
+					group_id={groupDetails.group_url_id}
+					modalType={modalType}
+					heading={modalHeading}
+				/>
+			)}
 			<div className="activegroup">
 				<div
 					className="activegroup-header"
