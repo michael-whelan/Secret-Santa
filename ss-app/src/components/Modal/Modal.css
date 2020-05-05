@@ -6,3 +6,15 @@
 .modal-header{
 	background-color: red;
 }
+
+.mb-check-holder{
+	background-color: #282c34;
+	align-items: baseline;
+}
+
+
+.mb-check-label{
+	background-color: #282c34;
+	border: none;
+	color: white;
+}

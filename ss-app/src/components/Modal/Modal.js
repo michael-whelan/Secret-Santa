@@ -13,12 +13,14 @@ function ModalPopup({
 	dispatch,
 	...props
 }) {
-	const [tempData, updateTempData] = React.useState(currData);
+	const [tempData, updateTempData] = React.useState({currData});
 	tempData !== currData && updateTempData(currData);
 
-	const handleChange = ({ target: { value, dataset } }) => {
+	const handleChange = ({ target: { value, dataset, type ,...props} }) => {
 		let localDataObj = currData;
-		localDataObj[dataset.link] = value;
+		type === "checkbox"
+			? (localDataObj[dataset.link] = props.checked? 1:0)
+			: (localDataObj[dataset.link] = value);
 		updateTempData(localDataObj);
 	};
 
@@ -40,6 +42,33 @@ function ModalPopup({
 		);
 	};
 
+	const checkInput = (label, link, placeholder, index) => {
+		return (
+			<InputGroup className="mb-check-holder" key={index}>
+				<InputGroup.Text className="mb-check-label" id="basic-addon1">
+					{label}
+				</InputGroup.Text>
+				<input
+					type="checkbox"
+					data-link={link}
+					className="mb-checkbox"
+					onChange={handleChange.bind(this)}
+					onClick={handleChange.bind(this)}
+					value={currData[link] === 1 ? true : false}
+					defaultChecked={currData[link]}
+				/>
+			</InputGroup>
+		);
+	};
+
+	const genElem = (elem, index) => {
+		if (elem.type === "text") {
+			return textInput(elem.label, elem.link, elem.default, index);
+		} else if (elem.type === "check") {
+			return checkInput(elem.label, elem.link, elem.default, index);
+		}
+	};
+
 	return (
 		<Modal
 			size="lg"
@@ -54,11 +83,7 @@ function ModalPopup({
 			</Modal.Header>
 			<Modal.Body>
 				<h4>Centered Modal</h4>
-				{modalMap.map(
-					(elem, index) =>
-						elem.type === "text" &&
-						textInput(elem.label, elem.link, elem.default, index)
-				)}
+				{modalMap.map((elem, index) => genElem(elem, index))}
 			</Modal.Body>
 			<Modal.Footer>
 				{modalMap.map(
@@ -91,7 +116,7 @@ function ModalPopup({
 
 ModalPopup.propTypes = {
 	modalMap: PropTypes.array.isRequired,
-	currData: PropTypes.object.isRequired
+	currData: PropTypes.object.isRequired,
 };
 
 export default ModalPopup;

@@ -29,7 +29,7 @@ const ModalContainer = ({ group_id, modalType, ...props }) => {
 		dispatch(deletePerson(vars, group_id, uuid));
 	};
 	const localAddGroup = (vars) => {
-		console.log(user.sub)
+		console.log(user.sub);
 		dispatch(addGroup(vars, uuid));
 	};
 	const localUpdateGroup = (vars) => {
@@ -48,7 +48,11 @@ const ModalContainer = ({ group_id, modalType, ...props }) => {
 		localUpdateGroup: localUpdateGroup,
 		localDeleteGroup: localDeleteGroup,
 	};
-	return <ModalPopup {...props} modalMap={getModalMap(modalType, funcs)} />;
+	return props.show ? (
+		<ModalPopup {...props} modalMap={getModalMap(modalType, funcs)} />
+	) : (
+		<></>
+	);
 };
 
 export default ModalContainer;

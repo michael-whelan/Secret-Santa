@@ -4,6 +4,7 @@ import {
 	FETCH_GROUP,
 	CLEAR_SELECTED_GROUP,
 } from "./types";
+import {doSelectGroup} from "../Sidebar/actions"
 import { do_get } from "../api/actions";
 
 const loadGroupError = (message) => ({
@@ -21,9 +22,10 @@ export const clearSelectedGroup = () => ({
 });
 
 export const loadSelectedGroup = (id) => async (dispatch) => {
-	let response = await do_get("getgroup?uuid=" + id);
+	let response = await do_get("getgroup", id);
 	if (response.status === 200) {
 		dispatch(storeSelectedGroup(response.data));
+		dispatch(doSelectGroup(id));
 	} else {
 		dispatch(loadGroupError(response));
 	}

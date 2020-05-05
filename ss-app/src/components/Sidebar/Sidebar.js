@@ -5,7 +5,6 @@ import ListItem from "../ListItem/ListItem";
 import Button from "react-bootstrap/Button";
 import ModalContainer from "../../containers/ModalContainer";
 
-
 const SideBar = ({ groups, selectGroup, errorMsg }) => {
 	const [modalShow, setModalShow] = React.useState(false);
 	return (
@@ -27,21 +26,22 @@ const SideBar = ({ groups, selectGroup, errorMsg }) => {
 				variant="outline-primary"
 				className="add-group-btn"
 				onClick={() => {
-					setModalShow(true)
+					setModalShow(true);
 				}}
 			>
 				Add Group
 			</Button>
 			<span className="error">{errorMsg}</span>
-
-			<ModalContainer
-				show={modalShow}
-				onHide={() => setModalShow(false)}
-				group_id={null}
-				currData={{}}
-				heading={"Add New Group"}
-				modalType={"add-group"}
-			/>
+			{modalShow && (
+				<ModalContainer
+					show={modalShow}
+					onHide={() => setModalShow(false)}
+					group_id={null}
+					currData={{}}
+					heading={"Add New Group"}
+					modalType={"add-group"}
+				/>
+			)}
 		</div>
 	);
 };

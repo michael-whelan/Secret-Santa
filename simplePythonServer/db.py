@@ -126,7 +126,7 @@ def getGroups(uuid):
 	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
 	#query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active, p.nots from groups g inner join
 	#people p where g.id = p.group_id and g.admin_uuid = '%s' order by p.group_id;""" % (uuid)
-	query = """SELECT id as group_id,group_name,sent,group_url_id from groups 
+	query = """SELECT id as group_id,group_name,sent, public, group_url_id from groups 
 	where admin_uuid = '%s' order by id;""" % (uuid)
 	print(query)
 	if uuid == 'test':
@@ -206,8 +206,11 @@ def make_update_strings(vars):
 
 def update_person(vars, creds):
 	id = vars.pop("person_id", None)
+	vars.pop("uuid", None)
 	update_string = make_update_strings(vars)
-	#Should first check that user is valid to make change
+	if not user_group_rights(None,creds["uuid"],id, False):
+		return 301
+	
 	query = """update people set %s where id = %s""" % (
 				update_string, id
 			)
@@ -221,33 +224,36 @@ def update_person(vars, creds):
 
 def update_group(vars, creds):
 	id = vars.pop("group_id", None)
+	vars.pop("uuid", None)
+	vars['public'] = vars.pop("public_group")
 	update_string = make_update_strings(vars)
-	#Should first check that user is valid to make change
+	if not user_group_rights(id,creds["uuid"],None, False):
+		return 301
 	query = """update groups set %s where group_url_id = '%s'""" % (
 				update_string, id
 			)
+	print(query)
 	try:
 		do_query(query)
 		return 200
 	except:
 		print("Error: update_group")
+		print(query)
 		return 400
 
 def delete_group(vars, creds):
 	if vars["group_id"][0]:
-	#Should first check that user is valid to make change
-		if not user_group_rights(vars["group_id"][0],creds["uuid"]):
+		if not user_group_rights(vars["group_id"][0],creds["uuid"],None, True):
 			return 301
-		return 400
 		broken_query1 = "error"
 		broken_query2 = "error"
 		try:
 			query1 = """delete from people where group_id =
-			(select id from groups where group_url_id = '%s');""" % (
-					vars["group_id"][0]
+			(select id from groups where group_url_id = '%s' and admin_uuid = '%s');""" % (
+					vars["group_id"][0], creds["uuid"]
 				)
-			query2 = """delete from groups where group_url_id = '%s';""" % (
-					vars["group_id"][0]
+			query2 = """delete from groups where group_url_id = '%s' and admin_uuid = '%s';""" % (
+					vars["group_id"][0], creds["uuid"]
 				)
 			broken_query1 = query1
 			broken_query2 = query2
@@ -261,8 +267,9 @@ def delete_group(vars, creds):
 			return 400
 	return 400
 
-def add_person(vars):
-	#Should first check that user is valid to make change
+def add_person(vars,creds):
+	if not user_group_rights(vars["group_id"],creds["uuid"], None,False):
+			return 301
 	new_name = vars["name"]
 	new_email = vars["email"]
 	query = """insert into people(group_id, name, email, active) values (
@@ -280,7 +287,9 @@ def add_person(vars):
 		return 400
 
 def delete_person(vars, creds):
-	#do cred check
+	print(vars)
+	if not user_group_rights(None,creds["uuid"],vars["id"][0], True):
+		return 301
 	if vars["id"][0]:
 		try:
 			query = """delete from people where id = %s""" % (
@@ -292,13 +301,36 @@ def delete_person(vars, creds):
 			return 400
 	return 400
 
-def user_group_rights(gid, uid):
-	print("***********")
+
+#Check if the current user has the rights for the action selected.
+#Strict false means that if the group is public allow this right (does not apply to delete) 
+def user_group_rights(gid, uid, pid,strict=True):
 	try:
-		query = """select * from groups where group_url_id = '%s' and admin_uuid = '%s';""" % (
-			gid, uid
-		)
-		print(query )
+		query = None
+		if gid:
+			if strict:
+				query = """select * from groups where group_url_id = '%s' and admin_uuid = '%s';""" % (
+					gid, uid
+				)
+			else:
+				query = """select * from groups where group_url_id = '%s' and (admin_uuid = '%s' or public=1);""" % (
+					gid,uid
+				)
+		elif pid:
+			if strict:
+				query = """select * from groups where id = 
+				(select group_id from people where id =%s) 
+				and admin_uuid ='%s';""" % (
+					pid, uid
+				)
+			else:
+				query = """select * from groups where id = 
+				(select group_id from people where id =%s) 
+				and (admin_uuid ='%s' or public=1);""" % (
+					pid, uid
+				)
+		if query == None:
+			return False
 		conn = sqlite3.connect('secretsanta.db')
 		cursor= conn.cursor()
 		cursor.execute(query)

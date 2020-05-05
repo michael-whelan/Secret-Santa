@@ -51,7 +51,7 @@ class Handler (BaseHTTPRequestHandler) :
 		if self.path=="/":
 			self.path="/index.html"
 		
-		creds= {'uuid': 'test'}
+		creds= {'uuid': 'null'}
 
 		par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
 
@@ -92,7 +92,7 @@ class Handler (BaseHTTPRequestHandler) :
 
 
 	def do_POST(self):
-		creds= {'uuid': 'test'}
+		creds= {'uuid': 'null'}
 		postvars = self.parse_POST()
 		print (postvars)
 		try:
@@ -105,7 +105,7 @@ class Handler (BaseHTTPRequestHandler) :
 			if self.path == "/creategroup" or self.path == "/creategroup/":
 				status = db.addGroup(postvars["group_name"],creds)
 			elif self.path == "/addperson" or self.path == "/addperson/":
-				status = db.add_person(postvars)
+				status = db.add_person(postvars,creds)
 			self.send_response(status)
 			self.end_headers()
 			return
@@ -113,9 +113,14 @@ class Handler (BaseHTTPRequestHandler) :
 		self.end_headers()
 
 	def do_PUT(self):
-		creds= {'uuid': 'test'}
+		creds= {'uuid': 'null'}
+
+		postvars = self.parse_POST()
+		try:
+			creds['uuid'] = postvars['uuid']
+		except:
+			print("error: Cant capture uuid PUT")
 		if creds is not None:
-			postvars = self.parse_POST()
 			status = 404
 			if self.path == "/updateperson" or self.path == "/updateperson/":
 				status = db.update_person(postvars,creds)
