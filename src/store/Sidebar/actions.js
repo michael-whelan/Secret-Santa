@@ -9,19 +9,7 @@ import {
 import { do_get } from "../api/actions";
 import { loadSelectedGroup } from "../ActiveGroup/actions";
 
-export const selectGroup = (id) => (dispatch) => {
-	dispatch(loadSelectedGroup(id));
-	dispatch(doSelectGroup(id));
-};
 
-export const doSelectGroup = (id) => {
-	return id
-		? {
-				type: SELECT_GROUP,
-				data: id,
-		  }
-		: { type: CLEAR_SELECTED_GROUP };
-};
 
 const renderGroupList = (data) => ({
 	type: RENDER_GROUP_LIST,
@@ -34,7 +22,7 @@ export const loadGroupsError = (message) => ({
 });
 
 export const loadGroupList = (userId = null) => async (dispatch) => {
-	let response = await do_get("getgroups",userId);
+	let response = await do_get("getgroups", {uuid: userId});
 
 	if (response.status === 200) {
 		dispatch(renderGroupList(response.data));
