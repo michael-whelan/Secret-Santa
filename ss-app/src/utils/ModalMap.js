@@ -59,7 +59,7 @@ export const getModalMap = (type, functionList) => {
 				{
 					label: "Public",
 					type: "check",
-					link: "public",
+					link: "public_group",
 					default: false,
 				},
 				{
@@ -80,7 +80,7 @@ export const getModalMap = (type, functionList) => {
 				{
 					label: "Public",
 					type: "check",
-					link: "public",
+					link: "public_group",
 					default: false,
 				},
 				{

@@ -150,28 +150,46 @@ def getGroups(uuid):
 	print(generate_uuid())
 	return raw_data	
 
-def getGroup(g_id):
-	query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active,p.nots from groups g inner join
-	people p where g.id = p.group_id and g.group_url_id = '%s'""" % (g_id)
-	print(query )
+def getGroup(g_id, u_id):
+	if not user_group_rights(g_id,u_id,None, False):
+		return 201
+
+	query1 = """SELECT id as group_id,group_name,sent,public,group_url_id from groups
+	where group_url_id = '%s'""" % (g_id)
+	query2 = """SELECT id as person_id,name,email,active,nots 
+	from people where group_id = 
+	(select id from groups where group_url_id = '%s')""" % (g_id)
+	print(query1)
+	print(query2)
 	conn = sqlite3.connect('secretsanta.db')
 	cursor= conn.cursor()
-	cursor.execute(query)
-	if cursor == None:
-		return None
-	rows = [x for x in cursor]
-	cols = [x[0] for x in cursor.description]
+	cursor.execute(query1)
+	group_info = cursor.fetchall()
+	cursor.execute(query2)
+	people_info = cursor.fetchall()
 	conn.close()
-	raw_data = []
+	
+	ret_data = {
+		"group_id": group_info[0][0],
+		"group_name": group_info[0][1],
+		"sent": group_info[0][2],
+		"public": group_info[0][3],
+		"ugid":group_info[0][4]
+	}
 
-	for row in rows:
-		dataSingle = {}
-		for prop, val in zip(cols, row):
-			dataSingle[prop] = val
-		raw_data.append(dataSingle)
-
+	people = []
+	for personDetail in people_info:
+		person = {
+			'person_id':personDetail[0],
+			'name': personDetail[1],
+			'email': personDetail[2],
+			'active': personDetail[3],
+			'nots': personDetail[4] 
+		}
+		people.append(person)
+	ret_data["people"] = people
 	print ("getGroup done successfully")
-	return raw_data
+	return ret_data
 
 
 def addGroup(groupName, userInfo):
@@ -209,7 +227,7 @@ def update_person(vars, creds):
 	vars.pop("uuid", None)
 	update_string = make_update_strings(vars)
 	if not user_group_rights(None,creds["uuid"],id, False):
-		return 301
+		return 201
 	
 	query = """update people set %s where id = %s""" % (
 				update_string, id
@@ -223,12 +241,13 @@ def update_person(vars, creds):
 		return 400
 
 def update_group(vars, creds):
-	id = vars.pop("group_id", None)
+	id = vars.pop("ugid", None)
 	vars.pop("uuid", None)
 	vars['public'] = vars.pop("public_group")
-	update_string = make_update_strings(vars)
+	
 	if not user_group_rights(id,creds["uuid"],None, False):
-		return 301
+		return 201
+	update_string = make_update_strings(vars)
 	query = """update groups set %s where group_url_id = '%s'""" % (
 				update_string, id
 			)
@@ -242,18 +261,18 @@ def update_group(vars, creds):
 		return 400
 
 def delete_group(vars, creds):
-	if vars["group_id"][0]:
-		if not user_group_rights(vars["group_id"][0],creds["uuid"],None, True):
-			return 301
+	if vars["ugid"][0]:
+		if not user_group_rights(vars["ugid"][0],creds["uuid"],None, True):
+			return 201
 		broken_query1 = "error"
 		broken_query2 = "error"
 		try:
 			query1 = """delete from people where group_id =
 			(select id from groups where group_url_id = '%s' and admin_uuid = '%s');""" % (
-					vars["group_id"][0], creds["uuid"]
+					vars["ugid"][0], creds["uuid"]
 				)
 			query2 = """delete from groups where group_url_id = '%s' and admin_uuid = '%s';""" % (
-					vars["group_id"][0], creds["uuid"]
+					vars["ugid"][0], creds["uuid"]
 				)
 			broken_query1 = query1
 			broken_query2 = query2
@@ -268,14 +287,14 @@ def delete_group(vars, creds):
 	return 400
 
 def add_person(vars,creds):
-	if not user_group_rights(vars["group_id"],creds["uuid"], None,False):
-			return 301
+	if not user_group_rights(vars["ugid"],creds["uuid"], None,False):
+			return 201
 	new_name = vars["name"]
 	new_email = vars["email"]
 	query = """insert into people(group_id, name, email, active) values (
 		(select id from groups where group_url_id = '%s')
 		, '%s', '%s',%s)""" % (
-				vars["group_id"], new_name, new_email,1
+				vars["ugid"], new_name, new_email,1
 			)
 	print(query)
 	try:
@@ -289,7 +308,7 @@ def add_person(vars,creds):
 def delete_person(vars, creds):
 	print(vars)
 	if not user_group_rights(None,creds["uuid"],vars["id"][0], True):
-		return 301
+		return 201
 	if vars["id"][0]:
 		try:
 			query = """delete from people where id = %s""" % (

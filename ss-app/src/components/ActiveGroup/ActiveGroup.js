@@ -19,7 +19,7 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 					show={modalShow}
 					onHide={() => setModalShow(false)}
 					currData={Object.assign({}, activeObject)}
-					group_id={groupDetails.group_url_id}
+					ugid={groupDetails.ugid}
 					modalType={modalType}
 					heading={modalHeading}
 				/>

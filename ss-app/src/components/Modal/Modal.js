@@ -17,6 +17,7 @@ function ModalPopup({
 	tempData !== currData && updateTempData(currData);
 
 	const handleChange = ({ target: { value, dataset, type ,...props} }) => {
+		console.log(value, dataset, type,currData);
 		let localDataObj = currData;
 		type === "checkbox"
 			? (localDataObj[dataset.link] = props.checked? 1:0)
@@ -53,7 +54,6 @@ function ModalPopup({
 					data-link={link}
 					className="mb-checkbox"
 					onChange={handleChange.bind(this)}
-					onClick={handleChange.bind(this)}
 					value={currData[link] === 1 ? true : false}
 					defaultChecked={currData[link]}
 				/>

@@ -46,9 +46,6 @@ export const Auth0Provider = ({
 				dispatch(storeUser(user));
 				dispatch(loadGroupList(user.sub));
 			}
-			else{
-				dispatch(loadGroupList());
-			}
 			setLoading(false);
 		};
 		initAuth0();

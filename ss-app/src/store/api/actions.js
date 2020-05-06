@@ -51,9 +51,9 @@ export const do_delete = (endpoint, uuid) => {
 	// 	dispatch(deleteError(error));
 	// });
 };
-export const do_get = (endpoint, uuid) => {
+export const do_get = (endpoint, param) => {
 	return axios
-		.get(dom + endpoint, { params: { uuid: uuid } })
+		.get(dom + endpoint, { params: param })
 		.then((response) => {
 			return response;
 		});

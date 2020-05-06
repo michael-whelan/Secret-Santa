@@ -36,7 +36,7 @@ const SideBar = ({ groups, selectGroup, errorMsg }) => {
 				<ModalContainer
 					show={modalShow}
 					onHide={() => setModalShow(false)}
-					group_id={null}
+					ugid={null}
 					currData={{}}
 					heading={"Add New Group"}
 					modalType={"add-group"}

@@ -25,9 +25,8 @@ PORT = 8080
 """
 Codes:
 200 success
-201 user already exists
+201 insuffient rights
 202 added person
-301 insuffient rights
 401 uuid not found
 402 group not found
 404 error in understanding request
@@ -54,25 +53,32 @@ class Handler (BaseHTTPRequestHandler) :
 		creds= {'uuid': 'null'}
 
 		par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
-
 		try:
+			print('par',par)
 			creds['uuid'] = par['uuid'][0]
 		except:
 			print("error: Cant capture uuid GET")
 		
-		if creds is not None:
+		path = self.path.split('?')[0]
+		if path == "/getgroups" or path == "/getgroups/":
 			self.send_response(200)
 			self.wfile.write("\n")
-			path = self.path.split('?')[0]
-			if path == "/getgroups" or path == "/getgroups/":
+			if creds['uuid'] =='null':
+				self.send_response(201)
+			else:
 				json.dump(db.getGroups(creds['uuid']), self.wfile)
-			if path == "/getgroup":
-				json.dump(db.getGroup(creds['uuid']), self.wfile)
 			self.end_headers
 			return
-		else:
-			self.send_response(404)
+		if path == "/getgroup":
+			self.send_response(200)
+			self.wfile.write("\n")
+			json.dump(db.getGroup(par['ugid'][0],creds['uuid']), self.wfile)
+			#js = jsonify(db.getGroup(par['ugid'][0],creds['uuid']))
+			#import pdb; pdb.set_trace()
+			self.end_headers()
 			return
+		self.send_response(404)
+		return
 	
 
 	def parse_POST(self):
@@ -150,5 +156,5 @@ class Handler (BaseHTTPRequestHandler) :
 			self.end_headers()
 
 server = HTTPServer(("localhost", PORT), Handler)
-print ("serving at port", PORT)
+print ("serving on port", PORT)
 server.serve_forever()
