@@ -18,7 +18,6 @@ const ModalContainer = ({ ugid, modalType, ...props }) => {
 	const user = useSelector((state) => state.auth.user);
 	const uuid = user ? user.sub : null;
 	const history = useHistory();
-	console.log(ugid);
 
 	const localAddPerson = (vars) => {
 		dispatch(addPerson(vars, ugid, uuid));
