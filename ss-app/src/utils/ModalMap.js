@@ -96,10 +96,17 @@ export const getModalMap = (type, functionList) => {
 					func: functionList["localUpdateGroup"],
 				},
 			];
+		case "201-message":
+			return [
+				{
+					type: "info",
+					placeholder: "You do not have the rights to complete that action",
+				},
+			];
 		default:
 			return [
 				{
-					label: "This is a test. You shouldnt see this",
+					label: "This is a test. You shouldn't see this",
 					type: "label",
 					default: "",
 					link: "",

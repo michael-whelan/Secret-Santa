@@ -73,8 +73,6 @@ class Handler (BaseHTTPRequestHandler) :
 			self.send_response(200)
 			self.wfile.write("\n")
 			json.dump(db.getGroup(par['ugid'][0],creds['uuid']), self.wfile)
-			#js = jsonify(db.getGroup(par['ugid'][0],creds['uuid']))
-			#import pdb; pdb.set_trace()
 			self.end_headers()
 			return
 		self.send_response(404)

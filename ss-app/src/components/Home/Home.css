@@ -1,10 +1,45 @@
-.column:not(:last-child) {
+.column {
 	float: left;
 	width: 33.33%;
 	height: 100%;
+	color: black;
+	position: relative;
 }
 
-.column:after {
+.column h1 {
+	display: block;
+	border-radius: 50%;
+	border-color: white;
+	width: 15%;
+	border-style: solid;
+	text-align: center;
+	margin-top: -50px;
+	margin-left: 43%;
+}
+
+.column h2 {
+	display: block;
+	width: fit-content;
+	margin: auto;
+}
+.column img {
+	display: block;
+	border-radius: 5%;
+	border-color: white;
+	border-style: solid;
+	align-content: center;
+	width: 50%;
+	margin: auto;
+	margin-top: 2em;
+}
+
+.column p {
+	display: block;
+	text-align: center;
+	margin-top: 15%;
+}
+
+.column:not(:last-child):after {
 	content: "";
 	height: 60%;
 	margin-top: 20%;
@@ -28,4 +63,13 @@
 
 .home {
 	height: 100%;
+}
+
+.jumbo {
+	width: 90%;
+	display: inline-block;
+	height: 90%;
+	margin-top: 5%;
+	margin-left: 5%;
+	border-radius: 5%;
 }
