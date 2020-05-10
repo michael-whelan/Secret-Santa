@@ -12,7 +12,7 @@ const ActiveGroupContainer = () => {
 	const dispatch = useDispatch();
 	const {
 		params: { ugid },
-	} = useRouteMatch("/group/:ugid");
+	} = useRouteMatch("/groups/:ugid");
 	
 	useEffect(() => {
 		ugid &&

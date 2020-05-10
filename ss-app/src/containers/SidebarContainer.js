@@ -14,7 +14,7 @@ const SidebarContainer = () => {
 	const history = useHistory();
 
 	const handleSelect = (group) => {
-		history.push(`/group/${group.group_url_id}`);
+		history.push(`/groups/${group.group_url_id}`);
 	};
 	console.log("add user check Sidebar container")
 	return user ? (

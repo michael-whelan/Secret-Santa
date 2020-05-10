@@ -17,12 +17,13 @@ const Headerbar = () => {
 			<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 			<Navbar.Collapse id="responsive-navbar-nav">
 				<Nav className="mr-auto">
-					<Nav.Link href="#features">Features</Nav.Link>
-					<Nav.Link href="#pricing">Pricing</Nav.Link>
+					<Link className="nav-link left" to="/">
+						Home
+					</Link>
 					{isAuthenticated && user && (
 						<span>
-							<Link className="nav-link left" to="/">
-								Home
+							<Link className="nav-link left" to="/groups">
+								Groups
 							</Link>
 							<Link className="nav-link right" to="/profile">
 								<img
