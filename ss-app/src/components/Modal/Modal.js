@@ -15,7 +15,7 @@ function ModalPopup({
 }) {
 	const [tempData, updateTempData] = React.useState({currData});
 	tempData !== currData && updateTempData(currData);
-
+	console.log(currData)
 	const handleChange = ({ target: { value, dataset, type ,...props} }) => {
 		console.log(value, dataset, type,currData);
 		let localDataObj = currData;
@@ -66,7 +66,8 @@ function ModalPopup({
 			return textInput(elem.label, elem.link, elem.default, index);
 		} else if (elem.type === "check") {
 			return checkInput(elem.label, elem.link, elem.default, index);
-		}
+		} 
+		
 	};
 
 	return (
@@ -82,7 +83,6 @@ function ModalPopup({
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<h4>Centered Modal</h4>
 				{modalMap.map((elem, index) => genElem(elem, index))}
 			</Modal.Body>
 			<Modal.Footer>

@@ -9,10 +9,16 @@ export const getModalMap = (type, functionList) => {
 					link: "name",
 				},
 				{
-					label: "email",
+					label: "Email",
 					type: "text",
 					placeholder: "email",
 					link: "email",
+				},
+				{
+					label: "Nots",
+					type: "multi",
+					placeholder: "Not to match with",
+					link: "nots",
 				},
 				{
 					label: "DELETE",
