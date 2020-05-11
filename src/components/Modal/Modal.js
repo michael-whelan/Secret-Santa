@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import Badge from "react-bootstrap/Badge";
 
 function ModalPopup({
 	heading = "Modal Heading",
@@ -13,14 +14,14 @@ function ModalPopup({
 	dispatch,
 	...props
 }) {
-	const [tempData, updateTempData] = React.useState({currData});
+	const [tempData, updateTempData] = React.useState({ currData });
 	tempData !== currData && updateTempData(currData);
-	console.log(currData)
-	const handleChange = ({ target: { value, dataset, type ,...props} }) => {
-		console.log(value, dataset, type,currData);
+	console.log(currData);
+	const handleChange = ({ target: { value, dataset, type, ...props } }) => {
+		//console.log(value, dataset, type, currData);
 		let localDataObj = currData;
 		type === "checkbox"
-			? (localDataObj[dataset.link] = props.checked? 1:0)
+			? (localDataObj[dataset.link] = props.checked ? 1 : 0)
 			: (localDataObj[dataset.link] = value);
 		updateTempData(localDataObj);
 	};
@@ -61,13 +62,22 @@ function ModalPopup({
 		);
 	};
 
+	const multiInput = (label, link, placeholder, index) => {
+		const arr = [];
+		currData[link].forEach((element, i) => {
+			arr.push(<Badge key={index + "-" + i}>{element}</Badge>);
+		});
+		return arr;
+	};
+
 	const genElem = (elem, index) => {
 		if (elem.type === "text") {
 			return textInput(elem.label, elem.link, elem.default, index);
 		} else if (elem.type === "check") {
 			return checkInput(elem.label, elem.link, elem.default, index);
-		} 
-		
+		} else if (elem.type === "multi") {
+			return multiInput(elem.label, elem.link, elem.default, index);
+		}
 	};
 
 	return (
