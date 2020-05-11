@@ -15,7 +15,18 @@ const initialState = {
 	errorMsg: "",
 };
 
-export default function ActiveGroupReducer(state = initialState, {type,data}) {
+const notsToArray = (people) => {
+	people.forEach((person) => {
+		if (person.nots) {
+			person.nots = person.nots.split("|").filter((item) => item != "");
+		}
+	});
+};
+
+export default function ActiveGroupReducer(
+	state = initialState,
+	{ type, data }
+) {
 	switch (type) {
 		case LOAD_GROUP_ERROR:
 			return {
@@ -24,12 +35,8 @@ export default function ActiveGroupReducer(state = initialState, {type,data}) {
 				errorMsg: "Error Loading Group Info",
 			};
 		case STORE_SELECTED_GROUP:
-			const {
-				group_id,
-				ugid,
-				group_name,
-				sent,
-			} = data;
+			const { group_id, ugid, group_name, sent } = data;
+			notsToArray(data.people);
 			return {
 				...state,
 				people: data.people,
