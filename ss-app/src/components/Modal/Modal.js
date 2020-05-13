@@ -3,8 +3,6 @@ import "./Modal.css";
 import PropTypes from "prop-types";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
 import Badge from "react-bootstrap/Badge";
 import TextInput from "../TextInput";
 import CheckInput from "../CheckInput";

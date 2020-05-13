@@ -9,7 +9,6 @@ import {
 	updateGroup,
 	deleteGroup,
 } from "../store/Modal/actions";
-import { doTestExport } from "../store/Modal/actions";
 import { getModalMap } from "../utils/ModalMap";
 import { useHistory } from "react-router";
 
