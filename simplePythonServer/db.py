@@ -99,29 +99,6 @@ def getUser(u,e,recpass):
 	print ("getUser done successfully")
 	return data
 
-
-
-def structure_group(raw_data):
-	lastGroup ="null"
-	data =[]
-	for i in raw_data:
-		if i["group_id"] != lastGroup:
-			group = {}
-			group["group_name"] = i["group_name"]
-			group["group_id"] = i["group_id"]
-			group["active"] = i["active"]
-			group["people"] = []
-			lastGroup = i["group_id"]
-			data.append(group)
-		person = {}
-		person["person_id"]= i["person_id"]
-		person["name"]= i["name"]
-		person["email"]= i["email"]
-		person["active"]= i["active"]
-		person["nots"]= i["nots"]
-		data[(len(data))-1]["people"].append(person)
-	return data
-
 def getGroups(uuid):
 	#query = """SELECT * from groups where admin = (select id from users where uuid = '%s');""" % (uuid)
 	#query = """SELECT g.id as group_id,g.group_name,g.sent, p.id as person_id,p.name,p.email,p.active, p.nots from groups g inner join

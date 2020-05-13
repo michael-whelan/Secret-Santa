@@ -35,7 +35,7 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 					}}
 				>
 					<h2 className="group-title">{groupDetails.group_name}</h2>
-					<img className="group-edit" src={logo} />
+					<img alt="" className="group-edit" src={logo} />
 				</div>
 				<ListGroup>
 					{people.map((p, index) => (

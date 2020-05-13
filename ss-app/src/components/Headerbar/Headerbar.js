@@ -27,6 +27,7 @@ const Headerbar = () => {
 							</Link>
 							<Link className="nav-link right" to="/profile">
 								<img
+									alt=""
 									className="profile-picture"
 									src={user.picture}
 								/>
