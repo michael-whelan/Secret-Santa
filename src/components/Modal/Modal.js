@@ -6,6 +6,8 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Badge from "react-bootstrap/Badge";
+import TextInput from "../TextInput";
+import CheckInput from "../CheckInput";
 
 function ModalPopup({
 	heading = "Modal Heading",
@@ -16,7 +18,7 @@ function ModalPopup({
 }) {
 	const [tempData, updateTempData] = React.useState({ currData });
 	tempData !== currData && updateTempData(currData);
-	console.log(currData);
+
 	const handleChange = ({ target: { value, dataset, type, ...props } }) => {
 		//console.log(value, dataset, type, currData);
 		let localDataObj = currData;
@@ -24,42 +26,6 @@ function ModalPopup({
 			? (localDataObj[dataset.link] = props.checked ? 1 : 0)
 			: (localDataObj[dataset.link] = value);
 		updateTempData(localDataObj);
-	};
-
-	const textInput = (label, link, placeholder, index) => {
-		return (
-			<InputGroup className="mb-3" key={index}>
-				<InputGroup.Prepend>
-					<InputGroup.Text id="basic-addon1">{label}</InputGroup.Text>
-				</InputGroup.Prepend>
-				<FormControl
-					placeholder={placeholder}
-					aria-label={placeholder}
-					aria-describedby="basic-addon1"
-					data-link={link}
-					defaultValue={currData[link]}
-					onChange={handleChange.bind(this)}
-				/>
-			</InputGroup>
-		);
-	};
-
-	const checkInput = (label, link, placeholder, index) => {
-		return (
-			<InputGroup className="mb-check-holder" key={index}>
-				<InputGroup.Text className="mb-check-label" id="basic-addon1">
-					{label}
-				</InputGroup.Text>
-				<input
-					type="checkbox"
-					data-link={link}
-					className="mb-checkbox"
-					onChange={handleChange.bind(this)}
-					value={currData[link] === 1 ? true : false}
-					defaultChecked={currData[link]}
-				/>
-			</InputGroup>
-		);
 	};
 
 	const multiInput = (label, link, placeholder, index) => {
@@ -72,9 +38,27 @@ function ModalPopup({
 
 	const genElem = (elem, index) => {
 		if (elem.type === "text") {
-			return textInput(elem.label, elem.link, elem.default, index);
+			return (
+				<TextInput
+					key={index}
+					label={elem.label}
+					link={elem.link}
+					givenVal={currData[elem.link]}
+					placeholder={elem.default}
+					handleChange={handleChange}
+				/>
+			);
 		} else if (elem.type === "check") {
-			return checkInput(elem.label, elem.link, elem.default, index);
+			return (
+				<CheckInput
+					key={index}
+					label={elem.label}
+					link={elem.link}
+					givenVal={currData[elem.link]}
+					placeholder={elem.default}
+					handleChange={handleChange}
+				/>
+			);
 		} else if (elem.type === "multi") {
 			return multiInput(elem.label, elem.link, elem.default, index);
 		}

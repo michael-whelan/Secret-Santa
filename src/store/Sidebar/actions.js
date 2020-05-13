@@ -1,13 +1,10 @@
 import {
-	SELECT_GROUP,
 	LOAD_GROUP_LIST,
 	RENDER_GROUP_LIST,
 	LOAD_GROUP_LIST_ERROR,
-	CLEAR_SELECTED_GROUP,
 } from "./types";
 
 import { do_get } from "../api/actions";
-import { loadSelectedGroup } from "../ActiveGroup/actions";
 
 
 

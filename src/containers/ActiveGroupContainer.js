@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
 import { withRouter, useRouteMatch } from "react-router-dom";

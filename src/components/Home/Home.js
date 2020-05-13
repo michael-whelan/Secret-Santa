@@ -1,5 +1,4 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
 import "./Home.css";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import accLogo from "../../icons/account-100.png";
@@ -13,7 +12,7 @@ const Home = () => {
 				<Jumbotron className="jumbo" fluid>
 					<h1>1</h1>
 					<h2>Sign up</h2>
-					<img src={accLogo} />
+					<img alt="" src={accLogo} />
 					<p>Register with your email address</p>
 				</Jumbotron>
 			</div>
@@ -21,7 +20,7 @@ const Home = () => {
 				<Jumbotron className="jumbo" fluid>
 					<h1>2</h1>
 					<h2>Create a Group</h2>
-					<img src={formLogo} />
+					<img alt="" src={formLogo} />
 					<p>Set a group name and add all your recipients</p>
 				</Jumbotron>
 			</div>
@@ -29,7 +28,7 @@ const Home = () => {
 				<Jumbotron className="jumbo" fluid>
 					<h1>3</h1>
 					<h2>Press Send</h2>
-					<img src={sendLogo} />
+					<img alt="" src={sendLogo} />
 					<p>Once your group is full hit the send button.</p>
 				</Jumbotron>
 			</div>

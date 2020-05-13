@@ -18,7 +18,9 @@ const initialState = {
 const notsToArray = (people) => {
 	people.forEach((person) => {
 		if (person.nots) {
-			person.nots = person.nots.split("|").filter((item) => item != "");
+			person.nots = person.nots.split("|").filter((item) => item !== "");
+		} else {
+			person.nots = [];
 		}
 	});
 };
@@ -36,7 +38,7 @@ export default function ActiveGroupReducer(
 			};
 		case STORE_SELECTED_GROUP:
 			const { group_id, ugid, group_name, sent } = data;
-			notsToArray(data.people);
+			data.people && notsToArray(data.people);
 			return {
 				...state,
 				people: data.people,
