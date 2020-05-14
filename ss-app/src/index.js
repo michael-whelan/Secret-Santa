@@ -27,6 +27,7 @@ render(
 				redirect_uri={window.location.origin}
 				onRedirectCallback={onRedirectCallback}
 				responseType={"id_token"}
+				sameSite={'none'}
 			>
 				<App />
 			</Auth0Provider>

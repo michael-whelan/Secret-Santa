@@ -22,6 +22,8 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 					ugid={groupDetails.ugid}
 					modalType={modalType}
 					heading={modalHeading}
+					animation={false}
+					people={people}
 				/>
 			)}
 			<div className="activegroup">

@@ -66,7 +66,7 @@ export const getModalMap = (type, functionList) => {
 					label: "Public",
 					type: "check",
 					link: "public_group",
-					default: false,
+					placeholder: false,
 				},
 				{
 					label: "Add",
@@ -87,7 +87,7 @@ export const getModalMap = (type, functionList) => {
 					label: "Public",
 					type: "check",
 					link: "public_group",
-					default: false,
+					placeholder: false,
 				},
 				{
 					label: "DELETE",
@@ -114,7 +114,7 @@ export const getModalMap = (type, functionList) => {
 				{
 					label: "This is a test. You shouldn't see this",
 					type: "label",
-					default: "",
+					placeholder: "",
 					link: "",
 				},
 			];
