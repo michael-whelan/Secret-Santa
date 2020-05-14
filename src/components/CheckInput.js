@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import InputGroup from "react-bootstrap/InputGroup";
 
-const CheckInput = ({ label, link, givenVal, placeholder, handleChange }) => (
+const CheckInput = ({ label, link, givenVal, handleChange }) => (
 	<InputGroup className="mb-check-holder" >
 		<InputGroup.Text className="mb-check-label" id="basic-addon1">
 			{label}
