@@ -12,9 +12,10 @@ const Headerbar = () => {
 	const user = useSelector((state) => state.auth.user);
 	return (
 		<Navbar variant="dark">
+			<Button className="hamburger"/>
 			<Navbar.Brand href="/">Secret Santa</Navbar.Brand>
 			<Navbar.Toggle />
-			<Navbar.Collapse>
+			<Navbar.Collapse >
 				<Nav className="mr-auto">
 					<Link className="nav-link left" to="/">
 						Home
