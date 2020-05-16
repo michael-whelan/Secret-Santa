@@ -25,14 +25,17 @@ export const doTestExport = (group_name, ugid) => {
 	return { type: "DO_TEST", data: { group_name, ugid } };
 };
 
+
 export const updatePerson = (n_person, ugid = null, uuid = null) => async (
 	dispatch
 ) => {
-	const { name, email, person_id } = n_person;
+	let { name, email, person_id, nots } = n_person;
+	nots = '|'+nots.join('|')+'|';
 	let response = await do_put("updateperson", {
 		name,
 		email,
 		person_id,
+		nots,
 		uuid,
 	});
 

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, forwardRef } from "react";
 import PropTypes from "prop-types";
 import FormControl from "react-bootstrap/FormControl";
 import Dropdown from "react-bootstrap/Dropdown";
+import Badge from "react-bootstrap/Badge";
+import "./SimpleComponents.css";
 
-const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+const CustomToggle = forwardRef(({ children, onClick }, ref) => (
 	<a
 		href=""
 		ref={ref}
@@ -17,9 +19,9 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 	</a>
 ));
 
-const CustomMenu = React.forwardRef(
+const CustomMenu = forwardRef(
 	({ children, style, className, "aria-labelledby": labeledBy }, ref) => {
-		const [value, setValue] = React.useState("");
+		const [value, setValue] = useState("");
 
 		return (
 			<div
@@ -47,8 +49,7 @@ const CustomMenu = React.forwardRef(
 	}
 );
 
-const MultiSelInput = ({ label, link, lists, handleSelect }) => {
-	console.log(lists);
+const MultiSelInput = ({ label, link, lists, handleSelect, handleRemove }) => {
 	return (
 		<div>
 			<Dropdown>
@@ -72,7 +73,12 @@ const MultiSelInput = ({ label, link, lists, handleSelect }) => {
 				</Dropdown.Menu>
 			</Dropdown>
 			{lists.selected.map(({ show, data }, index) => (
-				<span key={index}>{show}</span>
+				<Badge pill variant="danger" key={index} className={"not-node"}>
+					{show}
+					<span onClick={() => handleRemove(data)} className="remove">
+						X
+					</span>
+				</Badge>
 			))}
 		</div>
 	);

@@ -4,7 +4,7 @@ import datetime
 import hashlib
 
 
-def generate_uuid():
+def generate_uid():
 	return uuid.uuid1().hex
 
 def uniqueEntry(q):
@@ -18,65 +18,6 @@ def uniqueEntry(q):
 	else:
 		return False
 
-def days_between(d1, d2):
-	d1 = datetime.datetime.strptime(d1, "%Y-%m-%d")
-	d2 = datetime.datetime.strptime(d2, "%Y-%m-%d")
-	return abs((d2 - d1).days)
-
-def check_credentials(uuid,email,passw):
-	print("check_creds")
-	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
-	newUUID = uuid
-
-	#retrieve info from DB
-	userInfo = getUser(uuid,email,passw)
-	if userInfo is None or userInfo == {}:
-		return None
-	#get sent info from client
-	if uuid is not None:
-		if days_between(userInfo["uuid_date"],nowTime) < 1:
-			print("creds valid")
-			return {"uuid":uuid,"email":userInfo["email"]}
-			#newUUID=generate_uuid()
-		return None
-	#if not logging in via UUID salt the password and hash
-	passl = userInfo["salt"] +passw
-	passSec = hashlib.sha224(passl).hexdigest()
-	if email == userInfo["email"] and passSec == userInfo["pass"]:
-		print("creds valid")
-		if days_between(userInfo["uuid_date"],nowTime) >= 1:
-			newUUID=generate_uuid()
-			update_uuid(userInfo["id"],newUUID, nowTime)
-		else:
-			newUUID = userInfo["uuid"]
-		return {"uuid":newUUID,"email":userInfo["email"]}
-	return None
-
-
-def update_uuid(userId, uuid,curDate):
-	query = "Update users set uuid='%s',uuid_date='%s' where id = '%s'" % (uuid,curDate,userId)
-	conn = sqlite3.connect('secretsanta.db')
-	cursor= conn.cursor()
-	cursor.execute(query)
-	conn.commit()
-	conn.close()
-
-
-def registerUser(deets,secure,salt, uuid):
-	print("salt",salt)
-	nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
-	#if uniqueEntry("email", "users", deets['X-User-Email']):
-	if uniqueEntry("SELECT * from users where email = '%s'" % (deets['X-User-Email'])):
-		query = "insert into users(first_name, last_name,email,uuid,pass,salt,uuid_date) values ('%s','%s','%s','%s','%s','%s','%s');" %(
-			deets['X-User-First'],deets['X-User-Last'],deets['X-User-Email'],uuid,secure,salt,nowTime
-		)
-		conn = sqlite3.connect('secretsanta.db')
-		cursor= conn.cursor()
-		cursor.execute(query)
-		conn.commit()
-		conn.close()
-		return {"uuid":uuid,"success":True,"message":"New Account created"}
-	return {"message": "Email account already exists","success":False}
 
 def getUser(u,e,recpass):
 	query= ""
@@ -124,7 +65,6 @@ def getGroups(uuid):
 		raw_data.append(dataSingle)
 	conn.close()
 	print ("getGroups done successfully")
-	print(generate_uuid())
 	return raw_data	
 
 def getGroup(g_id, u_id):
@@ -175,7 +115,7 @@ def addGroup(groupName, userInfo):
 	if uniqueEntry("""select * from groups where group_name = '%s'""" % (groupName)):
 		try:
 			nowTime = '{:%Y-%m-%d}'.format(datetime.datetime.now())
-			ugid = generate_uuid()
+			ugid = generate_uid()
 			query = """insert into groups (group_name,date_created,last_update_date,admin_uuid,public,sent,group_url_id)
 				values ('%s', '%s', '%s', '%s', 0,0,'%s');""" % (
 					groupName,nowTime,nowTime,uuid,ugid

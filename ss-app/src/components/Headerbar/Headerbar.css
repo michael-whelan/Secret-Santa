@@ -1,28 +1,37 @@
-.sign-out-btn, .sign-in-btn{
+.sign-out-btn,
+.sign-in-btn {
 	position: absolute;
 	right: 1vw;
 }
 
-.nav-link{
+.nav-link {
 	display: inline-block;
 }
 
-.main .navbar{
+.main .navbar {
 	background-color: red;
 	border-bottom: 1px;
 	border-color: white;
 	border-bottom-style: double;
 	font-size: medium;
-} 
+}
 
-.profile-picture{
+.profile-picture {
 	border-radius: 50%;
 	max-width: 30px;
 	margin-right: 5px;
 }
 
-.nav-link.right{
+.nav-link.right {
 	position: absolute;
-	right:7vw;
+	right: 7vw;
 	top: 0.5vh;
+}
+
+.navbar-nav .auth-items span.username {
+	color: white;
+	margin-top: 0.5em;
+}
+.navbar-nav .auth-items span.username:hover {
+	color: white;
 }

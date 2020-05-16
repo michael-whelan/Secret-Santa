@@ -11,8 +11,6 @@ function ModalPopup({
 	childElements,
 	...props
 }) {
-	console.log("Modal");	
-
 	return (
 		<Modal
 			size="lg"

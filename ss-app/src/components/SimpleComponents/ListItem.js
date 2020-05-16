@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ListGroup from "react-bootstrap/ListGroup";
-import "./ListItem.css";
+import "./SimpleComponents.css";
 
 const ListItem = ({ group, selectGroup, selected }) => {
 	const handleSelect = () => {
