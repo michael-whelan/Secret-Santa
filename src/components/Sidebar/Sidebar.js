@@ -8,9 +8,9 @@ import ModalContainer from "../../containers/ModalContainer";
 const SideBar = ({ groups, selectGroup, errorMsg }) => {
 	const [modalShow, setModalShow] = useState(false);
 	return (
-		<div className="sidebar">
+		<div className="sidebar hidden">
 			<div className="sidebar-header">
-				<h3>Group List</h3>
+				<h3>My Groups</h3>
 			</div>
 
 			<ListGroup>

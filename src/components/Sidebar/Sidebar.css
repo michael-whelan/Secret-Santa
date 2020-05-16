@@ -8,6 +8,7 @@
 	color: white;
 	border-right: solid;
 	border-width: 1px;
+	overflow-y: scroll;
 	/*border-right: black solid 2px;*/
 }
 
@@ -15,4 +16,19 @@
 	position: relative;
 	display: block;
 	left: 10%;
+}
+
+@media only screen and (max-width: 600px) {
+	.hidden{
+	}
+	.hamburger {
+		display: inline-block;
+		width: 10%;
+		position: absolute;
+		margin-right: 5%;
+		left: 2%;
+	}
+	.sidebar {
+		margin-top: 16%;
+	}
 }
