@@ -5,21 +5,19 @@ import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import { useAuth0 } from "../../Auth";
 import { Link } from "react-router-dom";
+import hamburgerLogo from "../../icons/icons8-hamburger.png";
 import "./Headerbar.css";
 
 const Headerbar = () => {
 	const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 	const user = useSelector((state) => state.auth.user);
 	return (
-		<Navbar variant="dark">
-			<Button className="hamburger"/>
-			<Navbar.Brand href="/">Secret Santa</Navbar.Brand>
+		<Navbar variant="dark" className="sticky">
+			
+			<Link className="title" to="/">Secret Santa</Link>
 			<Navbar.Toggle />
-			<Navbar.Collapse >
+			<Navbar.Collapse>
 				<Nav className="mr-auto">
-					<Link className="nav-link left" to="/">
-						Home
-					</Link>
 					{isAuthenticated && user && (
 						<span className="auth-items">
 							<Link className="nav-link left" to="/groups">

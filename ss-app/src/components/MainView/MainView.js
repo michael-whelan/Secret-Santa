@@ -12,9 +12,9 @@ const MainView = () => {
 			<Headerbar />
 			<Switch>
 				<Route path="/profile" component={Profile} />
-				<Route exact path="/" component={Home} />
-				<Route path={"/groups"}>
-					<SidebarContainer />
+				<Route path="/">
+				<SidebarContainer />
+				<Route exact path={"/"} component={Home}/>
 					<Route exact path={"/groups/:group_url_id"}>
 						<ActiveGroupContainer />
 					</Route>
