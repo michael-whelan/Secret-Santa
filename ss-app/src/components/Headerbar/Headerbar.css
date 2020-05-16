@@ -35,3 +35,11 @@
 .navbar-nav .auth-items span.username:hover {
 	color: white;
 }
+.hamburger {
+	display: none;
+}
+@media only screen and (max-width: 600px) {
+	.hamburger {
+		display: block;
+	}
+}
