@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import "./Sidebar.css";
 import ListGroup from "react-bootstrap/ListGroup";
-import ListItem from "../ListItem/ListItem";
+import ListItem from "../SimpleComponents/ListItem";
 import Button from "react-bootstrap/Button";
 import ModalContainer from "../../containers/ModalContainer";
 
 const SideBar = ({ groups, selectGroup, errorMsg }) => {
-	const [modalShow, setModalShow] = React.useState(false);
+	const [modalShow, setModalShow] = useState(false);
 	return (
 		<div className="sidebar">
 			<div className="sidebar-header">

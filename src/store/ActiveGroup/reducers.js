@@ -54,6 +54,7 @@ export default function ActiveGroupReducer(
 				if (peep.person_id === person_id) {
 					peep.name = data.name;
 					peep.email = data.email;
+					peep.nots= data.nots;
 				}
 				return peep;
 			});

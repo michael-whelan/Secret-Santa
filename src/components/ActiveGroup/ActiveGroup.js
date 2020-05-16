@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./ActiveGroup.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import PersonContainer from "../../containers/PersonContainer";
@@ -8,10 +8,10 @@ import logo from "../../icons/icons8-edit-file-52.png";
 import PropTypes from "prop-types";
 
 const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
-	const [modalShow, setModalShow] = React.useState(false);
-	const [activeObject, setActiveObject] = React.useState({});
-	const [modalType, setModalType] = React.useState("update");
-	const [modalHeading, setModalHeading] = React.useState("update");
+	const [modalShow, setModalShow] = useState(false);
+	const [activeObject, setActiveObject] = useState({});
+	const [modalType, setModalType] = useState("update");
+	const [modalHeading, setModalHeading] = useState("update");
 	return (
 		<div className="main-area">
 			{modalShow && (

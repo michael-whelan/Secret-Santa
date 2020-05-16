@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ModalPopup from "../components/Modal/Modal";
 import {
@@ -11,9 +11,9 @@ import {
 } from "../store/Modal/actions";
 import { getModalMap } from "../utils/ModalMap";
 import { useHistory } from "react-router";
-import TextInput from "../components/TextInput";
-import CheckInput from "../components/CheckInput";
-import MultiSelInput from "../components/MultiSelInput";
+import TextInput from "../components/SimpleComponents/TextInput";
+import CheckInput from "../components/SimpleComponents/CheckInput";
+import MultiSelInput from "../components/SimpleComponents/MultiSelInput";
 
 const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 	const dispatch = useDispatch();
@@ -21,8 +21,8 @@ const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 	const uuid = user ? user.sub : null;
 	const history = useHistory();
 
-	const [tempData, updateTempData] = React.useState({ currData });
-	tempData !== currData && updateTempData(currData);
+	const [tempData, updateTempData] = useState(currData);
+	//tempData !== currData && updateTempData(currData);
 
 	const handleChange = ({ target: { value, dataset, type, ...props } }) => {
 		let localDataObj = currData;
@@ -31,21 +31,31 @@ const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 			: (localDataObj[dataset.link] = value);
 		updateTempData(localDataObj);
 	};
+	const handleRemove = (id) => {
+		let localDataObj = Object.assign({},tempData);
+		localDataObj.nots= tempData.nots.filter((not) => parseInt(not) !== id)
+		updateTempData(localDataObj);
+	};
+	const handleSelect = (id) => {
+		let localDataObj = Object.assign({},tempData);
+		localDataObj.nots.push(id.toString())
+		updateTempData(localDataObj );
+	};
 
 	const formMultiSelList = () => {
 		const selectable = [];
 		const selected = [];
-		people.map(
-			(person) =>
-				currData.person_id !== person.person_id &&
-				selectable.push({
-					show: person.name,
-					data: person.person_id,
-				}) &&
-				currData.nots.includes(person.person_id.toString()) &&
-				selected.push({ show: person.name, data: person.person_id })
-		);
-		console.log(currData.nots)
+		tempData.nots &&
+			people.map(
+				(person) =>
+					tempData.person_id !== person.person_id &&
+					selectable.push({
+						show: person.name,
+						data: person.person_id,
+					}) &&
+					tempData.nots.includes(person.person_id.toString()) &&
+					selected.push({ show: person.name, data: person.person_id })
+			);
 		return { selectable: selectable, selected: selected };
 	};
 
@@ -59,7 +69,6 @@ const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 		dispatch(deletePerson(tempData, ugid, uuid));
 	};
 	const localAddGroup = () => {
-		console.log(user.sub);
 		dispatch(addGroup(tempData, uuid));
 	};
 	const localUpdateGroup = () => {
@@ -78,7 +87,6 @@ const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 		localUpdateGroup: localUpdateGroup,
 		localDeleteGroup: localDeleteGroup,
 	};
-	console.log("Render Container");
 
 	const genElem = ({ type, label, link, placeholder }, index) => {
 		if (type === "text") {
@@ -109,8 +117,11 @@ const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 					label={"Not list"}
 					link={link}
 					lists={formMultiSelList()}
-					handleSelect={(info) => {
-						console.log(info);
+					handleSelect={(id) => {
+						handleSelect(id);
+					}}
+					handleRemove={(id) => {
+						handleRemove(id);
 					}}
 				/>
 			);

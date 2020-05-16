@@ -9,3 +9,20 @@
 	background-color: #282c34;
 	color: red;
 }
+
+
+.not-node{
+	margin-right: 10px;
+}
+
+.not-node .remove{
+	border-left: dashed;
+	margin-left: 2px;
+	border-width: 1px;
+	padding-left: 4px;
+}
+
+.remove:hover{
+	cursor: pointer;
+}
+

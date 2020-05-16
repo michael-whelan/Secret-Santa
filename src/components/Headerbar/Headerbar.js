@@ -10,28 +10,23 @@ import "./Headerbar.css";
 const Headerbar = () => {
 	const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 	const user = useSelector((state) => state.auth.user);
-
 	return (
-		<Navbar expand="lg" variant="dark">
+		<Navbar variant="dark">
 			<Navbar.Brand href="/">Secret Santa</Navbar.Brand>
-			<Navbar.Toggle aria-controls="responsive-navbar-nav" />
-			<Navbar.Collapse id="responsive-navbar-nav">
+			<Navbar.Toggle />
+			<Navbar.Collapse>
 				<Nav className="mr-auto">
 					<Link className="nav-link left" to="/">
 						Home
 					</Link>
 					{isAuthenticated && user && (
-						<span>
+						<span className="auth-items">
 							<Link className="nav-link left" to="/groups">
 								Groups
 							</Link>
-							<Link className="nav-link right" to="/profile">
-								<img
-									alt=""
-									className="profile-picture"
-									src={user.picture}
-								/>
-							</Link>
+							<span className="nav-link right username">
+								{user.nickname}
+							</span>
 						</span>
 					)}
 					{!isAuthenticated && (
