@@ -5,16 +5,8 @@ import { loadSelectedGroup } from "../store/ActiveGroup/actions";
 import { withRouter } from "react-router-dom";
 import { useHistory } from "react-router";
 import hamburgerLogo from "../icons/icons8-hamburger.png";
+import "./styles.css";
 
-const hamburgerStyle = {
-	display: "inline-block",
-	width: "10%",
-	position: "absolute",
-	marginRight: "5%",
-	left: "2%",
-	zIndex: 3,
-	top: "1%",
-};
 const SidebarContainer = () => {
 	const groupList = useSelector((state) => state.sidebar.groupList);
 	const user = useSelector((state) => state.auth.user);
@@ -34,21 +26,22 @@ const SidebarContainer = () => {
 				className="hamburger"
 				alt="hamburger-menu"
 				src={hamburgerLogo}
-				style={hamburgerStyle}
-				onClick={() => setSidebarShow(!sidebarShow)}
+				onClick={() => {
+					setSidebarShow(!sidebarShow);
+				}}
 			/>
-			{sidebarShow && (
-				<Sidebar
-					selectGroup={(group) => {
-						dispatch(
-							loadSelectedGroup(group.group_url_id, user.sub)
-						);
-						handleSelect(group);
-					}}
-					groups={groupList}
-					errorMsg={errorMsg}
-				/>
-			)}
+
+			<Sidebar
+				selectGroup={(group) => {
+					dispatch(loadSelectedGroup(group.group_url_id, user.sub));
+					handleSelect(group);
+					setSidebarShow(!sidebarShow);
+				}}
+				showSidebar={sidebarShow ? "show" : "hidden"}
+				groups={groupList}
+				errorMsg={errorMsg}
+				user = {user}
+			/>
 		</div>
 	) : (
 		<></>

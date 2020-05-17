@@ -1,14 +1,16 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./Sidebar.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListItem from "../SimpleComponents/ListItem";
 import Button from "react-bootstrap/Button";
 import ModalContainer from "../../containers/ModalContainer";
 
-const SideBar = ({ groups, selectGroup, errorMsg }) => {
+const SideBar = ({ groups, selectGroup, errorMsg, showSidebar, user }) => {
 	const [modalShow, setModalShow] = useState(false);
+	console.log(user);
 	return (
-		<div className="sidebar hidden">
+		<div className={"sidebar " + showSidebar}>
+			{user && <span className="username">{user.nickname}</span>}
 			<div className="sidebar-header">
 				<h3>My Groups</h3>
 			</div>
