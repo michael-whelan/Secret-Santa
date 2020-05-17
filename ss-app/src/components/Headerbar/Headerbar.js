@@ -5,7 +5,6 @@ import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import { useAuth0 } from "../../Auth";
 import { Link } from "react-router-dom";
-import hamburgerLogo from "../../icons/icons8-hamburger.png";
 import "./Headerbar.css";
 
 const Headerbar = () => {

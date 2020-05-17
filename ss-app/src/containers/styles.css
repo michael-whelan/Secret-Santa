@@ -1,0 +1,19 @@
+.hamburger {
+	display: none;
+}
+
+@media only screen and (max-width: 600px) {
+	.hamburger {
+		display: inline-block;
+		width: 10%;
+		position: absolute;
+		margin-right: 5%;
+		left: 2%;
+		z-index: 3;
+		top: 1%;
+	}
+	.hidden{
+		display: none;
+	}
+	
+}
