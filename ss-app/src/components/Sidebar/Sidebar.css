@@ -18,15 +18,15 @@
 	left: 10%;
 }
 
-.sidebar .username{
+.sidebar .username {
 	display: none;
 }
 
 @media only screen and (max-width: 600px) {
 	.sidebar {
-		margin-top: 16%;
+		margin-top: 15%;
 	}
-	.sidebar .username{
+	.sidebar .username {
 		display: block;
 		border-bottom: solid;
 		border-width: 1px;
