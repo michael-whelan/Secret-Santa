@@ -1,19 +1,34 @@
 .hamburger {
 	display: none;
 }
+.main-overlay {
+	display: none;
+}
 
 @media only screen and (max-width: 600px) {
 	.hamburger {
 		display: inline-block;
 		width: 10%;
-		position: absolute;
+		position: fixed;
 		margin-right: 5%;
 		left: 2%;
 		z-index: 3;
 		top: 1%;
 	}
-	.hidden{
+	.hidden {
 		display: none;
 	}
-	
+
+	.main-overlay.show{
+		height: 100%;
+		width: 100%;
+		z-index: 1;
+		display:block;
+		position: absolute;
+		background-color: black;
+		opacity: 0.4;
+	}
+	.main-overlay .hidden{
+		display: none;
+	}
 }

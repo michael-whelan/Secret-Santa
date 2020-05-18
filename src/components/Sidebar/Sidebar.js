@@ -7,7 +7,6 @@ import ModalContainer from "../../containers/ModalContainer";
 
 const SideBar = ({ groups, selectGroup, errorMsg, showSidebar, user }) => {
 	const [modalShow, setModalShow] = useState(false);
-	console.log(user);
 	return (
 		<div className={"sidebar " + showSidebar}>
 			{user && <span className="username">{user.nickname}</span>}

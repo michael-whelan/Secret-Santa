@@ -30,7 +30,10 @@ const SidebarContainer = () => {
 					setSidebarShow(!sidebarShow);
 				}}
 			/>
-
+			<div
+				className={"main-overlay " + (sidebarShow ? "show" : "hidden")}
+				onClick={() => setSidebarShow(!sidebarShow)}
+			></div>
 			<Sidebar
 				selectGroup={(group) => {
 					dispatch(loadSelectedGroup(group.group_url_id, user.sub));
@@ -40,7 +43,7 @@ const SidebarContainer = () => {
 				showSidebar={sidebarShow ? "show" : "hidden"}
 				groups={groupList}
 				errorMsg={errorMsg}
-				user = {user}
+				user={user}
 			/>
 		</div>
 	) : (
