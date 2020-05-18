@@ -29,7 +29,7 @@ const Home = () => {
 					<h1>3</h1>
 					<h2>Press Send</h2>
 					<img alt="" src={sendLogo} />
-					<p>Once your group is full hit the send button.</p>
+					<p>Once your group is full hit the send button</p>
 				</Jumbotron>
 			</div>
 		</div>

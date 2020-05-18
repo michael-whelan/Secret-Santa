@@ -4,9 +4,11 @@
 	left: 45%;
 }
 
-.add-person-btn {
+.add-person-btn,
+.send-emails {
 	display: block;
 	margin: auto;
+	margin-bottom: 2%;
 }
 
 .group-title {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { loadSelectedGroup } from "../store/ActiveGroup/actions";
-import { withRouter } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import hamburgerLogo from "../icons/icons8-hamburger.png";
 import "./styles.css";
@@ -12,7 +12,7 @@ const SidebarContainer = () => {
 	const user = useSelector((state) => state.auth.user);
 	const errorMsg = useSelector((state) => state.sidebar.errorMsg);
 	const [sidebarShow, setSidebarShow] = useState(false);
-
+	let location = useLocation();
 	const dispatch = useDispatch();
 
 	const history = useHistory();
@@ -21,7 +21,9 @@ const SidebarContainer = () => {
 		history.push(`/groups/${group.group_url_id}`);
 	};
 	return user ? (
-		<div>
+		<div
+			className={!location.pathname.includes("groups") ? "at-home" : ""}
+		>
 			<img
 				className="hamburger"
 				alt="hamburger-menu"
