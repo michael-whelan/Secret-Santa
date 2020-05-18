@@ -5,6 +5,10 @@
 	display: none;
 }
 
+.at-home {
+	display: none;
+}
+
 @media only screen and (max-width: 600px) {
 	.hamburger {
 		display: inline-block;
@@ -19,16 +23,20 @@
 		display: none;
 	}
 
-	.main-overlay.show{
+	.at-home {
+		display: block;
+	}
+
+	.main-overlay.show {
 		height: 100%;
 		width: 100%;
 		z-index: 1;
-		display:block;
+		display: block;
 		position: absolute;
 		background-color: black;
 		opacity: 0.4;
 	}
-	.main-overlay .hidden{
+	.main-overlay .hidden {
 		display: none;
 	}
 }

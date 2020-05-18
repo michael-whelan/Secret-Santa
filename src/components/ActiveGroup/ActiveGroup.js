@@ -54,6 +54,7 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 					))}
 				</ListGroup>
 				{groupDetails.group_name && (
+					<>
 					<Button
 						variant="outline-primary"
 						className="add-person-btn"
@@ -66,6 +67,16 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 					>
 						Add Person
 					</Button>
+					<Button
+					variant="outline-primary"
+					className="send-emails"
+					onClick={() => {
+						console.log("send")
+					}}
+				>
+					Send Secret Santa
+				</Button>
+				</>
 				)}
 				<span className="error">{errorMsg}</span>
 			</div>
