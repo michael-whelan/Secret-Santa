@@ -31,3 +31,8 @@ export const loadSelectedGroup = (ugid, uuid=null) => async (dispatch) => {
 		type: FETCH_GROUP,
 	};
 };
+
+export const sendMailToGroup = (ugid, uuid=null)=> async (dispatch)=>{
+	let response = await do_get("sendmail", { ugid: ugid, uuid: uuid });
+	console.log(response);
+}
