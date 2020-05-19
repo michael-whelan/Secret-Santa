@@ -46,7 +46,6 @@ def getGroups(uuid):
 	#people p where g.id = p.group_id and g.admin_uuid = '%s' order by p.group_id;""" % (uuid)
 	query = """SELECT id as group_id,group_name,sent, public, group_url_id from groups 
 	where admin_uuid = '%s' order by id;""" % (uuid)
-	print(query)
 	if uuid == 'test':
 		query = """SELECT * from groups""" 
 	conn = sqlite3.connect('secretsanta.db')
@@ -76,8 +75,6 @@ def getGroup(g_id, u_id):
 	query2 = """SELECT id as person_id,name,email,active,nots 
 	from people where group_id = 
 	(select id from groups where group_url_id = '%s')""" % (g_id)
-	print(query1)
-	print(query2)
 	conn = sqlite3.connect('secretsanta.db')
 	cursor= conn.cursor()
 	cursor.execute(query1)
@@ -108,6 +105,21 @@ def getGroup(g_id, u_id):
 	print ("getGroup done successfully")
 	return ret_data
 
+def get_people(g_id, u_id):
+	if not user_group_rights(g_id,u_id,None, False):
+		return 201
+	query = """SELECT name,email 
+	from people where group_id = 
+	(select id from groups where group_url_id = '%s')""" % (g_id)
+	conn = sqlite3.connect('secretsanta.db')
+	cursor= conn.cursor()
+	cursor.execute(query)
+	people_info = cursor.fetchall()
+	conn.close()
+	return people_info
+
+	
+
 
 def addGroup(groupName, userInfo):
 	uuid = userInfo["uuid"]
@@ -121,7 +133,6 @@ def addGroup(groupName, userInfo):
 					groupName,nowTime,nowTime,uuid,ugid
 				)
 			broken_query =query 
-			print(query)
 			do_query(query)
 			return 200
 		except:
@@ -134,7 +145,6 @@ def addGroup(groupName, userInfo):
 def make_update_strings(vars):
 	ret_string = ""
 	for var in vars:
-		print(var)
 		ret_string = ret_string + "%s = '%s', " % (var, vars[var]) 
 	return ret_string[:-2]
 
@@ -168,7 +178,6 @@ def update_group(vars, creds):
 	query = """update groups set %s where group_url_id = '%s'""" % (
 				update_string, id
 			)
-	print(query)
 	try:
 		do_query(query)
 		return 200
@@ -213,7 +222,6 @@ def add_person(vars,creds):
 		, '%s', '%s',%s)""" % (
 				vars["ugid"], new_name, new_email,1
 			)
-	print(query)
 	try:
 		do_query(query)
 		return 200
@@ -223,7 +231,6 @@ def add_person(vars,creds):
 		return 400
 
 def delete_person(vars, creds):
-	print(vars)
 	if not user_group_rights(None,creds["uuid"],vars["id"][0], True):
 		return 201
 	if vars["id"][0]:

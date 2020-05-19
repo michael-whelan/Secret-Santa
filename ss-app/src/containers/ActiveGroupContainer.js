@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
 import { withRouter, useRouteMatch } from "react-router-dom";
-import {loadSelectedGroup} from "../store/ActiveGroup/actions"
+import {
+	loadSelectedGroup,
+	sendMailToGroup,
+} from "../store/ActiveGroup/actions";
 
 const ActiveGroupContainer = () => {
 	const selectedGroup = useSelector((state) => state.activeGroup);
@@ -13,11 +16,13 @@ const ActiveGroupContainer = () => {
 	const {
 		params: { ugid },
 	} = useRouteMatch("/groups/:ugid");
-	
+
 	useEffect(() => {
 		ugid &&
-		(!selectedGroup.ugid|| selectedGroup.ugid !== ugid) &&
-		(user ? dispatch(loadSelectedGroup(ugid,user.sub)):dispatch(loadSelectedGroup(ugid)))
+			(!selectedGroup.ugid || selectedGroup.ugid !== ugid) &&
+			(user
+				? dispatch(loadSelectedGroup(ugid, user.sub))
+				: dispatch(loadSelectedGroup(ugid)));
 	});
 
 	return (
@@ -25,6 +30,7 @@ const ActiveGroupContainer = () => {
 			groupDetails={selectedGroup}
 			people={people}
 			errorMsg={errorMsg}
+			onSubmit={() => dispatch(sendMailToGroup(ugid, user.sub))}
 		/>
 	);
 };

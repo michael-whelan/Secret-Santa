@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import logo from "../../icons/icons8-edit-file-52.png";
 import PropTypes from "prop-types";
 
-const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
+const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "", onSubmit }) => {
 	const [modalShow, setModalShow] = useState(false);
 	const [activeObject, setActiveObject] = useState({});
 	const [modalType, setModalType] = useState("update");
@@ -71,7 +71,7 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "" }) => {
 					variant="outline-primary"
 					className="send-emails"
 					onClick={() => {
-						console.log("send")
+						onSubmit()
 					}}
 				>
 					Send Secret Santa
@@ -88,6 +88,7 @@ ActiveGroup.propTypes = {
 	groupDetails: PropTypes.object,
 	people: PropTypes.array,
 	errorMsg: PropTypes.string,
+	onSubmit: PropTypes.func,
 };
 
 export default ActiveGroup;

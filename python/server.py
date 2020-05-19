@@ -8,6 +8,7 @@ from os import curdir, sep
 import json
 import re
 import db
+import SS
 import codecs
 import cgi
 import urlparse
@@ -45,7 +46,6 @@ class Handler (BaseHTTPRequestHandler) :
 		self.end_headers()
 
 	def do_GET(self) :
-		print(self.path)
 		# Look for main page
 		if self.path=="/":
 			self.path="/index.html"
@@ -54,7 +54,6 @@ class Handler (BaseHTTPRequestHandler) :
 
 		par = urlparse.parse_qs(urlparse.urlparse(self.path).query)
 		try:
-			print('par',par)
 			creds['uuid'] = par['uuid'][0]
 		except:
 			print("error: Cant capture uuid GET")
@@ -75,6 +74,11 @@ class Handler (BaseHTTPRequestHandler) :
 			json.dump(db.getGroup(par['ugid'][0],creds['uuid']), self.wfile)
 			self.end_headers()
 			return
+		if path == "/sendmail":
+			people = db.get_people(par['ugid'][0],creds['uuid'])
+			status = SS.gen_people(people)
+			self.send_response(status)
+			self.end_headers()
 		self.send_response(404)
 		return
 	
@@ -98,7 +102,6 @@ class Handler (BaseHTTPRequestHandler) :
 	def do_POST(self):
 		creds= {'uuid': 'null'}
 		postvars = self.parse_POST()
-		print (postvars)
 		try:
 			creds['uuid'] = postvars['uuid']
 		except:

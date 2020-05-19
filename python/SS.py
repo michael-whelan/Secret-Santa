@@ -66,8 +66,8 @@ usersG[3].not_list.append(usersG[1])
 usersG[4].not_list.append(usersG[5])
 usersG[5].not_list.append(usersG[4])
 
-def fillTest():
-	for user in usersG:
+def fillTest(people_list):
+	for user in people_list:
 		user.not_list=[]
 		tempInt =random.randint(1,3)
 		while tempInt > 0:
@@ -75,29 +75,38 @@ def fillTest():
 			tempInt-=1
 
 
-def main():
+def gen_people(people):
+	people_list = []
+	for person in people:
+		people_list.append(Person(person[0], person[1]))  
+	return main(people_list)
+
+def main(people_list = None):
 	fails = 0
 	success=False
-	fillTest()
+	if not people_list:
+		return 404
+	fillTest(people_list)
 	while fails < 1200 and success==False:
-		shuffle(usersG)
-		usersG.sort(key=lambda s: len(s.not_list), reverse = True)#sort the list so that the largest not list is first
-		if not loopUsers():
+		shuffle(people_list)
+		people_list.sort(key=lambda s: len(s.not_list), reverse = True)#sort the list so that the largest not list is first
+		if not loopUsers(people_list):
 			fails+=1
-			fillTest()
+			fillTest(people_list)
 		else:
 			success=True
-	for user in usersG:
-		#print(user.name, user.chosen.name)
-		sendMessage(user)
+	for user in people_list:
+		print(user.name, user.chosen.name)
+		#sendMessage(user)
+	return 200
 	print('success:', success)
 	print('fails:', fails)
 
 
-def loopUsers():
-	remaining = usersG[:]
+def loopUsers(people_list):
+	remaining = people_list[:]
 	try:
-		for user in usersG:
+		for user in people_list:
 			remaining.remove(user.collect(remaining))
 			if user.chosen == False:
 				return False
@@ -126,6 +135,6 @@ def sendMessage(person):
 	finally:
 		s.quit()
 
-if __name__ == "__main__":
-	main()
+# if __name__ == "__main__":
+# 	main()
 	#sendMessage('santysecrets@gmail.com','seagullmania93@gmail.com')
