@@ -102,6 +102,19 @@ export const getModalMap = (type, functionList) => {
 					func: functionList["localUpdateGroup"],
 				},
 			];
+			case "reactivate-group":
+				return [
+					{
+						type: "info",
+						placeholder: "Are you sure you would like to reactivate this group?",
+					},
+					{
+						label: "Confirm",
+						type: "button",
+						color: "primary",
+						func: functionList["localReactivateGroup"],
+					},
+				];
 		case "201-message":
 			return [
 				{

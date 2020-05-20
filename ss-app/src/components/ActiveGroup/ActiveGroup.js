@@ -65,9 +65,10 @@ const ActiveGroup = ({
 							onClick={() => {
 								onSubmit();
 							}}
-							disabled={groupDetails.sent === 0}
 						>
-							Send Secret Santa
+							{groupDetails.sent === 0
+								? "Send Secret Santa"
+								: "Reactivate Group"}
 						</Button>
 					</>
 				)}

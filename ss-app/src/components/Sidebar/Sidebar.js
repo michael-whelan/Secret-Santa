@@ -3,10 +3,15 @@ import "./Sidebar.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListItem from "../SimpleComponents/ListItem";
 import Button from "react-bootstrap/Button";
-import ModalContainer from "../../containers/ModalContainer";
 
-const SideBar = ({ groups, selectGroup, errorMsg, showSidebar, user }) => {
-	const [modalShow, setModalShow] = useState(false);
+const SideBar = ({
+	groups,
+	selectGroup,
+	errorMsg,
+	showSidebar,
+	user,
+	setModalShow,
+}) => {
 	return (
 		<div className={"sidebar " + showSidebar}>
 			{user && <span className="username">{user.nickname}</span>}
@@ -33,16 +38,6 @@ const SideBar = ({ groups, selectGroup, errorMsg, showSidebar, user }) => {
 				Add Group
 			</Button>
 			<span className="error">{errorMsg}</span>
-			{modalShow && (
-				<ModalContainer
-					show={modalShow}
-					onHide={() => setModalShow(false)}
-					ugid={null}
-					currData={{}}
-					heading={"Add New Group"}
-					modalType={"add-group"}
-				/>
-			)}
 		</div>
 	);
 };

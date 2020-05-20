@@ -5,6 +5,10 @@
     font-size: medium;
 }
 
+.list-group-item.sent {
+	color:grey;
+}
+
 .list-group-item:hover {
 	background-color: #282c34;
 	color: red;

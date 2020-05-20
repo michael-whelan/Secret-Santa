@@ -23,7 +23,7 @@ const ActiveGroupContainer = () => {
 	const {
 		params: { ugid },
 	} = useRouteMatch("/groups/:ugid");
-
+	console.log(selectedGroup.ugid, ugid);
 	useEffect(() => {
 		ugid &&
 			(!selectedGroup.ugid || selectedGroup.ugid !== ugid) &&
@@ -31,6 +31,19 @@ const ActiveGroupContainer = () => {
 				? dispatch(loadSelectedGroup(ugid, user.sub))
 				: dispatch(loadSelectedGroup(ugid)));
 	});
+
+	const submitFunction = () => {
+		selectedGroup.sent === 0
+			? dispatch(sendMailToGroup(ugid, user.sub))
+			: reactivateModal();
+	};
+
+	const reactivateModal = () => {
+		setModalShow(true);
+		setActiveObject({});
+		setModalType("reactivate-group");
+		setModalHeading("Reactivate Group");
+	};
 
 	return (
 		<>
@@ -54,7 +67,7 @@ const ActiveGroupContainer = () => {
 				setActiveObject={(obj) => setActiveObject(obj)}
 				setModalType={(type) => setModalType(type)}
 				setModalHeading={(heading) => setModalHeading(heading)}
-				onSubmit={() => dispatch(sendMailToGroup(ugid, user.sub))}
+				onSubmit={() => submitFunction()}
 			/>
 		</>
 	);

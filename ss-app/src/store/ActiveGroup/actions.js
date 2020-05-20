@@ -5,6 +5,8 @@ import {
 	CLEAR_SELECTED_GROUP,
 } from "./types";
 import { do_get } from "../api/actions";
+import { loadGroupList } from "../Sidebar/actions";
+
 
 const loadGroupError = (message) => ({
 	type: LOAD_GROUP_ERROR,
@@ -20,7 +22,7 @@ export const clearSelectedGroup = () => ({
 	type: CLEAR_SELECTED_GROUP,
 });
 
-export const loadSelectedGroup = (ugid, uuid=null) => async (dispatch) => {
+export const loadSelectedGroup = (ugid, uuid = null) => async (dispatch) => {
 	let response = await do_get("getgroup", { ugid: ugid, uuid: uuid });
 	if (response.status === 200) {
 		dispatch(storeSelectedGroup(response.data));
@@ -32,7 +34,19 @@ export const loadSelectedGroup = (ugid, uuid=null) => async (dispatch) => {
 	};
 };
 
-export const sendMailToGroup = (ugid, uuid=null)=> async (dispatch)=>{
+export const sendMailToGroup = (ugid, uuid = null) => async (dispatch) => {
+	console.log("show loader");
 	let response = await do_get("sendmail", { ugid: ugid, uuid: uuid });
-	console.log(response);
-}
+	if (response.status === 200) {
+		dispatch(loadGroupList(uuid)).then(
+			dispatch(loadSelectedGroup(ugid, uuid))
+		);
+		console.log("stop loader");
+	} else {
+		console.log("Error sending mail", response);
+		//dispatch(loadGroupsError(response));
+	}
+	return {
+		type: "UPDATE_GROUP",
+	};
+};
