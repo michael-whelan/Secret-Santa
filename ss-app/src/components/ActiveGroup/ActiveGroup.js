@@ -1,37 +1,29 @@
-import React, {useState} from "react";
+import React from "react";
 import "./ActiveGroup.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import PersonContainer from "../../containers/PersonContainer";
-import ModalContainer from "../../containers/ModalContainer";
 import Button from "react-bootstrap/Button";
 import logo from "../../icons/icons8-edit-file-52.png";
 import PropTypes from "prop-types";
 
-const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "", onSubmit }) => {
-	const [modalShow, setModalShow] = useState(false);
-	const [activeObject, setActiveObject] = useState({});
-	const [modalType, setModalType] = useState("update");
-	const [modalHeading, setModalHeading] = useState("update");
+const ActiveGroup = ({
+	groupDetails = {},
+	people = [],
+	errorMsg = "",
+	onSubmit,
+	setModalShow,
+	setActiveObject,
+	setModalType,
+	setModalHeading,
+}) => {
 	return (
 		<div className="main-area">
-			{modalShow && (
-				<ModalContainer
-					show={modalShow}
-					onHide={() => setModalShow(false)}
-					currData={Object.assign({}, activeObject)}
-					ugid={groupDetails.ugid}
-					modalType={modalType}
-					heading={modalHeading}
-					animation={false}
-					people={people}
-				/>
-			)}
 			<div className="activegroup">
 				<div
 					className="activegroup-header"
 					onClick={() => {
 						setModalType("update-group");
-						setModalShow(!modalShow);
+						setModalShow(true);
 						setModalHeading("Edit Group");
 						setActiveObject(groupDetails);
 					}}
@@ -45,7 +37,7 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "", onSubmit }
 							key={index}
 							person={p}
 							clickAction={() => {
-								setModalShow(!modalShow);
+								setModalShow(true);
 								setModalType("update");
 								setActiveObject(p);
 								setModalHeading("Edit Person");
@@ -55,28 +47,29 @@ const ActiveGroup = ({ groupDetails = {}, people = [], errorMsg = "", onSubmit }
 				</ListGroup>
 				{groupDetails.group_name && (
 					<>
-					<Button
-						variant="outline-primary"
-						className="add-person-btn"
-						onClick={() => {
-							setModalShow(!modalShow);
-							setActiveObject({});
-							setModalType("add");
-							setModalHeading("Add New Person");
-						}}
-					>
-						Add Person
-					</Button>
-					<Button
-					variant="outline-primary"
-					className="send-emails"
-					onClick={() => {
-						onSubmit()
-					}}
-				>
-					Send Secret Santa
-				</Button>
-				</>
+						<Button
+							variant="outline-primary"
+							className="add-person-btn"
+							onClick={() => {
+								setModalShow(true);
+								setActiveObject({});
+								setModalType("add");
+								setModalHeading("Add New Person");
+							}}
+						>
+							Add Person
+						</Button>
+						<Button
+							variant="outline-primary"
+							className="send-emails"
+							onClick={() => {
+								onSubmit();
+							}}
+							disabled={groupDetails.sent === 0}
+						>
+							Send Secret Santa
+						</Button>
+					</>
 				)}
 				<span className="error">{errorMsg}</span>
 			</div>
