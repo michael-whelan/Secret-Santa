@@ -32,14 +32,14 @@ const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 		updateTempData(localDataObj);
 	};
 	const handleRemove = (id) => {
-		let localDataObj = Object.assign({},tempData);
-		localDataObj.nots= tempData.nots.filter((not) => parseInt(not) !== id)
+		let localDataObj = Object.assign({}, tempData);
+		localDataObj.nots = tempData.nots.filter((not) => parseInt(not) !== id);
 		updateTempData(localDataObj);
 	};
 	const handleSelect = (id) => {
-		let localDataObj = Object.assign({},tempData);
-		localDataObj.nots.push(id.toString())
-		updateTempData(localDataObj );
+		let localDataObj = Object.assign({}, tempData);
+		localDataObj.nots.push(id.toString());
+		updateTempData(localDataObj);
 	};
 
 	const formMultiSelList = () => {
@@ -74,6 +74,10 @@ const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 	const localUpdateGroup = () => {
 		dispatch(updateGroup(tempData, ugid, uuid));
 	};
+	const localReactivateGroup = () => {
+		dispatch(updateGroup({ sent: 0 }, ugid, uuid));
+	};
+
 	const localDeleteGroup = () => {
 		history.push(`/`);
 		dispatch(deleteGroup(ugid, uuid));
@@ -86,6 +90,7 @@ const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 		localAddGroup: localAddGroup,
 		localUpdateGroup: localUpdateGroup,
 		localDeleteGroup: localDeleteGroup,
+		localReactivateGroup: localReactivateGroup,
 	};
 
 	const genElem = ({ type, label, link, placeholder }, index) => {
@@ -125,6 +130,8 @@ const ModalContainer = ({ ugid, modalType, currData, people, ...props }) => {
 					}}
 				/>
 			);
+		} else if (type === "info") {
+			return <span key={index}>{placeholder}</span>;
 		}
 	};
 	const elemList = [];

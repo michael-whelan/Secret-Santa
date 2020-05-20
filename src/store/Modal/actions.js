@@ -98,11 +98,12 @@ export const addGroup = ({ group_name }, uuid = null) => async (dispatch) => {
 export const updateGroup = (groupvars, ugid, uuid = null) => async (
 	dispatch
 ) => {
-	const { group_name, public_group } = groupvars;
+	const { group_name, public_group,sent } = groupvars;
 	console.log(groupvars);
 	let response = await do_put("updategroup", {
 		group_name,
 		public_group,
+		sent,
 		ugid,
 		uuid,
 	});
