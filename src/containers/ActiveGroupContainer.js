@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveGroup from "../components/ActiveGroup/ActiveGroup";
+import ModalContainer from "./ModalContainer";
 import { withRouter, useRouteMatch } from "react-router-dom";
 import {
 	loadSelectedGroup,
@@ -12,6 +13,12 @@ const ActiveGroupContainer = () => {
 	const user = useSelector((state) => state.auth.user);
 	const people = useSelector((state) => state.activeGroup.people);
 	const errorMsg = useSelector((state) => state.activeGroup.errorMsg);
+
+	const [modalShow, setModalShow] = useState(false);
+	const [activeObject, setActiveObject] = useState({});
+	const [modalType, setModalType] = useState("update");
+	const [modalHeading, setModalHeading] = useState("update");
+
 	const dispatch = useDispatch();
 	const {
 		params: { ugid },
@@ -26,12 +33,30 @@ const ActiveGroupContainer = () => {
 	});
 
 	return (
-		<ActiveGroup
-			groupDetails={selectedGroup}
-			people={people}
-			errorMsg={errorMsg}
-			onSubmit={() => dispatch(sendMailToGroup(ugid, user.sub))}
-		/>
+		<>
+			{modalShow && (
+				<ModalContainer
+					show={modalShow}
+					onHide={() => setModalShow(false)}
+					currData={Object.assign({}, activeObject)}
+					ugid={selectedGroup.ugid}
+					modalType={modalType}
+					heading={modalHeading}
+					animation={false}
+					people={people}
+				/>
+			)}
+			<ActiveGroup
+				groupDetails={selectedGroup}
+				people={people}
+				errorMsg={errorMsg}
+				setModalShow={(show) => setModalShow(show)}
+				setActiveObject={(obj) => setActiveObject(obj)}
+				setModalType={(type) => setModalType(type)}
+				setModalHeading={(heading) => setModalHeading(heading)}
+				onSubmit={() => dispatch(sendMailToGroup(ugid, user.sub))}
+			/>
+		</>
 	);
 };
 

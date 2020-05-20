@@ -27,6 +27,11 @@
 	position: absolute;
 }
 
+button.btn:disabled{
+	color:grey;
+	border-color: grey;
+}
+
 @media only screen and (max-width: 600px) {
 	.activegroup {
 		margin-top: 10%;
