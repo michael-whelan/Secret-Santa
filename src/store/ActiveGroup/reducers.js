@@ -31,10 +31,14 @@ export default function ActiveGroupReducer(
 ) {
 	switch (type) {
 		case LOAD_GROUP_ERROR:
+			console.log(data);
 			return {
 				...state,
 				people: [],
-				errorMsg: "Error Loading Group Info",
+				errorMsg: {
+					message: "Error Loading Group Info",
+					status: data.status,
+				},
 			};
 		case STORE_SELECTED_GROUP:
 			const { group_id, ugid, group_name, sent } = data;
@@ -54,7 +58,7 @@ export default function ActiveGroupReducer(
 				if (peep.person_id === person_id) {
 					peep.name = data.name;
 					peep.email = data.email;
-					peep.nots= data.nots;
+					peep.nots = data.nots;
 				}
 				return peep;
 			});
