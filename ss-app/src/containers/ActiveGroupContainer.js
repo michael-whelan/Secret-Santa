@@ -25,7 +25,8 @@ const ActiveGroupContainer = () => {
 	} = useRouteMatch("/groups/:ugid");
 	console.log(selectedGroup.ugid, ugid);
 	useEffect(() => {
-		ugid &&
+		!errorMsg.status &&
+			ugid &&
 			(!selectedGroup.ugid || selectedGroup.ugid !== ugid) &&
 			(user
 				? dispatch(loadSelectedGroup(ugid, user.sub))
@@ -62,7 +63,7 @@ const ActiveGroupContainer = () => {
 			<ActiveGroup
 				groupDetails={selectedGroup}
 				people={people}
-				errorMsg={errorMsg}
+				errorMsg={errorMsg.message}
 				setModalShow={(show) => setModalShow(show)}
 				setActiveObject={(obj) => setActiveObject(obj)}
 				setModalType={(type) => setModalType(type)}

@@ -5,6 +5,7 @@ import PersonContainer from "../../containers/PersonContainer";
 import Button from "react-bootstrap/Button";
 import logo from "../../icons/icons8-edit-file-52.png";
 import PropTypes from "prop-types";
+import Spinner from "react-bootstrap/Spinner";
 
 const ActiveGroup = ({
 	groupDetails = {},
@@ -18,7 +19,11 @@ const ActiveGroup = ({
 }) => {
 	return (
 		<div className="main-area">
-			<div className="activegroup">
+			<div
+				className={
+					groupDetails.sent ? "activegroup sent" : "activegroup"
+				}
+			>
 				<div
 					className="activegroup-header"
 					onClick={() => {
@@ -36,6 +41,7 @@ const ActiveGroup = ({
 						<PersonContainer
 							key={index}
 							person={p}
+							disabled={groupDetails.sent}
 							clickAction={() => {
 								setModalShow(true);
 								setModalType("update");
@@ -50,6 +56,7 @@ const ActiveGroup = ({
 						<Button
 							variant="outline-primary"
 							className="add-person-btn"
+							disabled={groupDetails.sent}
 							onClick={() => {
 								setModalShow(true);
 								setActiveObject({});
