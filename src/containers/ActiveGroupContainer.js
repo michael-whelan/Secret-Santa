@@ -23,15 +23,13 @@ const ActiveGroupContainer = () => {
 	const {
 		params: { ugid },
 	} = useRouteMatch("/groups/:ugid");
-	console.log(selectedGroup.ugid, ugid);
 	useEffect(() => {
-		!errorMsg.status &&
 			ugid &&
 			(!selectedGroup.ugid || selectedGroup.ugid !== ugid) &&
 			(user
 				? dispatch(loadSelectedGroup(ugid, user.sub))
 				: dispatch(loadSelectedGroup(ugid)));
-	});
+	},[user]);
 
 	const submitFunction = () => {
 		selectedGroup.sent === 0
