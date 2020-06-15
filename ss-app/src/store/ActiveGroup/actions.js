@@ -26,7 +26,7 @@ export const loadSelectedGroup = (ugid, uuid = null) => async (dispatch) => {
 	try {
 		response = await do_get("getgroup", { ugid: ugid, uuid: uuid });
 	} catch (e) {
-		response["status"] = 400;
+		response["status"] = e.request.status;
 	}
 	if (response.status === 200) {
 		dispatch(storeSelectedGroup(response.data));

@@ -51,6 +51,7 @@ export default function ActiveGroupReducer(
 				group_name: group_name,
 				public_group: data.public,
 				sent: sent,
+				errorMsg: "",
 			};
 		case UPDATE_PERSON:
 			const { person_id } = data;
