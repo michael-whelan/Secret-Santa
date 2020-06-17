@@ -115,7 +115,7 @@ export const getModalMap = (type, functionList) => {
 						func: functionList["localReactivateGroup"],
 					},
 				];
-		case "201-message":
+		case "401-message":
 			return [
 				{
 					type: "info",
