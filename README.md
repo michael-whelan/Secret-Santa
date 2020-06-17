@@ -1,68 +1,55 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Secret-Santa
+A simple secet santa app. The digital version of picking names out of a hat.
 
-## Available Scripts
 
-In the project directory, you can run:
+## The Functionality
 
-### `npm start`
+This is a simple web app that will allow a user to register/login and create different groups to be used in Secret santa, or any other reason to randomly and secret assign people to one another.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Public/Private
+Each group can be made public or private. A private group can only be edited by the admin. 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Both public and private groups will be visible to anyone with the ID and both will show the names assigned to people in the groups. However to protect email addresses of users the emails in both public and private groups will be hidden.
 
-### `npm test`
+Public groups will allow unregistered people to make changes to groups. 
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Private groups will only be editable by the group admin.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Nots
+Every person in a group can be assigned a bunch of _"Nots"_, other people in the group that they shouldn't be assigned.
+Most groups won't require many Nots
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## The Front End
 
-### `npm run eject`
+The front end of the site is built in ReactJS and using ~~MaterialUI~~ (bootstrap) to handle parts of the interface.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The aim with this project is to get to grips with some of the new trends in React, functional componants, [hooks](https://reactjs.org/docs/hooks-intro.html), and using [react router](https://reacttraining.com/react-router/web/example/basic) to create unique urls to allow sharing of content better.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This will require building the app with a data layer seperate to the "dumb" components.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+App -> Component data layer(container) -> Component Renderer(Component)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Connecting to RESTful service:
 
-## Learn More
+I'm using the [axios](https://github.com/axios/axios) library to connect to my simple python API. It's a standard in React devlopment and comes with excellent documentation. 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```javascript
+export const loadGroupList = () => {
+  return function (dispatch) {
+    dispatch(loadGroups());//simple action 
+      return axios
+        .get(endpoint + "getgroups")//the actual getter connection
+        .then(({ data }) => {
+          dispatch(renderGroupList(data));//what to do once the get returns (status: 200)
+        })
+        .catch((error) => dispatch(loadGroupsError(error)));//some simple error handling for the client
+    };
+};
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
 
-### Code Splitting
+## The Backend
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+https://github.com/michael-whelan/secret-santa-backend
