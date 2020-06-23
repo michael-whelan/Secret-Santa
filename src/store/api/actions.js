@@ -2,8 +2,8 @@ import axios from "axios";
 
 import { GET_ERROR, POST_ERROR, PUT_ERROR, DELETE_ERROR } from "./types";
 
-const dom = "http://localhost:8080/";
-//const dom = "http://michaelwhelan.pythonanywhere.com/";
+//const dom = "http://localhost:8080/";
+const dom = "http://michaelwhelan.pythonanywhere.com/";
 
 
 const getError = (message) => ({
