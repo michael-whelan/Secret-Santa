@@ -2,6 +2,7 @@ import {
 	LOAD_GROUP_ERROR,
 	STORE_SELECTED_GROUP,
 	CLEAR_SELECTED_GROUP,
+	SEND_MAIL_ERROR,
 } from "./types";
 import {
 	UPDATE_PERSON,
@@ -67,6 +68,8 @@ export default function ActiveGroupReducer(
 		case UPDATE_PERSON_ERROR:
 			console.log("Error during update");
 			console.log(data);
+			return state;
+		case SEND_MAIL_ERROR:
 			return state;
 		case ADD_PERSON:
 			return state;

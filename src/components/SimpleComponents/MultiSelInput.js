@@ -6,8 +6,7 @@ import Badge from "react-bootstrap/Badge";
 import "./SimpleComponents.css";
 
 const CustomToggle = forwardRef(({ children, onClick }, ref) => (
-	<a
-		href=""
+	<div
 		ref={ref}
 		onClick={(e) => {
 			e.preventDefault();
@@ -16,7 +15,7 @@ const CustomToggle = forwardRef(({ children, onClick }, ref) => (
 	>
 		{children}
 		&#x25bc;
-	</a>
+	</div>
 ));
 
 const CustomMenu = forwardRef(

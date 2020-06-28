@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "../components/Sidebar/Sidebar";
 import ModalContainer from "./ModalContainer";
@@ -20,9 +20,14 @@ const SidebarContainer = () => {
 
 	const history = useHistory();
 
+	useEffect(() => {
+		setSidebarShow(false);
+	}, [history.location.pathname]);
+
 	const handleSelect = (group) => {
 		history.push(`/groups/${group.group_url_id}`);
 	};
+
 	return user ? (
 		<div className={!location.pathname.includes("groups") ? "at-home" : ""}>
 			<img
@@ -41,7 +46,6 @@ const SidebarContainer = () => {
 				selectGroup={(group) => {
 					dispatch(loadSelectedGroup(group.group_url_id, user.sub));
 					handleSelect(group);
-					setSidebarShow(!sidebarShow);
 				}}
 				showSidebar={sidebarShow ? "show" : "hidden"}
 				groups={groupList}

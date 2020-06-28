@@ -3,3 +3,4 @@ export const LOAD_GROUP_ERROR = "@ActiveGroup/LOAD_GROUP_ERROR";
 export const STORE_SELECTED_GROUP = "@ActiveGroup/STORE_SELECTED_GROUP";
 export const FETCH_GROUP = "@ActiveGroup/FETCH_GROUP";
 export const CLEAR_SELECTED_GROUP = "@ActiveGroup/CLEAR_SELECTED_GROUP";
+export const SEND_MAIL_ERROR = "@ActiveGroup/SEND_MAIL_ERROR";

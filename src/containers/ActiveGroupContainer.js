@@ -24,16 +24,16 @@ const ActiveGroupContainer = () => {
 		params: { ugid },
 	} = useRouteMatch("/groups/:ugid");
 	useEffect(() => {
-			ugid &&
+		ugid &&
 			(!selectedGroup.ugid || selectedGroup.ugid !== ugid) &&
 			(user
 				? dispatch(loadSelectedGroup(ugid, user.sub))
 				: dispatch(loadSelectedGroup(ugid)));
-	},[user]);
+	}, [user]);
 
 	const submitFunction = () => {
 		selectedGroup.sent === 0
-			? dispatch(sendMailToGroup(ugid, user.sub))
+			? checkEmails() && dispatch(sendMailToGroup(ugid, user.sub))
 			: reactivateModal();
 	};
 
@@ -42,6 +42,18 @@ const ActiveGroupContainer = () => {
 		setActiveObject({});
 		setModalType("reactivate-group");
 		setModalHeading("Reactivate Group");
+	};
+
+	const checkEmails = () => {
+		const re = /^(([^<>()[]\\.,;:s@"]+(.[^<>()[]\\.,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
+		for (let i = 0; i < people.length; ++i) {
+			let person = people[i];
+			if (!re.test(String(person.email).toLowerCase())) {
+				alert(`Something is wrong. Please check your email address for ${person.name}`);
+				return false;
+			}
+		}
+		return true;
 	};
 
 	return (

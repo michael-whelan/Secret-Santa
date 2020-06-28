@@ -5,7 +5,6 @@ import PersonContainer from "../../containers/PersonContainer";
 import Button from "react-bootstrap/Button";
 import logo from "../../icons/icons8-edit-file-52.png";
 import PropTypes from "prop-types";
-import Spinner from "react-bootstrap/Spinner";
 
 const ActiveGroup = ({
 	groupDetails = {},

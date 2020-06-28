@@ -26,6 +26,8 @@
 	.sidebar {
 		margin-top: 15%;
 		width: 50%;
+		height:100%;
+		position: fixed;
 	}
 	.sidebar .username {
 		display: block;

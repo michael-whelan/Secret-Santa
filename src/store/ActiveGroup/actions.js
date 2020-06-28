@@ -1,5 +1,6 @@
 import {
 	LOAD_GROUP_ERROR,
+	SEND_MAIL_ERROR,
 	STORE_SELECTED_GROUP,
 	FETCH_GROUP,
 	CLEAR_SELECTED_GROUP,
@@ -10,6 +11,10 @@ import { loadGroupList } from "../Sidebar/actions";
 const loadGroupError = (message) => ({
 	type: LOAD_GROUP_ERROR,
 	data: message,
+});
+
+const sendMailError = () => ({
+	type: SEND_MAIL_ERROR,
 });
 
 const storeSelectedGroup = (data) => ({
@@ -46,7 +51,8 @@ export const sendMailToGroup = (ugid, uuid = null) => async (dispatch) => {
 		);
 	} else {
 		console.log("Error sending mail", response);
-		//dispatch(loadGroupsError(response));
+		alert("Error sending all of your emails. Please check all are correct.")
+		dispatch(sendMailError());
 	}
 	return {
 		type: "UPDATE_GROUP",
