@@ -1,5 +1,6 @@
 # Secret-Santa
 A simple secet santa app. The digital version of picking names out of a hat.
+Link to app: https://secretsanta-generator.herokuapp.com/
 
 
 ## The Functionality
