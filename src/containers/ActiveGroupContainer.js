@@ -32,7 +32,9 @@ const ActiveGroupContainer = () => {
 	}, [user]);
 
 	const submitFunction = () => {
-		selectedGroup.sent === 0
+		!user ?
+		alert(`You must be logged in and be the group admin to send emails or reactivete`)
+		: selectedGroup.sent === 0
 			? checkEmails() && dispatch(sendMailToGroup(ugid, user.sub))
 			: reactivateModal();
 	};
